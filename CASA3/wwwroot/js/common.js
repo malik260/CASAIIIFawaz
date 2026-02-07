@@ -127,3 +127,7 @@ function getDataForDelete(id) {
     $('#delete_Id').val(id);
     $('#deleteModal').modal('show');
 }
+
+function showModal(id) {
+    $('#' + id).modal('show');
+}

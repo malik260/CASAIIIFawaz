@@ -689,6 +689,159 @@ namespace CASA3.Controllers
             return View(project);
         }
 
+        [HttpGet("Become-A-Vendor")]
+        public IActionResult BecomeAVendor()
+        {
+            var model = new HomePageVM();
+            model.Banner = new List<BannerDto>
+            {
+                new BannerDto
+                {
+                    ImageUrl = "/images/banners/vbanner-1.jpg",
+                    Tag = null,
+                    Title = "Streamlined Vendor Management",
+                    Subtitle = "Connect with procurement opportunities and manage vendor relationships efficiently",
+                    CtaText = "Get Started",
+                    CtaUrl = "#"
+                },
+                new BannerDto
+                {
+                    ImageUrl = "/images/banners/vbanner-2.jpg",
+                    Tag = null,
+                    Title = "Transparent Bidding Process",
+                    Subtitle = "Access real-time bid opportunities with complete transparency and fairness",
+                    CtaText = "View Opportunities",
+                    CtaUrl = "#"
+                }
+            };
+            // Partners data - Set in ViewData for layout access
+            ViewData["Partners"] = GetPartners();
+
+            // Projects data for navigation dropdown - Set in ViewData for layout access
+            ViewData["Projects"] = GetProjects();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitVendorRegistration()
+        {
+            try
+            {
+                // Extract form data
+                var model = new VendorRegistrationDto()
+                {
+                    CompanyName = Request.Form["companyName"].ToString(),
+                    ContactPerson = Request.Form["contactPerson"].ToString(),
+                    Email = Request.Form["email"].ToString(),
+                    PhoneNumber = Request.Form["phoneNumber"].ToString(),
+                    CACNumber = Request.Form["cacNumber"].ToString(),
+                    TIN = Request.Form["tin"].ToString(),
+                    BusinessCategory = Request.Form["businessCategory"].ToString(),
+                    BusinessAddress = Request.Form["businessAddress"].ToString(),
+                    File = Request.Form.Files["document"] as IFormFile
+                };
+
+                // Validate required fields
+                if (string.IsNullOrWhiteSpace(model.CompanyName) || string.IsNullOrWhiteSpace(model.ContactPerson) || string.IsNullOrWhiteSpace(model.Email) 
+                    || string.IsNullOrWhiteSpace(model.PhoneNumber) ||string.IsNullOrWhiteSpace(model.TIN) 
+                    || string.IsNullOrWhiteSpace(model.BusinessCategory) ||string.IsNullOrWhiteSpace(model.BusinessAddress))
+                {
+                    return Json(new
+                    {
+                        isError = true,
+                        message = "All required fields must be filled."
+                    });
+                }
+
+                // Handle file upload
+                var documentPath = string.Empty;
+                if (model.File != null && model.File.Length > 0)
+                {
+                    // Validate file size (10MB)
+                    if (model.File.Length > 10 * 1024 * 1024)
+                    {
+                        return Json(new
+                        {
+                            isError = true,
+                            message = "Document file size exceeds 10MB limit."
+                        });
+                    }
+
+                    // Validate file extension
+                    var allowedExtensions = new[] { ".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png", ".gif" };
+                    var fileExtension = Path.GetExtension(model.File.FileName).ToLowerInvariant();
+
+                    if (!Array.Exists(allowedExtensions, ext => ext == fileExtension))
+                    {
+                        return Json(new
+                        {
+                            isError = true,
+                            message = "Invalid file type. Only PDF, DOC, DOCX, JPG, JPEG, PNG, and GIF files are allowed."
+                        });
+                    }
+
+                    // Create upload directory if it doesn't exist
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "vendor-documents");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    // Generate unique filename
+                    var uniqueFileName = $"{Guid.NewGuid()}_{model.File.FileName}";
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    // Save file
+                    //using (var stream = new FileStream(filePath, FileMode.Create))
+                    //{
+                    //    await documentFile.CopyToAsync(stream);
+                    //}
+
+                    documentPath = Path.Combine("uploads", "vendor-documents", uniqueFileName);
+                }
+
+                // TODO: Save vendor registration data to database
+                // Example:
+                // var vendor = new VendorRegistration
+                // {
+                //     CompanyName = companyName,
+                //     ContactPerson = contactPerson,
+                //     Email = email,
+                //     PhoneNumber = phoneNumber,
+                //     CACNumber = cacNumber,
+                //     TIN = tin,
+                //     BusinessCategory = businessCategory,
+                //     BusinessAddress = businessAddress,
+                //     DocumentPath = documentPath,
+                //     RegistrationDate = DateTime.Now,
+                //     Status = "Pending"
+                // };
+                // 
+                // await _context.VendorRegistrations.AddAsync(vendor);
+                // await _context.SaveChangesAsync();
+
+                // TODO: Send email notification to admin and vendor
+                // await SendVendorRegistrationEmail(email, companyName);
+
+                return Json(new
+                {
+                    isError = false,
+                    message = "Registration submitted successfully! We'll review your application shortly."
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error processing vendor registration");
+
+                return Json(new
+                {
+                    isError = true,
+                    message = "An error occurred while processing your registration. Please try again."
+                });
+            }
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
