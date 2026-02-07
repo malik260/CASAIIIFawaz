@@ -1,1 +1,63 @@
-﻿
+﻿/* Team Member Card Styling */
+.team-member-card {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.team-image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    background-color: #f3f4f6;
+}
+
+/* Grayscale effect on default state */
+.team-member-image {
+    filter: grayscale(100%);
+    transition: filter 0.4s ease;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Remove grayscale and show color on hover */
+.team-member-card:hover .team-member-image {
+    filter: grayscale(0%);
+}
+
+/* LinkedIn container positioning */
+.team-linkedin-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* Show LinkedIn icon on image hover */
+.team-member-card:hover .team-linkedin-container {
+    opacity: 1 !important;
+}
+
+.team-linkedin-icon {
+    transition: all 0.3s ease;
+}
+
+    /* LinkedIn icon hover effect - scale up */
+    .team-linkedin-icon:hover {
+        transform: scale(1.15) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .team-member-image {
+        filter: grayscale(0%);
+    }
+
+    .team-linkedin-container {
+        opacity: 1 !important;
+        background: rgba(0, 0, 0, 0.3);
+    }
+}

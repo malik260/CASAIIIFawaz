@@ -203,6 +203,102 @@ namespace CASA3.Controllers
             };
         }
 
+        public IActionResult AboutUs()
+        {
+            var model = new HomePageVM();
+            
+            // Board of Directors data
+            model.BoardOfDirectors = new List<TeamMemberDto>
+            {
+                new TeamMemberDto
+                {
+                    Id = 1,
+                    Name = "DR. SADIQ SULEIMAN ABDULLAHI",
+                    Position = "CHAIRMAN, BOARD OF DIRECTORS",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/dr-sadiq-suleiman-abdullahi-668ab9300"
+                },
+                new TeamMemberDto
+                {
+                    Id = 2,
+                    Name = "ALIYU ALIYU",
+                    Position = "EXECUTIVE DIRECTOR",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/aliyu-aliyu"
+                },
+                new TeamMemberDto
+                {
+                    Id = 3,
+                    Name = "YAHYA AHMAD RUFAI",
+                    Position = "NON-EXECUTIVE DIRECTOR",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/yahya-ahmad-rufai"
+                },
+                new TeamMemberDto
+                {
+                    Id = 4,
+                    Name = "ROSS OLUYEDE",
+                    Position = "INDEPENDENT DIRECTOR",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/ross-oluyede"
+                },
+                new TeamMemberDto
+                {
+                    Id = 5,
+                    Name = "MALLAM HALLIRU SA'AD MALAMI",
+                    Position = "INDEPENDENT DIRECTOR",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/mallam-halliru"
+                },
+                new TeamMemberDto
+                {
+                    Id = 6,
+                    Name = "DR. NURATU MUSA ABDULLAHI",
+                    Position = "INDEPENDENT DIRECTOR",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/dr-nuratu-musa"
+                }
+            };
+            
+            // Management Team data
+            model.ManagementTeam = new List<TeamMemberDto>
+            {
+                new TeamMemberDto
+                {
+                    Id = 1,
+                    Name = "DR. EMMANUEL BASSI USMAN",
+                    Position = "CHIEF EXECUTIVE OFFICER",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/dr-emmanuel-bassi-usman"
+                },
+                new TeamMemberDto
+                {
+                    Id = 2,
+                    Name = "ABDULFATAI MUSA",
+                    Position = "CHIEF OPERATIONS OFFICER",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/abdulfatai-musa"
+                },
+                new TeamMemberDto
+                {
+                    Id = 3,
+                    Name = "ABDULKADIR ABDULKADIR",
+                    Position = "CHIEF BUSINESS AND STRATEGY OFFICER",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/abdulkadir-abdulkadir"
+                }
+            };
+            
+            // Partners data - Set in ViewData for layout access
+            ViewData["Partners"] = GetPartners();
+            
+            // Projects data for navigation dropdown - Set in ViewData for layout access
+            ViewData["Projects"] = GetProjects();
+            
+            ViewData["Title"] = "About Us";
+            
+            return View(model);
+        }
         public IActionResult Privacy()
         {
             return View();

@@ -31,7 +31,7 @@
 
                 <!-- Desktop Nav -->
                 <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
-                    <a href="#" class="text-gray-700 hover:text-gray-900 transition-colors">About Us</a>
+                    <a asp-controller="Home" asp-action="AboutUs" class="text-gray-700 hover:text-gray-900 transition-colors">About Us</a>
 
                     <!-- Dropdown -->
                     <div class="relative group">
@@ -66,7 +66,7 @@
         <!-- Mobile Menu -->
         <div id="mobileMenu" class="hidden md:hidden border-t bg-white">
             <div class="px-4 py-4 space-y-3 text-sm">
-                <a class="block text-gray-800" href="#">About Us</a>
+                <a asp-controller="Home" asp-action="AboutUs" class="block text-gray-800">About Us</a>
                 <details>
                     <summary class="cursor-pointer text-gray-800">Our Projects</summary>
                     <div class="ml-4 mt-2 space-y-2">
@@ -267,7 +267,7 @@
     <!-- Live Chat Button (Fixed Bottom Right) -->
     <div class="fixed bottom-6 right-6 z-50">
         <button class="bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-colors duration-200">
-            <i class="fa fa-comments text-xl"></i>
+            <svg width="32" height="30" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#ffffff"><g clip-path="url(#messages__clip0_14307_15730)"><path fill-opacity="0.01" d="M0 0h24v24H0z"></path><mask id="messages__b" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24" style="mask-type: alpha;"><g clip-path="url(#messages__clip1_14307_15730)"><g clip-path="url(#messages__clip2_14307_15730)"><mask id="messages__a" maskUnits="userSpaceOnUse" x="1" y="0" width="23" height="23" style="mask-type: alpha;"><path d="M2.571 22.286h-.008.008z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M17.143 4.286c1.414 0 2.571 1.157 2.571 2.571v8.572c0 1.414-1.157 2.571-2.571 2.571H7.209l-4.037 4.037c-.162.162-.384.247-.606.248-.11 0-.219-.017-.32-.068-.317-.128-.532-.445-.532-.788V6.857c0-1.414 1.157-2.571 2.572-2.571h12.857zM4.286 6c-.472 0-.857.386-.857.857v12.506l2.82-2.82c.162-.163.377-.249.608-.249h10.286c.471 0 .857-.385.857-.857V6.866c0-.472-.386-.857-.857-.857H4.286V6z"></path><path d="M20.571.857c1.415 0 2.572 1.158 2.572 2.572V12c0 .472-.386.857-.857.857-.472 0-.857-.385-.857-.857V3.43c0-.472-.386-.857-.858-.857H7.714c-.471 0-.857-.386-.857-.857 0-.472.386-.858.857-.858h12.857z"></path></mask><g mask="url(#messages__a)"><path d="M-1.714-1.714h27.429v27.429H-1.714z"></path></g></g></g></mask><g mask="url(#messages__b)"><path d="M0 0h24v24H0V0z"></path></g></g><defs><clipPath id="messages__clip0_14307_15730"><path d="M0 0h24v24H0z"></path></clipPath><clipPath id="messages__clip1_14307_15730"><path d="M0 0h24v24H0z"></path></clipPath><clipPath id="messages__clip2_14307_15730"><path transform="translate(-1.714 -1.714)" d="M0 0h27.429v27.429H0z"></path></clipPath></defs></svg>
         </button>
     </div>
 

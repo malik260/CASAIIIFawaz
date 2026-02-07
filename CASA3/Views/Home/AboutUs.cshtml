@@ -1,0 +1,334 @@
+﻿@model Core.ViewModels.HomePageVM
+
+@{
+    ViewData["Title"] = "About Us";
+}
+
+<!-- Hero Section -->
+<section class="relative h-[85vh] overflow-hidden">
+    <!-- Background Image -->
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/images/about-us-hero.jpg');"></div>
+    
+    <!-- Overlay (optional, for better text readability) -->
+    <div class="absolute inset-0 bg-black/10"></div>
+    
+    <!-- Content -->
+    <div class="relative z-10 h-full flex items-center">
+        <div class="max-w-7xl mx-auto px-6 w-full">
+            <div class="max-w-md">
+                <!-- Main Title -->
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-4" style="color: #4A4A4A;">
+                    ABOUT US
+                </h1>
+                
+                <!-- Subtitle -->
+                <p class="text-2xl md:text-3xl lg:text-4xl font-normal" style="color: #7A7A7A;">
+                    IT'S REALLY ABOUT YOU
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CEO Quote and Company Description Section -->
+<section class="bg-white py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-start">
+            
+            <!-- Left Content -->
+            <div class="space-y-8">
+                <!-- CEO Quote -->
+                <div>
+                    <blockquote class="text-xl md:text-2xl font-bold italic text-gray-900 mb-4 leading-relaxed">
+                        "For us at Bilaad Realty, the roadmap to sustainable living is inevitably an interesting journey and serves as a template for all our endeavors."
+                    </blockquote>
+                    <p class="text-base md:text-lg text-gray-700">
+                        — Dr. Emmanuel Bassi Usman (Chief Executive Officer)
+                    </p>
+                </div>
+                
+                <!-- Company Description -->
+                <div class="space-y-6 text-gray-700 text-base md:text-lg leading-relaxed">
+                    <p>
+                        Real estate is more than development; it is a dialogue between people, place, and purpose. Every structure we create is rooted in sustainability, guided by vision, and crafted for those who expect more than the ordinary.
+                    </p>
+                    
+                    <p>
+                        We partner with individuals and organizations who value purpose, quality, and sustainability. Backed by a passionate team of seasoned professionals, we have earned the trust of clients who expect nothing but excellence.
+                    </p>
+                    
+                    <p>
+                        Our approach is rooted in the values shaping Nigeria's future and the SDGs 2030, which we bring to life through thoughtful, innovative design. As the world changes, we stay ahead by refining our tools, embracing new technologies, and staying true to what matters most: Building better, smarter, and more sustainable communities.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Right Image -->
+            <div class="relative w-full lg:sticky lg:top-24">
+                <div class="aspect-[5/5] w-full overflow-hidden shadow-2xl">
+                    <img src="/images/dummy user.jpg" alt="Dr. Emmanuel Bassi Usman - Chief Executive Officer" class="w-full h-full object-cover" />
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+<!-- What We Do Section -->
+<section class="bg-[#484747] py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <!-- Section Title -->
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-16" style="color: #b39359;">
+            WHAT WE DO
+        </h2>
+
+        <!-- Property Development Section -->
+        <div class="mb-16 pb-16 border-b border-gray-700">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left Content -->
+                <div class="space-y-6">
+                    <!-- Title with Icon -->
+                    <div class="flex items-center gap-4 mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"  style="color: #b39359;">
+                            <path fill="currentColor" d="M62.88 0H23.34c-.4 0-.72.32-.72.72 0 .4.32.72.72.72h38.83v42.49H23.46v-3.67l12.32-.06c.08.01.16.01.23 0l20.41-.1c.39 0 .71-.32.71-.72V19.31a.72.72 0 0 0-.17-.46L46.82 6.81s-.05-.05-.07-.08l-.01-.01a.727.727 0 0 0-.46-.17H24.4c-.21 0-.41.09-.54.25l-.38.45V3.97c0-2.59-5.91-3.95-11.74-3.95S0 1.36 0 3.95v51.51c0 2.71 6.07 3.95 11.71 3.95 5.64 0 11.74-1.24 11.74-3.95v-2.52h39.42c.4 0 .72-.32.72-.72V.72c0-.4-.32-.72-.72-.72h.01Zm-27.7 38.76-11.72.06V20.01h11.72v18.75Zm14.4-.08h-6.59v-8.65h6.59v8.65Zm6.12-.02-4.69.02v-9.36c0-.4-.32-.72-.72-.72h-8.02c-.4 0-.72.32-.72.72v9.41l-4.95.03V20.02h19.09v18.64h.01Zm-.82-20.07h-17.6l8.98-10.24 8.62 10.24ZM24.71 7.96h19.97l-9.32 10.62H23.45V9.43l1.26-1.47Zm-13-6.53c6.67 0 10.31 1.66 10.31 2.52 0 .86-3.64 2.55-10.31 2.55-1.23 0-2.35-.06-3.37-.16V4.11c.89-.12 1.79-.18 2.66-.18 2.1 0 4.15.32 5.36.83.36.15.78-.02.94-.38a.728.728 0 0 0-.38-.94C14.83 2.56 11 2.2 7.51 2.79c-.34.06-.6.36-.6.71v2.67c-3.57-.53-5.48-1.59-5.48-2.21 0-.86 3.63-2.52 10.28-2.52v-.01Zm10.31 54.03c0 .86-3.64 2.52-10.31 2.52S1.43 56.32 1.43 55.46V5.96s.04.02.05.03c.24.14.5.28.78.41.06.03.12.05.18.07.26.11.53.21.82.31.06.02.11.04.17.06 1.2.39 2.62.67 4.16.86h.05c1.31.15 2.69.23 4.07.23 3.03 0 6.08-.37 8.31-1.09.06-.02.12-.04.19-.06.28-.1.55-.2.8-.31.06-.03.12-.05.18-.08.28-.13.54-.26.78-.4.02 0 .04-.02.05-.03v49.5Zm40.14-3.95h-38.7v-6.16h38.71v6.16h-.01Z"></path><path fill="currentColor" d="M44.11 18.12h4.31c.4 0 .72-.32.72-.72v-4.35c0-.4-.32-.72-.72-.72h-4.31c-.4 0-.72.32-.72.72v4.35c0 .4.32.72.72.72Zm.72-4.35h2.88v2.92h-2.88v-2.92ZM43.43 28.17h5.7c.4 0 .72-.32.72-.72V21.7c0-.4-.32-.72-.72-.72h-5.7c-.4 0-.72.32-.72.72v5.75c0 .4.32.72.72.72Zm.72-5.75h4.27v4.32h-4.27v-4.32Z">
+                            </path></svg>
+                        <h3 class="text-2xl md:text-3xl font-bold" style="color: #b39359;">
+                            PROPERTY DEVELOPMENT
+                        </h3>
+                    </div>
+
+                    <!-- Text Content -->
+                    <div class="space-y-4 text-white text-base md:text-lg leading-relaxed">
+                        <p>
+                            The Nigerian property market is a dynamic landscape, and we understand its complexities. Through a combination of academic rigor and professional practice, we identify and solve industry challenges, creating solutions that stand the test of time.
+                        </p>
+                        <p>
+                            Our services span residential and commercial property development, each project tailored to meet the unique demands of urban living and business operations.
+                        </p>
+                        <p>
+                            We focus on sustainable real estate development, innovation, alternative project finance, strategic partnerships, value-chain restructuring, complex development projects, comprehensive project management, and creating sustainable communities that refine lifestyle choices.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right Image -->
+                <div class="relative w-full">
+                    <div class="aspect-[4/3] w-full overflow-hidden shadow-2xl">
+                        <img src="/images/building-design.webp" 
+                             alt="Property Development" 
+                             class="w-full h-full object-cover" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advisory Services Section -->
+        <div>
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left Content -->
+                
+                <div class="relative w-full">
+                    <div class="aspect-[4/3] w-full overflow-hidden shadow-2xl">
+                        <img src="/images/site-engineers.webp"
+                             alt="Advisory Services" 
+                             class="w-full h-full object-cover" />
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Title with Icon -->
+                    <div class="flex items-center gap-4 mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #b39359;">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        <h3 class="text-2xl md:text-3xl font-bold" style="color: #b39359;">
+                            ADVISORY SERVICES
+                        </h3>
+                    </div>
+
+                    <!-- Text Content -->
+                    <div class="space-y-4 text-white text-base md:text-lg leading-relaxed">
+                        <p>
+                            We offer expert advisory services for real estate investment and project execution, combining deep industry knowledge with client-focused strategies to deliver profitable outcomes.
+                        </p>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2" style="color: #b39359;">
+                                    • Investment Advisory
+                                </h4>
+                                <p>
+                                    We help clients make informed, profitable real estate decisions. Our guidance, strategies, and partnerships are rooted in integrity and designed to maximize returns while minimizing risk.
+                                </p>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2" style="color: #b39359;">
+                                    • Project Management
+                                </h4>
+                                <p>
+                                    Our experienced team delivers end-to-end project management solutions with a focus on quality, efficiency, and risk mitigation. We ensure smooth execution from planning to completion.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="bg-white py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        
+        <!-- Section Title -->
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-20" style="color: #4A4A4A;">
+            MEET OUR TEAM
+        </h2>
+
+        <!-- Board of Directors Section -->
+        <div class="mb-20">
+            <h3 class="text-3xl md:text-4xl font-bold mb-12" style="color: #b39359;">
+                Board Of Directors
+            </h3>
+            
+            <!-- BOD Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                @foreach(var member in Model.BoardOfDirectors)
+                {
+                    <div class="team-member-card">
+                        <!-- Image Container with Hover Effects -->
+                        <div class="team-image-wrapper overflow-hidden bg-gray-200 mb-6">
+                            <!-- Grayscale Image -->
+                            <img src="@member.ImageUrl" 
+                                 alt="@member.Name" 
+                                 class="team-member-image w-full h-auto aspect-square object-cover" 
+                                 onerror="this.src='/images/team/placeholder.jpg'" />
+                            
+                            <!-- LinkedIn Icon Container (hidden by default, shows on image hover) -->
+                            <div class="team-linkedin-container absolute inset-0 flex items-end justify-center pb-6 opacity-0 transition-opacity duration-300 z-10">
+                                <a href="@member.LinkedInUrl" 
+                                   target="_blank" 
+                                   rel="noopener noreferrer"
+                                   title="Visit LinkedIn Profile"
+                                   class="team-linkedin-icon w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center text-white transition-transform hover:scale-110 duration-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Member Info -->
+                        <div class="text-center">
+                            <h4 class="font-bold text-lg mb-2" style="color: #4A4A4A;">
+                                @member.Name
+                            </h4>
+                            <p class="text-sm text-gray-600 tracking-wide">
+                                @member.Position
+                            </p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Management Team Section -->
+        <div>
+            <h3 class="text-3xl md:text-4xl font-bold mb-12" style="color: #b39359;">
+                Management Team
+            </h3>
+            
+            <!-- Management Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                @foreach(var member in Model.ManagementTeam)
+                {
+                    <div class="team-member-card">
+                        <!-- Image Container with Hover Effects -->
+                        <div class="team-image-wrapper overflow-hidden bg-gray-200 mb-6">
+                            <!-- Grayscale Image -->
+                            <img src="@member.ImageUrl" 
+                                 alt="@member.Name" 
+                                 class="team-member-image w-full h-auto aspect-square object-cover" 
+                                 onerror="this.src='/images/dummy user.jpg'" />
+                            
+                            <!-- LinkedIn Icon Container (hidden by default, shows on image hover) -->
+                            <div class="team-linkedin-container absolute inset-0 flex items-end justify-center pb-6 opacity-0 transition-opacity duration-300 z-10">
+                                <a href="@member.LinkedInUrl" 
+                                   target="_blank" 
+                                   rel="noopener noreferrer"
+                                   title="Visit LinkedIn Profile"
+                                   class="team-linkedin-icon w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center text-white transition-transform hover:scale-110 duration-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Member Info -->
+                        <div class="text-center">
+                            <h4 class="font-bold text-lg mb-2" style="color: #4A4A4A;">
+                                @member.Name
+                            </h4>
+                            <p class="text-sm text-gray-600 tracking-wide">
+                                @member.Position
+                            </p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Sustainable Value Approach Section -->
+<section class="bg-white py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            
+            <!-- Left Content - Flower Image -->
+            <div class="flex justify-center">
+                <div class="w-full max-w-md">
+                    <img src="/images/flower.webp" 
+                         alt="Sustainable Growth" 
+                         class="w-full h-auto" />
+                </div>
+            </div>
+
+            <!-- Right Content -->
+            <div class="space-y-6">
+                <!-- Section Title -->
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold" style="color: #4A4A4A;">
+                    OUR APPROACH TO SUSTAINABLE VALUE
+                </h2>
+
+                <!-- Description Content -->
+                <div class="space-y-6 text-gray-700 text-base md:text-lg leading-relaxed">
+                    <p>
+                        In alignment with our code of business ethics, the leadership of Bilaad Realty reaffirms its commitment to contributing meaningfully to societal development.
+                    </p>
+
+                    <p>
+                        As part of this commitment, the <span class="font-semibold text-gray-900">Bilaad Development Trust</span> plays a key role in advancing initiatives that create long-term value for communities and the environment.
+                    </p>
+
+                    <p>
+                        Through this dedicated vehicle, we continue to translate our values into actions, building not just spaces, but a more sustainable and inclusive future for all.
+                    </p>
+                </div>
+
+                <!-- CTA Button -->
+                <div class="pt-4">
+                    <a href="#" class="inline-block px-8 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors duration-300">
+                        Discover More
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

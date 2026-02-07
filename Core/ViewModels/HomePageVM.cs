@@ -9,6 +9,8 @@ namespace Core.ViewModels
         public List<FootprintYearDto> FootprintYears { get; set; } = new();
         public int SelectedFootprintYear { get; set; } = 2018;
         public List<NewsletterDto> Newsletters { get; set; } = new();
+        public List<TeamMemberDto> BoardOfDirectors { get; set; } = new();
+        public List<TeamMemberDto> ManagementTeam { get; set; } = new();
     }
 
 
