@@ -149,20 +149,24 @@ namespace CASA3.Controllers
         {
             return new List<ProjectDto>
             {
-                new ProjectDto { Name = "AMAZON", Url = "/projects/amazon" },
-                new ProjectDto { Name = "BAHAMAS", Url = "/projects/bahamas" },
-                new ProjectDto { Name = "BIMINI", Url = "/projects/bimini" },
-                new ProjectDto { Name = "BALI ISLAND", Url = "/projects/bali" },
-                new ProjectDto { Name = "BARBADOS ISLAND", Url = "/projects/barbados" },
-                new ProjectDto { Name = "BOBOWASI ISLAND", Url = "/projects/bobowasi" },
-                new ProjectDto { Name = "BORA BORA ISLAND", Url = "/projects/borabora" },
-                new ProjectDto { Name = "CAPRI ISLAND", Url = "/projects/capri" },
-                new ProjectDto { Name = "FIJI ISLAND", Url = "/projects/fiji" },
-                new ProjectDto { Name = "LANGKAWI ISLAND", Url = "/projects/langkawi" },
-                new ProjectDto { Name = "MALDIVES", Url = "/projects/maldives" },
-                new ProjectDto { Name = "MAURITIUS ISLAND", Url = "/projects/mauritius" },
-                new ProjectDto { Name = "SEYCHELLES", Url = "/projects/seychelles" },
-                new ProjectDto { Name = "ZANZIBAR", Url = "/projects/zanzibar" }
+                new ProjectDto { Id = 1, Name = "CAPRI ISLAND", Url = "/projects/capri" },
+                new ProjectDto { Id = 2, Name = "EMERALD", Url = "/projects/emerald" },
+                new ProjectDto { Id = 3, Name = "ONYX", Url = "/projects/onyx" },
+                new ProjectDto { Id = 4, Name = "OPAL", Url = "/projects/opal" },
+                new ProjectDto { Id = 5, Name = "AVENTURINE", Url = "/projects/aventurine" },
+                new ProjectDto { Id = 6, Name = "AMAZON", Url = "/projects/amazon" },
+                new ProjectDto { Id = 7, Name = "BAHAMAS", Url = "/projects/bahamas" },
+                new ProjectDto { Id = 8, Name = "BIMINI", Url = "/projects/bimini" },
+                new ProjectDto { Id = 9, Name = "BALI ISLAND", Url = "/projects/bali" },
+                new ProjectDto { Id = 10, Name = "BARBADOS ISLAND", Url = "/projects/barbados" },
+                new ProjectDto { Id = 11, Name = "BOBOWASI ISLAND", Url = "/projects/bobowasi" },
+                new ProjectDto { Id = 12, Name = "BORA BORA ISLAND", Url = "/projects/borabora" },
+                new ProjectDto { Id = 13, Name = "FIJI ISLAND", Url = "/projects/fiji" },
+                new ProjectDto { Id = 14, Name = "LANGKAWI ISLAND", Url = "/projects/langkawi" },
+                new ProjectDto { Id = 15, Name = "MALDIVES", Url = "/projects/maldives" },
+                new ProjectDto { Id = 16, Name = "MAURITIUS ISLAND", Url = "/projects/mauritius" },
+                new ProjectDto { Id = 17, Name = "SEYCHELLES", Url = "/projects/seychelles" },
+                new ProjectDto { Id = 18, Name = "ZANZIBAR", Url = "/projects/zanzibar" }
             };
         }
 
@@ -607,6 +611,82 @@ namespace CASA3.Controllers
             ViewData["Title"] = post.Title;
 
             return View(post);
+        }
+
+        public IActionResult ProjectDetails(int id)
+        {
+            // Dummy projects data
+            var dummyProjects = new List<ProjectDetailsDto>
+            {
+                new ProjectDetailsDto
+                {
+                    Id = 1,
+                    Name = "CAPRI ISLAND",
+                    HeroImageUrl = "/images/projects/project-1.webp",
+                    Description = "Spanning 210 hectares in Kalantan island, Abiaj Longterm Island is a refined residential estate offering 10 thoughtfully-planned homes. From elegant 5-bedroom mansions to the charm of 4-bedroom duplexes, each home is designed with meticulous attention to detail while featuring top-notch aesthetics and security. Long-term island delivers a luxurious lifestyle where every detail is built to elevate everyday living.",
+                    BrochurePdfUrl = "/files/capri-brochure.pdf"
+                },
+                new ProjectDetailsDto
+                {
+                    Id = 2,
+                    Name = "EMERALD",
+                    HeroImageUrl = "/images/projects/emerald-hero.webp",
+                    Description = "The Emerald is a majestically designed five-bedroom villa that embodies refined living spaces with the perfect balance of contemporary luxe and elegant details. This distinctively crafted villa features an elegant guest quarters and an exquisite guard house. Balconies with sweeping views every detail has been crafted for comfort and sophistication. The finessed design and fixtures suitable for those who crave style, serenity.",
+                    BrochurePdfUrl = "/files/emerald-brochure.pdf"
+                },
+                new ProjectDetailsDto
+                {
+                    Id = 3,
+                    Name = "ONYX",
+                    HeroImageUrl = "/images/projects/onyx-hero.webp",
+                    Description = "This beautifully designed villa is a perfect blend of creativity and craftsmanship, emphasizing quality and comfort. It features five spacious generously suited two bedroom en-suite and an ultra-modern kitchen. The home is intelligently designed to offer a refined lifestyle and architectural opulence. Every space tells a story of sophistication with quality finishes and design excellence.",
+                    BrochurePdfUrl = "/files/onyx-brochure.pdf"
+                },
+                new ProjectDetailsDto
+                {
+                    Id = 4,
+                    Name = "OPAL",
+                    HeroImageUrl = "/images/projects/opal-hero.webp",
+                    Description = "This beautifully designed townhouse showcase a perfect blend of creativity and meticulous craftsmanship, focusing on quality and comfort. With luxury spaces and suite bedrooms and an employees rest area with quality finishing throughout. Adventurine redefines the modern living experience that meets the needs of today's families seeking style, functionality and premium comfort and details.",
+                    BrochurePdfUrl = "/files/opal-brochure.pdf"
+                },
+                new ProjectDetailsDto
+                {
+                    Id = 5,
+                    Name = "AVENTURINE",
+                    HeroImageUrl = "/images/projects/aventurine-hero.webp",
+                    Description = "Aventurine showcases three spacious en-suite bedrooms along with a contemporary lounge. All interior surfaces are enhanced by festive liquors that color in your mood-making interior and create both warmth and relaxed feelings. Whi exquisite details and high quality finishes throughout Aventurine redefines the ultimate lifestyle where every corner is built for comfort.",
+                    BrochurePdfUrl = "/files/aventurine-brochure.pdf"
+                }
+            };
+
+            // Get the project by ID or default to first project
+            var project = dummyProjects.FirstOrDefault(p => p.Id == id) ?? dummyProjects.First();
+
+            // Generate random number of building designs (1-5)
+            var random = new Random();
+            int numberOfDesigns = random.Next(1, 6);
+
+            // Create dummy building designs
+            project.BuildingDesigns = new List<BuildingDesignDto>();
+            for (int i = 1; i <= numberOfDesigns; i++)
+            {
+                project.BuildingDesigns.Add(new BuildingDesignDto
+                {
+                    Id = i,
+                    Name = $"{project.Name} - Design Type {i}",
+                    Description = $"This beautifully designed building showcases a perfect blend of modern architecture and luxury living. The unit features spacious living areas, state-of-the-art amenities, and exquisite finishes throughout. Every detail is meticulously crafted to provide the ultimate comfort and elegance for residents.",
+                    ImageUrl = $"/images/sample-project-details.webp",
+                    FloorPlanPdfUrl = $"/files/floorplan-{i}.pdf"
+                });
+            }
+
+            // Set layout data
+            ViewData["Partners"] = GetPartners();
+            ViewData["Projects"] = GetProjects();
+            ViewData["Title"] = project.Name;
+
+            return View(project);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
