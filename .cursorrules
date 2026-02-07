@@ -1,0 +1,145 @@
+# CASA3 Project - Cursor Rules
+
+## Project Overview
+This is an ASP.NET Core 8.0 MVC application following a clean architecture pattern with three main layers:
+- **CASA3**: Presentation layer (Controllers, Views, wwwroot)
+- **Core**: Data/Domain layer (Models, DTOs, ViewModels, EFContext, Migrations)
+- **Logic**: Business logic layer (Services, Interfaces)
+
+## Technology Stack
+- .NET 8.0
+- ASP.NET Core MVC
+- Entity Framework Core 8.0.11 with SQL Server
+- ASP.NET Identity for authentication
+- NLog for logging
+- Tailwind CSS, jQuery, and related frontend libraries
+- Newtonsoft.Json
+
+## Code Style & Conventions
+
+### C# Coding Standards
+- Use nullable reference types (`<Nullable>enable</Nullable>`)
+- Use implicit usings (`<ImplicitUsings>enable</ImplicitUsings>`)
+- Follow C# naming conventions:
+  - Classes: PascalCase (e.g., `HomeController`, `AppUser`)
+  - Methods: PascalCase (e.g., `LogDebug`, `GetClassAndMethodName`)
+  - Properties: PascalCase (e.g., `ImageUrl`, `FirstName`)
+  - Private fields: camelCase with underscore prefix (e.g., `_logger`)
+  - Parameters: camelCase (e.g., `methodBase`, `message`)
+- Use meaningful, descriptive names
+- Prefer explicit types when it improves readability
+
+### Project Structure
+- **Controllers**: Place in `CASA3/Controllers/` with `Controller` suffix
+- **Models**: Domain models in `Core/Model/`, ViewModels in `Core/ViewModels/`
+- **DTOs**: Data Transfer Objects in `Core/DTOs/`
+- **Services**: Business logic in `Logic/Services/`, interfaces in `Logic/IServices/`
+- **Views**: Razor views in `CASA3/Views/` following MVC conventions
+- **Migrations**: Entity Framework migrations in `Core/Migrations/`
+
+### Architecture Patterns
+
+#### Dependency Injection
+- Register services in `Program.cs` using appropriate lifetimes:
+  - `AddScoped` for services (e.g., `ILoggerManager`)
+  - Use constructor injection in controllers and services
+- Always use interfaces for services (e.g., `ILoggerManager`)
+
+#### Data Access
+- Use Entity Framework Core with `EFContext` in `Core/DB/`
+- All database operations should go through `EFContext`
+- Use migrations for database schema changes
+- DbContext should inherit from `IdentityDbContext` for Identity support
+
+#### DTOs and ViewModels
+- Use DTOs (`Core/DTOs/`) for data transfer between layers
+- Use ViewModels (`Core/ViewModels/`) for passing data to views
+- Initialize collections with `= new()` or `= new List<T>()` to avoid null reference issues
+- Keep DTOs simple with properties only (no business logic)
+
+#### Controllers
+- Keep controllers thin - delegate business logic to services
+- Use dependency injection for services
+- Return appropriate action results (`IActionResult`, `View()`, `Json()`, etc.)
+- Use `[ResponseCache]` attribute for caching when appropriate
+
+#### Services
+- Implement service interfaces from `Logic/IServices/`
+- Services should depend on `Core` project, not `CASA3`
+- Use the `ILoggerManager` for logging with method context:
+  ```csharp
+  _logger.Loginfo(MethodBase.GetCurrentMethod()!, "Message");
+  ```
+
+### Logging
+- Use `ILoggerManager` from `Logic.IServices` for all logging
+- Log format: `{className} ::> {methodName} :: {message}`
+- Use appropriate log levels: `LogDebug`, `Loginfo`, `LogWarn`, `LogError`
+- Always pass `MethodBase.GetCurrentMethod()!` as the first parameter
+
+### Entity Framework
+- Use `EFContext` for all database operations
+- Apply migrations automatically in `Program.cs` using `context.Database.Migrate()`
+- Use `DbSet<T>` properties for entity sets
+- Follow Identity patterns for user management
+
+### ASP.NET Identity
+- Use `AppUser` (extends `IdentityUser`) for user entities
+- Configure Identity options in `Program.cs`
+- Use roles: "SuperAdmin", "Admin", "Staff"
+- Initialize roles in `Program.cs` startup
+
+### Frontend
+- Static files in `wwwroot/`
+- Use Tailwind CSS for styling
+- jQuery for DOM manipulation
+- Keep JavaScript organized in `wwwroot/js/`
+- Use Razor views with proper layout (`_Layout.cshtml`)
+
+### Error Handling
+- Use exception handling middleware in `Program.cs`
+- Custom error pages in `Views/Shared/Error.cshtml`
+- Use `[ResponseCache]` with `NoStore = true` for error actions
+
+### Configuration
+- Store connection strings in `appsettings.json` and `appsettings.Development.json`
+- Use `IConfiguration` for accessing configuration
+- Connection string key: `"Casa3DbConnection"`
+
+### Session Management
+- Session configured with 43800 minutes timeout
+- Use `AppHttpContext.Services` for accessing services in static contexts
+- Enable session in middleware pipeline
+
+## Best Practices
+
+1. **Separation of Concerns**: Keep presentation, business logic, and data access separate
+2. **Dependency Injection**: Always use DI, never create instances with `new` for services
+3. **Null Safety**: Leverage nullable reference types to prevent null reference exceptions
+4. **Async/Await**: Use async methods for I/O operations (database, HTTP calls)
+5. **Error Handling**: Always handle exceptions appropriately
+6. **Logging**: Log important operations, errors, and debug information
+7. **Code Reusability**: Extract common logic into services
+8. **Security**: Use ASP.NET Identity for authentication and authorization
+9. **Performance**: Use appropriate caching strategies
+10. **Maintainability**: Write clean, readable, and well-documented code
+
+## When Adding New Features
+
+1. **New Entity**: Add to `Core/Model/`, add `DbSet` to `EFContext`, create migration
+2. **New Service**: Create interface in `Logic/IServices/`, implement in `Logic/Services/`, register in `Program.cs`
+3. **New Controller**: Add to `CASA3/Controllers/`, inject required services
+4. **New View**: Add to appropriate folder in `CASA3/Views/`
+5. **New DTO/ViewModel**: Add to `Core/DTOs/` or `Core/ViewModels/` respectively
+
+## Code Generation Guidelines
+
+- Always maintain the three-layer architecture (CASA3, Core, Logic)
+- Never create circular dependencies between projects
+- Core should not reference CASA3 or Logic
+- Logic can reference Core
+- CASA3 can reference both Core and Logic
+- Use proper namespaces matching folder structure
+- Include XML comments for public APIs when appropriate
+- Follow existing code patterns and conventions
+

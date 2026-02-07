@@ -11,40 +11,49 @@
 
     <!-- Icons -->
     <link rel="stylesheet" href="~/css/font-awesome.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
 
 </head>
 <body class="flex flex-col min-h-screen text-gray-800">
 
     <!-- ================= HEADER ================= -->
+    @{
+        var projects = ViewData["Projects"] as List<Core.DTOs.ProjectDto> ?? new List<Core.DTOs.ProjectDto>();
+    }
     <header class="bg-white border-b sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
 
                 <!-- Logo -->
                 <a asp-controller="Home" asp-action="Index" class="flex items-center">
-                    <img src="~/images/logo.png" alt="Casa III" class="h-8">
+                    <img src="~/images/logo.png" alt="BILAAD REALTY" class="h-10 md:h-12">
                 </a>
 
                 <!-- Desktop Nav -->
                 <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
-                    <a href="#" class="hover:text-gold">About Us</a>
+                    <a href="#" class="text-gray-700 hover:text-gray-900 transition-colors">About Us</a>
 
                     <!-- Dropdown -->
                     <div class="relative group">
-                        <button class="flex items-center gap-1 hover:text-gold">
+                        <a href="#" class="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition-colors border-b-2 border-transparent hover:border-gray-700">
                             Our Projects <i class="fa fa-chevron-down text-xs"></i>
-                        </button>
-                        <div class="absolute left-0 mt-2 w-56 bg-white shadow-lg border hidden group-hover:block">
-                            <a class="block px-4 py-2 hover:bg-gray-100" href="#">Amazon</a>
-                            <a class="block px-4 py-2 hover:bg-gray-100" href="#">Capri Island</a>
-                            <a class="block px-4 py-2 hover:bg-gray-100" href="#">Zanzibar</a>
+                        </a>
+                        <!-- Invisible padding area to prevent dropdown from closing -->
+                        <div class="absolute left-0 top-full w-full h-2"></div>
+                        <div class="absolute left-0 top-full pt-2 w-56 bg-white shadow-xl border border-gray-200 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 max-h-96 overflow-y-auto z-50">
+                            @foreach (var project in projects)
+                            {
+                                <a class="block px-5 py-3.5 text-gray-700 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0 first:rounded-t-lg last:rounded-b-lg" href="@project.Url">
+                                    @project.Name
+                                </a>
+                            }
                         </div>
                     </div>
 
-                    <a href="#" class="hover:text-gold">Contact Us</a>
-                    <a href="#" class="hover:text-gold">Blog</a>
-                    <a href="#" class="hover:text-gold">Become a Vendor</a>
-                    <a href="#" class="hover:text-gold">Become an Affiliate</a>
+                    <a href="#" class="text-gray-700 hover:text-gray-900 transition-colors">Contact Us</a>
+                    <a href="#" class="text-gray-700 hover:text-gray-900 transition-colors">Blog</a>
+                    <a href="#" class="text-gray-700 hover:text-gray-900 transition-colors">Become A Vendor</a>
+                    <a href="#" class="text-gray-700 hover:text-gray-900 transition-colors">Become An Affiliate.</a>
                 </nav>
 
                 <!-- Mobile Menu Button -->
@@ -57,19 +66,20 @@
         <!-- Mobile Menu -->
         <div id="mobileMenu" class="hidden md:hidden border-t bg-white">
             <div class="px-4 py-4 space-y-3 text-sm">
-                <a class="block" href="#">About Us</a>
+                <a class="block text-gray-800" href="#">About Us</a>
                 <details>
-                    <summary class="cursor-pointer">Our Projects</summary>
+                    <summary class="cursor-pointer text-gray-800">Our Projects</summary>
                     <div class="ml-4 mt-2 space-y-2">
-                        <a class="block" href="#">Amazon</a>
-                        <a class="block" href="#">Capri Island</a>
-                        <a class="block" href="#">Zanzibar</a>
+                        @foreach (var project in projects)
+                        {
+                            <a class="block text-gray-800" href="@project.Url">@project.Name</a>
+                        }
                     </div>
                 </details>
-                <a class="block" href="#">Contact Us</a>
-                <a class="block" href="#">Blog</a>
-                <a class="block" href="#">Become a Vendor</a>
-                <a class="block" href="#">Become an Affiliate</a>
+                <a class="block text-gray-800" href="#">Contact Us</a>
+                <a class="block text-gray-800" href="#">Blog</a>
+                <a class="block text-gray-800" href="#">Become A Vendor</a>
+                <a class="block text-gray-800" href="#">Become An Affiliate.</a>
             </div>
         </div>
     </header>
@@ -83,86 +93,91 @@
     <footer class="bg-gray-100 mt-20">
 
         <!-- Newsletter -->
-        <section class="relative bg-cover bg-center py-20" style="background-image: url('/images/newsletter-bg.jpg');">
-
-            <div class="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row
-                items-start lg:items-center justify-between gap-10">
-
-                <!-- LEFT: CTA -->
-                <div class="flex-shrink-0">
-                    <a href="#"
-                       class="inline-block border border-black px-8 py-3
-                      text-sm font-semibold tracking-wide
-                      hover:bg-black hover:text-white transition">
-                        GET THE CASA III ADVANTAGE
-                    </a>
-                </div>
-
-                <!-- MIDDLE: Socials + Phone (INLINE) -->
-                <div class="flex flex-wrap items-center gap-6 text-lg">
-
-                    <!-- Social Icons -->
-                    <div class="flex items-center gap-4 text-xl">
-                        <a href="#" class="hover:text-black"><i class="fa fa-facebook"></i></a>
-                        <a href="#" class="hover:text-black"><i class="fa fa-instagram"></i></a>
-                        <a href="#" class="hover:text-black"><i class="fa fa-linkedin"></i></a>
-                        <a href="#" class="hover:text-black"><i class="fa fa-twitter"></i></a>
+        <section class="relative flex bg-cover bg-center" style="background-image: url('/images/newsletter-bg.jpg');">
+            <!-- Left Section (2/3 width) - Light Grey Background -->
+            <div class="w-full lg:w-2/3 py-16 lg:py-20">
+                <div class="max-w-4xl mx-auto px-6 lg:px-12">
+                    <!-- Main Title -->
+                    <div class="mb-8">
+                        <h2 class="inline-block border-2 border-gray-800 px-6 py-3 text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 tracking-wide uppercase">
+                            GET THE BILAAD ADVANTAGE
+                        </h2>
                     </div>
 
-                    <!-- Divider -->
-                    <span class="hidden sm:block w-px h-6 bg-gray-400"></span>
+                    <!-- Social Media Icons and Phone -->
+                    <div class="flex items-center justify-between mb-12">
+                        <!-- Social Icons -->
+                        <div class="flex items-center gap-4 text-2xl text-gray-800">
+                            <a href="#" class="hover:text-gray-600 transition"><i class="fa fa-facebook"></i></a>
+                            <a href="#" class="hover:text-gray-600 transition"><i class="fa fa-instagram"></i></a>
+                            <a href="#" class="hover:text-gray-600 transition"><i class="fa fa-linkedin"></i></a>
+                            <a href="#" class="hover:text-gray-600 transition"><i class="fa fa-twitter"></i></a>
+                        </div>
 
-                    <!-- Phone -->
-                    <div class="flex items-center gap-2 font-medium">
-                        <i class="fa fa-phone"></i>
-                        <span>(+234) 700-222-2111</span>
+                        <!-- Vertical Divider -->
+                        <span class="w-px h-8 bg-gray-800"></span>
+
+                        <!-- Phone - Far Right -->
+                        <div class="flex items-center gap-2 text-gray-800 font-medium">
+                            <i class="fa fa-phone"></i>
+                            <span>(+234) 700-222-2111</span>
+                        </div>
                     </div>
+
+                    <!-- Newsletter Subscription Form -->
+                    <form class="flex flex-col gap-3">
+                        <input type="email" placeholder="Enter your email address to subscribe to our newsletter"
+                               class="w-full border-2 border-[#b39359] bg-white px-4 py-3 text-gray-800 placeholder-gray-500
+                                      focus:outline-none focus:ring-2 focus:ring-[#b39359] focus:border-[#b39359]" />
+
+                        <button type="submit" class="w-1/2 mx-auto bg-black text-white px-8 py-3 font-medium hover:bg-[#b39359] rounded-lg transition-colors duration-200">
+                            Subscribe
+                        </button>
+                    </form>
                 </div>
+            </div>
 
-                <!-- RIGHT: Subscribe -->
-                <form class="flex w-full lg:w-auto">
-                    <input type="email"
-                           placeholder="Enter your email address to subscribe to our newsletter"
-                           class="w-full lg:w-96 border border-black px-4 py-3
-                       focus:outline-none" />
-
-                    <button type="submit"
-                            class="bg-black text-white px-8 py-3
-                       font-medium hover:bg-gray-800 transition">
-                        Subscribe
-                    </button>
-                </form>
-
+            <!-- Right Section (1/3 width) - Architectural Image -->
+            <div class="hidden lg:block w-1/3 relative">
+                <div class="absolute inset-0 bg-black/10"></div>
             </div>
         </section>
 
         <!-- Partners -->
-        <div class="bg-white py-10 overflow-hidden">
-            <h3 class="text-center text-xl font-semibold mb-8">Our Partners</h3>
+        @{
+            var partners = ViewData["Partners"] as List<Core.DTOs.PartnerDto> ?? new List<Core.DTOs.PartnerDto>();
+        }
+        @if (partners.Any())
+        {
+            <div class="bg-white py-12 overflow-hidden">
+                <h3 class="text-center text-2xl md:text-3xl font-bold text-gray-800 mb-12">Our Partners</h3>
 
-            <!-- Slider Track -->
-            <div class="relative w-screen">
-                <div class="flex items-center gap-14 whitespace-nowrap">
-
-                    <!-- Logo Set (1) -->
-                    <img src="~/images/partners/jaiz-1-1.webp" class="h-10 inline-block">
-                    <img src="~/images/partners/metro-2.webp" class="h-10 inline-block">
-                    <img src="~/images/partners/My-project-1-9-1-1.webp" class="h-10 inline-block">
-                    <img src="~/images/partners/jaiz-1-1.webp" class="h-10 inline-block">
-                    <img src="~/images/partners/metro-2.webp" class="h-10 inline-block">
-                    <img src="~/images/partners/My-project-1-9-1-1.webp" class="h-10 inline-block">
-
-                    <!-- Logo Set (2) – duplicate for seamless loop -->
-                    <img src="~/images/partners/jaiz-1-1.webp" class="h-10 inline-block">
-                    <img src="~/images/partners/metro-2.webp" class="h-10 inline-block">
-                    <img src="~/images/partners/My-project-1-9-1-1.webp" class="h-10 inline-block">
-                    <img src="~/images/partners/jaiz-1-1.webp" class="h-10 inline-block">
-                    <img src="~/images/partners/metro-2.webp" class="h-10 inline-block">
-                    <img src="~/images/partners/My-project-1-9-1-1.webp" class="h-10 inline-block">
-
+                <!-- Slider Container -->
+                <div class="relative w-full overflow-hidden">
+                    <div id="partnersSlider" class="flex items-center justify-center gap-12 md:gap-16 lg:gap-20" data-partners-count="@partners.Count">
+                        <!-- Partner Logos - Multiple sets for seamless infinite loop -->
+                        @for (int i = 0; i < 3; i++)
+                        {
+                            @foreach (var partner in partners)
+                            {
+                                <div class="partner-logo flex items-center justify-center flex-shrink-0 w-32 md:w-40">
+                                    @if (!string.IsNullOrEmpty(partner.WebsiteUrl) && partner.WebsiteUrl != "#")
+                                    {
+                                        <a href="@partner.WebsiteUrl" target="_blank" rel="noopener noreferrer">
+                                            <img src="@partner.ImageUrl" alt="@partner.Name" class="h-12 md:h-16 w-auto object-contain transition-all duration-300 opacity-70 hover:opacity-100">
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <img src="@partner.ImageUrl" alt="@partner.Name" class="h-12 md:h-16 w-auto object-contain transition-all duration-300 opacity-70 hover:opacity-100">
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
+        }
 
         <!-- Bottom Bar -->
         <div class="bg-gray-200 py-6">
@@ -189,12 +204,163 @@
         </div>
     </footer>
 
+    <!-- Fixed Floating Buttons -->
+    <div class="fixed right-0 top-1/2 -translate-y-1/2 z-50 flex flex-col items-end gap-2">
+        <!-- Toggle Button (Hide/Show Contact & WhatsApp) -->
+        <button id="toggleContactButtons" class="bg-black text-white p-3 hover:bg-gray-800 transition-colors duration-200">
+            <i class="fa fa-chevron-left" id="toggleIcon"></i>
+        </button>
+
+        <!-- Contact Us Button (Vertical Gold Bar) -->
+        <div id="contactButtonsGroup" class="flex flex-col gap-2">
+            <div class="relative group">
+                <button class="bg-[#b39359] text-white px-4 py-6 flex flex-col items-center justify-center gap-2 hover:bg-[#9a7a4a] transition-colors duration-200">
+                    <i class="fa fa-envelope text-xl"></i>
+                    <span class="writing-vertical text-sm font-medium">Contact Us</span>
+                </button>
+                
+                <!-- Contact Form Modal (Shows on Hover) -->
+                <div class="absolute right-full mr-4 top-0 w-80 bg-white rounded-lg shadow-2xl p-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold text-purple-600">Contact Form</h3>
+                        <button class="text-gray-400 hover:text-gray-600">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <form class="space-y-4">
+                        <input type="text" placeholder="Name" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#b39359]">
+                        <input type="tel" placeholder="Phone*" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#b39359]">
+                        <input type="email" placeholder="Email*" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#b39359]">
+                        <textarea placeholder="Message" rows="4" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#b39359]"></textarea>
+                        <button type="submit" class="w-full bg-[#b39359] text-white py-2 rounded-lg hover:bg-[#9a7a4a] transition-colors duration-200">
+                            Submit
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- WhatsApp Button -->
+            <div class="relative group">
+                <a href="https://wa.me/2347002222111" target="_blank" class="bg-[#25D366] text-white p-4 rounded-lg flex items-center justify-center hover:bg-[#20BA5A] transition-colors duration-200 shadow-lg">
+                    <i class="ri-whatsapp-fill text-2xl"></i>
+                </a>
+                
+                <!-- WhatsApp Tooltip (Shows on Hover) -->
+                <div class="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 whitespace-nowrap">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-[#25D366] text-white p-2 rounded-full">
+                            <i class="ri-whatsapp-fill"></i>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-gray-800">WhatsApp</p>
+                            <p class="text-sm text-gray-600">Chat with us</p>
+                        </div>
+                    </div>
+                    <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full">
+                        <div class="w-0 h-0 border-t-8 border-t-transparent border-l-8 border-l-white border-b-8 border-b-transparent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Chat Button (Fixed Bottom Right) -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <button class="bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-colors duration-200">
+            <i class="fa fa-comments text-xl"></i>
+        </button>
+    </div>
+
     <!-- Scripts -->
     <script>
         document.getElementById("mobileMenuBtn").onclick = () => {
             document.getElementById("mobileMenu").classList.toggle("hidden");
         };
+
+        // Toggle Contact Buttons
+        const toggleButton = document.getElementById("toggleContactButtons");
+        const contactButtonsGroup = document.getElementById("contactButtonsGroup");
+        const toggleIcon = document.getElementById("toggleIcon");
+        let isExpanded = true;
+
+        toggleButton.addEventListener("click", () => {
+            isExpanded = !isExpanded;
+            if (isExpanded) {
+                contactButtonsGroup.classList.remove("hidden");
+                toggleIcon.classList.remove("fa-chevron-right");
+                toggleIcon.classList.add("fa-chevron-left");
+            } else {
+                contactButtonsGroup.classList.add("hidden");
+                toggleIcon.classList.remove("fa-chevron-left");
+                toggleIcon.classList.add("fa-chevron-right");
+            }
+        });
+
+        // Partners Slider - Seamless infinite scroll
+        (function() {
+            const partnersSlider = document.getElementById("partnersSlider");
+            if (!partnersSlider) return;
+            
+            const logos = partnersSlider.querySelectorAll(".partner-logo");
+            if (logos.length === 0) return;
+            
+            const partnersCount = parseInt(partnersSlider.getAttribute("data-partners-count")) || 1;
+            let currentIndex = 0;
+            let scrollInterval;
+            
+            // Calculate scroll amount based on logo width + gap
+            function getScrollAmount() {
+                if (logos.length === 0) return 0;
+                const firstLogo = logos[0];
+                const logoWidth = firstLogo.offsetWidth;
+                // gap-12 = 3rem = 48px, gap-16 = 4rem = 64px, gap-20 = 5rem = 80px
+                const gap = window.innerWidth >= 1024 ? 80 : window.innerWidth >= 768 ? 64 : 48;
+                return logoWidth + gap;
+            }
+
+            function scrollPartners() {
+                const scrollAmount = getScrollAmount();
+                currentIndex++;
+                
+                // When we've scrolled through one complete set, reset instantly (no transition)
+                // This happens seamlessly because we have 3 sets, so reset happens in the middle
+                if (currentIndex >= partnersCount) {
+                    currentIndex = 0;
+                    partnersSlider.style.transition = "none";
+                    partnersSlider.style.transform = "translateX(0)";
+                    // Force reflow to apply the reset
+                    void partnersSlider.offsetWidth;
+                    // Re-enable transition for next scroll
+                    partnersSlider.style.transition = "transform 0.8s ease-in-out";
+                } else {
+                    partnersSlider.style.transition = "transform 0.8s ease-in-out";
+                    partnersSlider.style.transform = `translateX(-${scrollAmount * currentIndex}px)`;
+                }
+            }
+
+            // Wait for images to load and DOM to be ready
+            function initSlider() {
+                if (logos.length > 0 && partnersCount > 0) {
+                    // Start scrolling every 3 seconds
+                    scrollInterval = setInterval(scrollPartners, 3000);
+                }
+            }
+
+            // Initialize when page loads
+            if (document.readyState === "loading") {
+                window.addEventListener("load", initSlider);
+            } else {
+                initSlider();
+            }
+        })();
     </script>
+
+    <style>
+        .writing-vertical {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+    </style>
 
     @RenderSection("Scripts", required: false)
 </body>
