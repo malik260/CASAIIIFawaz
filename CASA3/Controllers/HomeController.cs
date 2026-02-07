@@ -538,6 +538,54 @@ namespace CASA3.Controllers
             return View();
         }
 
+        public IActionResult BecomeAnAffiliate()
+        {
+            // Partners data - Set in ViewData for layout access
+            ViewData["Partners"] = GetPartners();
+
+            // Projects data for navigation dropdown - Set in ViewData for layout access
+            ViewData["Projects"] = GetProjects();
+
+            return View("BecomeAnAffiliate");
+        }
+
+        [HttpPost]
+        public IActionResult RegisterAffiliate(AffiliateRegistrationDto registration)
+        {
+            // Basic validation
+            if (registration == null || string.IsNullOrWhiteSpace(registration.FirstName) || string.IsNullOrWhiteSpace(registration.LastName))
+            {
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return Json(new { success = false, message = "First Name and Last Name are required." });
+                }
+                TempData["AffiliateError"] = "First Name and Last Name are required.";
+                return RedirectToAction("Affiliate");
+            }
+
+            // Validate email format
+            var emailRegex = @"^[^\s@]+@[^\s@]+\.[^\s@]+$";
+            if (string.IsNullOrWhiteSpace(registration.Email) || !System.Text.RegularExpressions.Regex.IsMatch(registration.Email, emailRegex))
+            {
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return Json(new { success = false, message = "Please enter a valid email address." });
+                }
+                TempData["AffiliateError"] = "Please enter a valid email address.";
+                return RedirectToAction("Affiliate");
+            }
+
+            // TODO: Save affiliate registration to database
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return Json(new { success = true, message = "Thank you for registering! We'll review your application and contact you soon." });
+            }
+
+            TempData["AffiliateSuccess"] = "Thank you for registering! We'll review your application and contact you soon.";
+            return RedirectToAction("Affiliate");
+        }
+
         public IActionResult BlogDetails(int id)
         {
             // Create same dummy posts as in Blog action and find by id

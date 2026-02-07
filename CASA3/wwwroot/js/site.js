@@ -5,6 +5,7 @@
 
 (function () {
 	function formValidateRequired(id) {
+        debugger;
 		var el = document.getElementById(id);
 		if (!el) return false;
 		if (el.value.trim() === "") {
@@ -126,6 +127,111 @@
 				}
 
 				submitForm(newsletterForm);
+			});
+		}
+
+		// Affiliate registration form
+		var affiliateModal = document.getElementById('affiliateModal');
+		if (!affiliateModal) {
+			console.log('Affiliate modal not found');
+			return; 
+		}
+
+		console.log('Affiliate modal found, attaching listeners');
+
+		var affiliateRegisterBtn = document.getElementById('affiliateRegisterBtn');
+		var closeAffiliateModal = document.getElementById('closeAffiliateModal');
+		var affiliateRegistrationForm = document.getElementById('affiliateRegistrationForm');
+
+		if (affiliateRegisterBtn) {
+			console.log('Register button found');
+			affiliateRegisterBtn.addEventListener('click', function(e) {
+				console.log('Register button clicked');
+				e.preventDefault();
+				affiliateModal.classList.add('opacity-100');
+				affiliateModal.classList.remove('opacity-0', 'pointer-events-none');
+			});
+		} else {
+			console.log('Register button NOT found');
+		}
+
+		if (closeAffiliateModal) {
+			closeAffiliateModal.addEventListener('click', function(e) {
+				e.preventDefault();
+				affiliateModal.classList.remove('opacity-100');
+				affiliateModal.classList.add('opacity-0', 'pointer-events-none');
+			});
+		}
+
+		affiliateModal.addEventListener('click', function(e) {
+			if (e.target === affiliateModal) {
+				affiliateModal.classList.remove('opacity-100');
+				affiliateModal.classList.add('opacity-0', 'pointer-events-none');
+			}
+		});
+
+		if (affiliateRegistrationForm) {
+			affiliateRegistrationForm.addEventListener('submit', function(e) {
+				e.preventDefault();
+				var ok = true;
+				ok = formValidateRequired('aff_firstName') && ok;
+				ok = formValidateRequired('aff_lastName') && ok;
+				ok = formValidateRequired('email') && ok;
+				ok = formValidateRequired('phone') && ok;
+				ok = formValidateRequired('streetAddress') && ok;
+				ok = formValidateRequired('accountName') && ok;
+				ok = formValidateRequired('bankName') && ok;
+				ok = formValidateRequired('accountNumber') && ok;
+
+				// Validate email format
+				if (ok && typeof validateEmail === 'function') {
+					ok = validateEmail('email');
+				}
+
+				if (!ok) {
+					if (typeof infoAlert === 'function') infoAlert('Please fill in all required fields.');
+					else if (window.Swal) Swal.fire('Validation', 'Please fill in all required fields.', 'warning');
+					return;
+				}
+
+				// Submit via AJAX with FormData
+				var registerUrl = document.getElementById('registerAffiliateUrl').value;
+				var formData = new FormData(affiliateRegistrationForm);
+
+				fetch(registerUrl, {
+					method: 'POST',
+					headers: {
+						'X-Requested-With': 'XMLHttpRequest'
+					},
+					body: formData
+				})
+				.then(response => response.json())
+				.then(result => {
+					if (result.success) {
+						if (typeof successAlert === 'function') {
+							successAlert(result.message);
+						} else if (window.Swal) {
+							Swal.fire('Success', result.message, 'success');
+						}
+						affiliateRegistrationForm.reset();
+						affiliateModal.classList.remove('opacity-100');
+						affiliateModal.classList.add('opacity-0', 'pointer-events-none');
+					} else {
+						if (typeof errorAlert === 'function') {
+							errorAlert(result.message);
+						} else if (window.Swal) {
+							Swal.fire('Error', result.message, 'error');
+						}
+					}
+				})
+				.catch(error => {
+					console.error('Error:', error);
+					if (typeof errorAlert === 'function') {
+						errorAlert('An error occurred. Please try again.');
+					} else if (window.Swal) {
+						Swal.fire('Error', 'An error occurred. Please try again.', 'error');
+					}
+				});
 			});
 		}
 	});
