@@ -1,3 +1,5 @@
+using Core.Enum;
+
 namespace Core.DTOs
 {
     public class AffiliateRegistrationDto
@@ -12,5 +14,12 @@ namespace Core.DTOs
         public string AccountName { get; set; }
         public string BankName { get; set; }
         public string AccountNumber { get; set; }
+    }
+
+    public class AffiliateUpdateDto : AffiliateRegistrationDto
+    {
+        public string Id { get; set; }
+        public RegistrationStatus Status { get; set; }
+
     }
 }

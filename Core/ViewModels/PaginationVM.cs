@@ -1,6 +1,6 @@
-namespace Core.Models
+namespace Core.ViewModels
 {
-    public class PaginationModel
+    public class PaginationVM
     {
         public int TotalItems { get; set; }
         public int ItemsPerPage { get; set; }

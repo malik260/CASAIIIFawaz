@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Core.Enum;
+using Microsoft.AspNetCore.Http;
 
 namespace Core.DTOs
 {
@@ -12,9 +13,15 @@ namespace Core.DTOs
         public string TIN { get; set; }
         public string BusinessCategory { get; set; }
         public string BusinessAddress { get; set; }
+        public string? FilePath { get; set; }
 
-        public IFormFile File { get; set; }   // 👈 single
+        public IFormFile File { get; set; }
     }
 
+    public class VendorUpdateDto : VendorRegistrationDto
+    {
+        public string Id { get; set; }
+        public RegistrationStatus Status { get; set; }
 
+    }
 }

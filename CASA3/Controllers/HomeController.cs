@@ -1,6 +1,7 @@
 using CASA3.Models;
 using Core.DTOs;
 using Core.ViewModels;
+using Logic.IServices;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -9,10 +10,18 @@ namespace CASA3.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IVendorService _vendorService;
+        private readonly IAffiliateService _affiliateService;
+        private readonly INewsletterSubscriptionService _newsletterSubscriptionService;
+        private readonly IContactUsService _contactUsService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IVendorService vendorService, IAffiliateService affiliateService, INewsletterSubscriptionService newsletterSubscriptionService, IContactUsService contactUsService)
         {
             _logger = logger;
+            _vendorService = vendorService;
+            _affiliateService = affiliateService;
+            _newsletterSubscriptionService = newsletterSubscriptionService;
+            _contactUsService = contactUsService;
         }
 
         public IActionResult Index()
@@ -303,31 +312,7 @@ namespace CASA3.Controllers
             
             return View(model);
         }
-        [HttpPost]
-        public IActionResult ContactUs(ContactFormDto form)
-        {
-            // Basic server-side validation
-            if (form == null || string.IsNullOrWhiteSpace(form.FirstName) || string.IsNullOrWhiteSpace(form.Email) || string.IsNullOrWhiteSpace(form.Message))
-            {
-                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
-                {
-                    return Json(new { success = false, message = "Please fill required fields." });
-                }
-
-                TempData["ContactError"] = "Please fill required fields.";
-                return RedirectToAction("ContactUs");
-            }
-
-            // TODO: persist enquiry / send email - placeholder for now
-
-            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
-            {
-                return Json(new { success = true, message = "Thank you for contacting us. We'll be in touch shortly." });
-            }
-
-            TempData["ContactSuccess"] = "Thank you for contacting us. We'll be in touch shortly.";
-            return RedirectToAction("ContactUs");
-        }
+        
         public IActionResult ContactUs()
         {
             // Partners data - Set in ViewData for layout access
@@ -341,8 +326,29 @@ namespace CASA3.Controllers
             return View();
         }
 
+
         [HttpPost]
-        public IActionResult SubscribeNewsletter(NewsletterSubscriptionDto subscription)
+        public async Task<IActionResult> ContactUs(ContactFormDto form)
+        {
+            // Basic server-side validation
+            if (form == null || string.IsNullOrWhiteSpace(form.FirstName) || string.IsNullOrWhiteSpace(form.Email) || string.IsNullOrWhiteSpace(form.Message))
+            {
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return Json(new { success = false, message = "Please fill required fields." });
+                }
+
+                TempData["ContactError"] = "Please fill required fields.";
+                return RedirectToAction("ContactUs");
+            }
+
+            var res = await _contactUsService.CreateContactUsService(form);
+            return Json(res);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> SubscribeNewsletter(NewsletterSubscriptionDto subscription)
         {
             // Basic validation
             if (subscription == null || string.IsNullOrWhiteSpace(subscription.Email))
@@ -369,15 +375,8 @@ namespace CASA3.Controllers
                 return RedirectToAction("Index");
             }
 
-            // TODO: Save to database or send email confirmation
-
-            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
-            {
-                return Json(new { success = true, message = "Thank you for subscribing! Check your email for confirmation." });
-            }
-
-            TempData["NewsletterSuccess"] = "Thank you for subscribing! Check your email for confirmation.";
-            return RedirectToAction("Index");
+            var res = await _newsletterSubscriptionService.CreateNewsletterSubscriptionsService(subscription);
+            return Json(res);
         }
 
         public IActionResult Blog(int page = 1, string search = "")
@@ -487,7 +486,7 @@ namespace CASA3.Controllers
             if (page < 1) page = 1;
             if (page > totalPages && totalPages > 0) page = totalPages;
 
-            model.Pagination = new Core.Models.PaginationModel
+            model.Pagination = new PaginationVM
             {
                 TotalItems = totalItems,
                 ItemsPerPage = pageSize,
@@ -496,17 +495,10 @@ namespace CASA3.Controllers
             };
 
             // Apply pagination using Skip and Take
-            model.BlogPosts = filteredPosts
-                .OrderByDescending(b => b.PublishedDate)
-                .Skip(model.Pagination.SkipCount)
-                .Take(pageSize)
-                .ToList();
+            model.BlogPosts = filteredPosts.OrderByDescending(b => b.PublishedDate).Skip(model.Pagination.SkipCount).Take(pageSize).ToList();
 
             // Recent posts - Get the 3 most recent from all posts (not filtered)
-            model.RecentBlogPosts = allBlogPosts
-                .OrderByDescending(b => b.PublishedDate)
-                .Take(3)
-                .ToList();
+            model.RecentBlogPosts = allBlogPosts.OrderByDescending(b => b.PublishedDate).Take(3).ToList();
 
             // Check if this is an AJAX request
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
@@ -554,7 +546,7 @@ namespace CASA3.Controllers
         }
 
         [HttpPost]
-        public IActionResult RegisterAffiliate(AffiliateRegistrationDto registration)
+        public async Task<IActionResult> RegisterAffiliate(AffiliateRegistrationDto registration)
         {
             // Basic validation
             if (registration == null || string.IsNullOrWhiteSpace(registration.FirstName) || string.IsNullOrWhiteSpace(registration.LastName))
@@ -579,15 +571,8 @@ namespace CASA3.Controllers
                 return RedirectToAction("Affiliate");
             }
 
-            // TODO: Save affiliate registration to database
-
-            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
-            {
-                return Json(new { success = true, message = "Thank you for registering! We'll review your application and contact you soon." });
-            }
-
-            TempData["AffiliateSuccess"] = "Thank you for registering! We'll review your application and contact you soon.";
-            return RedirectToAction("Affiliate");
+            var res = await _affiliateService.CreateAffiliateService(registration);
+            return Json(res);
         }
 
         public IActionResult BlogDetails(int id)
@@ -755,7 +740,6 @@ namespace CASA3.Controllers
                 }
 
                 // Handle file upload
-                var documentPath = string.Empty;
                 if (model.File != null && model.File.Length > 0)
                 {
                     // Validate file size (10MB)
@@ -793,42 +777,15 @@ namespace CASA3.Controllers
                     var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
                     // Save file
-                    //using (var stream = new FileStream(filePath, FileMode.Create))
-                    //{
-                    //    await documentFile.CopyToAsync(stream);
-                    //}
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.File.CopyToAsync(stream);
+                    }
 
-                    documentPath = Path.Combine("uploads", "vendor-documents", uniqueFileName);
+                    model.FilePath = Path.Combine("uploads", "vendor-documents", uniqueFileName).Replace("\\", "/");
                 }
-
-                // TODO: Save vendor registration data to database
-                // Example:
-                // var vendor = new VendorRegistration
-                // {
-                //     CompanyName = companyName,
-                //     ContactPerson = contactPerson,
-                //     Email = email,
-                //     PhoneNumber = phoneNumber,
-                //     CACNumber = cacNumber,
-                //     TIN = tin,
-                //     BusinessCategory = businessCategory,
-                //     BusinessAddress = businessAddress,
-                //     DocumentPath = documentPath,
-                //     RegistrationDate = DateTime.Now,
-                //     Status = "Pending"
-                // };
-                // 
-                // await _context.VendorRegistrations.AddAsync(vendor);
-                // await _context.SaveChangesAsync();
-
-                // TODO: Send email notification to admin and vendor
-                // await SendVendorRegistrationEmail(email, companyName);
-
-                return Json(new
-                {
-                    isError = false,
-                    message = "Registration submitted successfully! We'll review your application shortly."
-                });
+                var res = await _vendorService.CreateVendorService(model);
+                return Json(res);
             }
             catch (Exception ex)
             {
@@ -843,6 +800,7 @@ namespace CASA3.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

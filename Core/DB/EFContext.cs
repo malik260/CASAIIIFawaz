@@ -1,12 +1,7 @@
 ﻿using Core.Model;
+using Core.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Core.DB
 {
@@ -17,5 +12,9 @@ namespace Core.DB
         }
         public DbSet<AppUser> ApplicationUsers { get; set; }
         public DbSet<UserVerification> UserVerifications { get; set; }
+        public DbSet<Affiliate> Affiliates { get; set; }
+        public DbSet<Vendor> Vendors { get; set; }
+        public DbSet<NewsletterSubscription> NewsletterSubscriptions { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
     }
 }

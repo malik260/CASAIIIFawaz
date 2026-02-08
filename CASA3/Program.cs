@@ -34,6 +34,10 @@ builder.Services.AddOptions();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ILoggerManager, LoggerManager>();
+builder.Services.AddScoped<IAffiliateService, AffiliateService>();
+builder.Services.AddScoped<IVendorService, VendorService>();
+builder.Services.AddScoped<INewsletterSubscriptionService, NewsletterSubscriptionService>();
+builder.Services.AddScoped<IContactUsService, ContactUsService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession(options =>
 {

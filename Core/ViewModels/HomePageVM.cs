@@ -1,5 +1,4 @@
 ﻿using Core.DTOs;
-using Core.Models;
 
 namespace Core.ViewModels
 {
@@ -14,7 +13,7 @@ namespace Core.ViewModels
         public List<TeamMemberDto> ManagementTeam { get; set; } = new();
         public List<BlogPostDto> BlogPosts { get; set; } = new();
         public List<BlogPostDto> RecentBlogPosts { get; set; } = new();
-        public PaginationModel Pagination { get; set; } = new();
+        public PaginationVM Pagination { get; set; } = new();
     }
 
 
