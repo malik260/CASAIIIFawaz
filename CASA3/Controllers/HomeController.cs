@@ -1,5 +1,6 @@
 using CASA3.Models;
 using Core.DTOs;
+using Core.Enum;
 using Core.ViewModels;
 using Logic.IServices;
 using Microsoft.AspNetCore.Mvc;
@@ -219,89 +220,14 @@ namespace CASA3.Controllers
         public IActionResult AboutUs()
         {
             var model = new HomePageVM();
-            
-            // Board of Directors data
-            model.BoardOfDirectors = new List<TeamMemberDto>
-            {
-                new TeamMemberDto
-                {
-                    Id = 1,
-                    Name = "DR. SADIQ SULEIMAN ABDULLAHI",
-                    Position = "CHAIRMAN, BOARD OF DIRECTORS",
-                    ImageUrl = "/images/dummy user.jpg",
-                    LinkedInUrl = "https://linkedin.com/in/dr-sadiq-suleiman-abdullahi-668ab9300"
-                },
-                new TeamMemberDto
-                {
-                    Id = 2,
-                    Name = "ALIYU ALIYU",
-                    Position = "EXECUTIVE DIRECTOR",
-                    ImageUrl = "/images/dummy user.jpg",
-                    LinkedInUrl = "https://linkedin.com/in/aliyu-aliyu"
-                },
-                new TeamMemberDto
-                {
-                    Id = 3,
-                    Name = "YAHYA AHMAD RUFAI",
-                    Position = "NON-EXECUTIVE DIRECTOR",
-                    ImageUrl = "/images/dummy user.jpg",
-                    LinkedInUrl = "https://linkedin.com/in/yahya-ahmad-rufai"
-                },
-                new TeamMemberDto
-                {
-                    Id = 4,
-                    Name = "ROSS OLUYEDE",
-                    Position = "INDEPENDENT DIRECTOR",
-                    ImageUrl = "/images/dummy user.jpg",
-                    LinkedInUrl = "https://linkedin.com/in/ross-oluyede"
-                },
-                new TeamMemberDto
-                {
-                    Id = 5,
-                    Name = "MALLAM HALLIRU SA'AD MALAMI",
-                    Position = "INDEPENDENT DIRECTOR",
-                    ImageUrl = "/images/dummy user.jpg",
-                    LinkedInUrl = "https://linkedin.com/in/mallam-halliru"
-                },
-                new TeamMemberDto
-                {
-                    Id = 6,
-                    Name = "DR. NURATU MUSA ABDULLAHI",
-                    Position = "INDEPENDENT DIRECTOR",
-                    ImageUrl = "/images/dummy user.jpg",
-                    LinkedInUrl = "https://linkedin.com/in/dr-nuratu-musa"
-                }
-            };
-            
+
+            var teamMembers = GetAllTeamMembers();
+            // Board of Directors
+            model.BoardOfDirectors = teamMembers.Where(tm => tm.Category == TeamMemeberCategory.BOD).ToList();
+
             // Management Team data
-            model.ManagementTeam = new List<TeamMemberDto>
-            {
-                new TeamMemberDto
-                {
-                    Id = 1,
-                    Name = "DR. EMMANUEL BASSI USMAN",
-                    Position = "CHIEF EXECUTIVE OFFICER",
-                    ImageUrl = "/images/dummy user.jpg",
-                    LinkedInUrl = "https://linkedin.com/in/dr-emmanuel-bassi-usman"
-                },
-                new TeamMemberDto
-                {
-                    Id = 2,
-                    Name = "ABDULFATAI MUSA",
-                    Position = "CHIEF OPERATIONS OFFICER",
-                    ImageUrl = "/images/dummy user.jpg",
-                    LinkedInUrl = "https://linkedin.com/in/abdulfatai-musa"
-                },
-                new TeamMemberDto
-                {
-                    Id = 3,
-                    Name = "ABDULKADIR ABDULKADIR",
-                    Position = "CHIEF BUSINESS AND STRATEGY OFFICER",
-                    ImageUrl = "/images/dummy user.jpg",
-                    LinkedInUrl = "https://linkedin.com/in/abdulkadir-abdulkadir"
-                }
-            };
-            
+            model.ManagementTeam = teamMembers.Where(tm => tm.Category == TeamMemeberCategory.MGT).ToList();
+
             // Partners data - Set in ViewData for layout access
             ViewData["Partners"] = GetPartners();
             
@@ -312,7 +238,19 @@ namespace CASA3.Controllers
             
             return View(model);
         }
-        
+
+        [HttpGet]
+        public IActionResult GetTeamMember(int id)
+        {
+            var member = GetAllTeamMembers().FirstOrDefault(x => x.Id == id);
+
+            if (member == null)
+                return NotFound();
+
+            return Json(member);
+        }
+
+
         public IActionResult ContactUs()
         {
             // Partners data - Set in ViewData for layout access
@@ -805,5 +743,112 @@ namespace CASA3.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+   
+        private List<TeamMemberDto> GetAllTeamMembers()
+        {
+            var dummy = @"{Name} is a multidisciplinary business executive and real estate professional whose career is anchored in a strong engineering foundation and shaped by extensive experience in finance, risk management, and strategic operations. He is recognized for driving innovation and value creation across real estate development, financial services, and enterprise transformation.
+            Trained as a Mechanical Engineer, Fawaz began his professional journey with a technical and systems-driven mindset that continues to influence his structured approach to problem-solving and execution. He later transitioned into the financial services sector, where he built deep expertise in underwriting, risk management, and portfolio analysis within Nigeria’s insurance industry.
+            At Consolidated Hallmark Insurance Plc, Fawaz progressed across underwriting and risk management roles, contributing to complex risk assessments, wealth management, and strategic decision-making. This phase of his career strengthened his financial discipline and sharpened his ability to manage risk at scale.
+            Building on this experience, Fawaz went on to co-found Harbourage Ltd, where he served as Chief Financial Officer, leading financial strategy and operational optimization with a strong focus on process improvement and scalable growth. He is a certified Financial Modeling and Valuation Analyst (FMVA®), a member of the Chartered Insurance Institute of Nigeria (CIIN), currently completing an MBA in Finance and Investment at Ahmadu Bello University, and a Harvard alumnus in Resilient Leadership, reflecting his commitment to world-class leadership and long-term value creation.
+            Driven by impact, Fawaz continues to bridge global best practices with local market realities, shaping sustainable businesses, transformative real estate solutions, and future-ready enterprises across Nigeria and beyond.
+                ";
+            var teamMembers = new List<TeamMemberDto>
+            {
+                new TeamMemberDto
+                {
+                    Id = 1,
+                    Name = "DR. SADIQ SULEIMAN ABDULLAHI",
+                    Position = "CHAIRMAN, BOARD OF DIRECTORS",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/dr-sadiq-suleiman-abdullahi-668ab9300",
+                    MemberInfo = dummy,
+                    Category = TeamMemeberCategory.BOD
+                },
+                new TeamMemberDto
+                {
+                    Id = 2,
+                    Name = "ALIYU ALIYU",
+                    Position = "EXECUTIVE DIRECTOR",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/aliyu-aliyu",
+                    MemberInfo = dummy,
+                    Category = TeamMemeberCategory.BOD
+                },
+                new TeamMemberDto
+                {
+                    Id = 3,
+                    Name = "YAHYA AHMAD RUFAI",
+                    Position = "NON-EXECUTIVE DIRECTOR",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/yahya-ahmad-rufai",
+                    MemberInfo = dummy,
+                    Category = TeamMemeberCategory.BOD
+                },
+                new TeamMemberDto
+                {
+                    Id = 4,
+                    Name = "ROSS OLUYEDE",
+                    Position = "INDEPENDENT DIRECTOR",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/ross-oluyede",
+                    MemberInfo = dummy,
+                    Category = TeamMemeberCategory.BOD
+                },
+                new TeamMemberDto
+                {
+                    Id = 5,
+                    Name = "MALLAM HALLIRU SA'AD MALAMI",
+                    Position = "INDEPENDENT DIRECTOR",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/mallam-halliru",
+                    MemberInfo = dummy,
+                    Category = TeamMemeberCategory.BOD
+                },
+                new TeamMemberDto
+                {
+                    Id = 6,
+                    Name = "DR. NURATU MUSA ABDULLAHI",
+                    Position = "INDEPENDENT DIRECTOR",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/dr-nuratu-musa",
+                    MemberInfo = dummy,
+                    Category = TeamMemeberCategory.BOD
+                },
+                new TeamMemberDto
+                {
+                    Id = 7,
+                    Name = "DR. EMMANUEL BASSI USMAN",
+                    Position = "CHIEF EXECUTIVE OFFICER",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/dr-emmanuel-bassi-usman",
+                    MemberInfo = dummy,
+                    Category = TeamMemeberCategory.MGT
+                },
+                new TeamMemberDto
+                {
+                    Id = 8,
+                    Name = "ABDULFATAI MUSA",
+                    Position = "CHIEF OPERATIONS OFFICER",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/abdulfatai-musa",
+                    MemberInfo = dummy,
+                    Category = TeamMemeberCategory.MGT
+                },
+                new TeamMemberDto
+                {
+                    Id = 9,
+                    Name = "ABDULKADIR ABDULKADIR",
+                    Position = "CHIEF BUSINESS AND STRATEGY OFFICER",
+                    ImageUrl = "/images/dummy user.jpg",
+                    LinkedInUrl = "https://linkedin.com/in/abdulkadir-abdulkadir",
+                    MemberInfo = dummy,
+                    Category = TeamMemeberCategory.MGT
+                }
+            };
+
+            return teamMembers;
+        }
     }
+
+    
 }
