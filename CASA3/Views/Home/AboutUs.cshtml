@@ -40,25 +40,25 @@
                 <!-- CEO Quote -->
                 <div>
                     <blockquote class="text-xl md:text-2xl font-bold italic text-gray-900 mb-4 leading-relaxed">
-                        "For us at Bilaad Realty, the roadmap to sustainable living is inevitably an interesting journey and serves as a template for all our endeavors."
+                        "Owning a home is one of life’s greatest milestones. At CASA III, we walk that journey with our clients; turning hope into keys, and investments into lasting legacies"
                     </blockquote>
                     <p class="text-base md:text-lg text-gray-700">
-                        — Dr. Emmanuel Bassi Usman (Chief Executive Officer)
+                        — Fawaz Suleiman, Chief Executive Officer, CASA III
                     </p>
                 </div>
                 
                 <!-- Company Description -->
                 <div class="space-y-6 text-gray-700 text-base md:text-lg leading-relaxed">
                     <p>
-                        Real estate is more than development; it is a dialogue between people, place, and purpose. Every structure we create is rooted in sustainability, guided by vision, and crafted for those who expect more than the ordinary.
+                        At CASA III, real estate is not just about structures; it is about creating elevated living experiences that shape how people feel, live, and grow. Every home we build is inspired by global standards of excellence and thoughtfully crafted to meet the realities of modern living, blending beauty, functionality, and enduring value.
                     </p>
                     
                     <p>
-                        We partner with individuals and organizations who value purpose, quality, and sustainability. Backed by a passionate team of seasoned professionals, we have earned the trust of clients who expect nothing but excellence.
+                        We work with homeowners and investors who seek more than property — they seek quality, confidence, and long-term worth. Driven by a passionate team of professionals, CASA III is built on trust, attention to detail, and a relentless commitment to delivering world-inspired homes that truly stand apart.
                     </p>
                     
                     <p>
-                        Our approach is rooted in the values shaping Nigeria's future and the SDGs 2030, which we bring to life through thoughtful, innovative design. As the world changes, we stay ahead by refining our tools, embracing new technologies, and staying true to what matters most: Building better, smarter, and more sustainable communities.
+                        Our developments reflect a forward-thinking vision for African cities — embracing smart design, sustainable practices, and innovative construction methods that ensure comfort today and value for tomorrow. As lifestyles evolve, we continue to raise the bar, refining how we build and how we serve, always guided by one promise: to create homes that elevate living and leave lasting impact.
                     </p>
                 </div>
             </div>
@@ -100,13 +100,13 @@
                     <!-- Text Content -->
                     <div class="space-y-4 text-white text-base md:text-lg leading-relaxed">
                         <p>
-                            The Nigerian property market is a dynamic landscape, and we understand its complexities. Through a combination of academic rigor and professional practice, we identify and solve industry challenges, creating solutions that stand the test of time.
+                            At CASA III, property development starts with how people live today and how they aspire to live tomorrow. In a complex and fast-evolving real estate landscape, we turn opportunity into lasting value through insight, innovation, and purposeful delivery.
                         </p>
                         <p>
-                            Our services span residential and commercial property development, each project tailored to meet the unique demands of urban living and business operations.
+                            We develop high-end residential and commercial properties that reflect global design standards while responding to local realities. Each project balances elegance with functionality, creating spaces that are practical, adaptable, and built to endure.
                         </p>
                         <p>
-                            We focus on sustainable real estate development, innovation, alternative project finance, strategic partnerships, value-chain restructuring, complex development projects, comprehensive project management, and creating sustainable communities that refine lifestyle choices.
+                            Our approach is driven by smart planning, innovative financing, and strategic partnerships that streamline delivery without compromising quality. Beyond buildings, CASA III creates environments that elevate everyday living and shape refined, future-ready communities.
                         </p>
                     </div>
                 </div>
@@ -150,25 +150,25 @@
                     <!-- Text Content -->
                     <div class="space-y-4 text-white text-base md:text-lg leading-relaxed">
                         <p>
-                            We offer expert advisory services for real estate investment and project execution, combining deep industry knowledge with client-focused strategies to deliver profitable outcomes.
+                            At CASA III, our advisory practice is built to guide clients confidently through real estate investment and development. We combine market insight, strategic thinking, and hands-on experience to help clients unlock value and achieve well-structured, successful outcomes.
                         </p>
                         
                         <div class="space-y-4">
                             <div>
                                 <h4 class="font-semibold text-lg mb-2" style="color: #b39359;">
-                                    • Investment Advisory
+                                    • Investment Strategy & Guidance
                                 </h4>
                                 <p>
-                                    We help clients make informed, profitable real estate decisions. Our guidance, strategies, and partnerships are rooted in integrity and designed to maximize returns while minimizing risk.
+                                    We support clients in making smart, future-focused property decisions through tailored advice, strong market intelligence, and trusted partnerships — always anchored in transparency and long-term value.
                                 </p>
                             </div>
                             
                             <div>
                                 <h4 class="font-semibold text-lg mb-2" style="color: #b39359;">
-                                    • Project Management
+                                    • Project Delivery & Management
                                 </h4>
                                 <p>
-                                    Our experienced team delivers end-to-end project management solutions with a focus on quality, efficiency, and risk mitigation. We ensure smooth execution from planning to completion.
+                                    From concept to completion, our team oversees every stage of development with precision, efficiency, and quality control, ensuring projects are delivered smoothly, on time, and to the highest standards.
                                 </p>
                             </div>
                         </div>
@@ -198,7 +198,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 @foreach(var member in Model.BoardOfDirectors)
                 {
-                    <div class="team-member-card">
+                    <div class="team-member-card cursor-pointer" data-id="@member.Id">
                         <!-- Image Container with Hover Effects -->
                         <div class="team-image-wrapper overflow-hidden bg-gray-200 mb-6">
                             <!-- Grayscale Image -->
@@ -245,7 +245,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 @foreach(var member in Model.ManagementTeam)
                 {
-                    <div class="team-member-card">
+                    <div class="team-member-card cursor-pointer" data-id="@member.Id">
                         <!-- Image Container with Hover Effects -->
                         <div class="team-image-wrapper overflow-hidden bg-gray-200 mb-6">
                             <!-- Grayscale Image -->
@@ -309,11 +309,11 @@
                 <!-- Description Content -->
                 <div class="space-y-6 text-gray-700 text-base md:text-lg leading-relaxed">
                     <p>
-                        In alignment with our code of business ethics, the leadership of Bilaad Realty reaffirms its commitment to contributing meaningfully to societal development.
+                        In alignment with our code of business ethics, the leadership of CASA III Realty reaffirms its commitment to contributing meaningfully to societal development.
                     </p>
 
                     <p>
-                        As part of this commitment, the <span class="font-semibold text-gray-900">Bilaad Development Trust</span> plays a key role in advancing initiatives that create long-term value for communities and the environment.
+                        As part of this commitment, the <span class="font-semibold text-gray-900">CASA III Development Trust</span> plays a key role in advancing initiatives that create long-term value for communities and the environment.
                     </p>
 
                     <p>
@@ -332,3 +332,80 @@
         </div>
     </div>
 </section>
+
+
+<!-- Team Member Modal -->
+<div id="teamModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50 p-6">
+    <div class="bg-white w-full max-w-5xl max-h-[95vh] overflow-y-auto rounded-xl shadow-2xl relative">
+
+        <!-- Close button -->
+        <button id="closeTeamModal"
+                class="absolute top-5 right-6 text-gray-500 hover:text-black text-3xl font-bold z-20">
+            &times;
+        </button>
+
+        <div class="p-8 md:p-12">
+
+            <!-- Header -->
+            <div class="mb-6">
+                <h3 id="modalName"
+                    class="text-3xl md:text-4xl font-bold"
+                    style="color:#4A4A4A;"></h3>
+
+                <p id="modalPosition"
+                   class="text-lg md:text-xl text-gray-600 mt-2"></p>
+            </div>
+
+            <!-- IMAGE + TEXT WRAP -->
+            <div class="text-gray-700 text-base md:text-lg leading-relaxed">
+
+                <!-- floated image -->
+                <img id="modalImage"
+                     src=""
+                     class="w-full sm:w-80 float-left mr-8 mb-4 object-cover shadow-lg" />
+
+                <!-- biography -->
+                <div id="modalInfo" class="whitespace-pre-line"></div>
+
+                <!-- important: clears float after text -->
+                <div class="clear-both"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("teamModal");
+        const closeBtn = document.getElementById("closeTeamModal");
+
+        // open modal on card click
+        document.querySelectorAll(".team-member-card").forEach(card => {
+            card.addEventListener("click", function () {
+
+                const id = this.getAttribute("data-id");
+
+                fetch(`/Home/GetTeamMember?id=${id}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        document.getElementById("modalImage").src = data.imageUrl;
+                        document.getElementById("modalName").innerText = data.name;
+                        document.getElementById("modalPosition").innerText = data.position;
+                        document.getElementById("modalInfo").innerText = data.memberInfo;
+
+                        modal.classList.remove("hidden");
+                        modal.classList.add("flex");
+                    });
+            });
+        });
+
+        // close only via button
+        closeBtn.addEventListener("click", function () {
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        });
+
+    });
+</script>
