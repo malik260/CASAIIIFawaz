@@ -8,6 +8,6 @@ namespace Core.Model
         public long? FileSize { get; set; }
         public string Purpose { get; set; } = string.Empty;
         public string OwnerType { get; set; } = string.Empty;
-        public string OwnerId { get; set; } = string.Empty;
+        public string OwnerId { get; set; } = string.Empty; 
     }
 }
