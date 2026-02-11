@@ -38,6 +38,9 @@ builder.Services.AddScoped<IAffiliateService, AffiliateService>();
 builder.Services.AddScoped<IVendorService, VendorService>();
 builder.Services.AddScoped<INewsletterSubscriptionService, NewsletterSubscriptionService>();
 builder.Services.AddScoped<IContactUsService, ContactUsService>();
+builder.Services.AddScoped<IStaffService, StaffService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IMediaService, MediaService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession(options =>
 {

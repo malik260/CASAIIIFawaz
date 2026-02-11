@@ -1,4 +1,4 @@
-﻿using Core.Model;
+using Core.Model;
 using Core.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -16,5 +16,9 @@ namespace Core.DB
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<NewsletterSubscription> NewsletterSubscriptions { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Staff> Staffs { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<BuildingDesign> BuildingDesigns { get; set; }
+        public DbSet<Media> Media { get; set; }
     }
 }

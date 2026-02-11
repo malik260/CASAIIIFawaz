@@ -1,0 +1,64 @@
+@model List<Core.DTOs.BuildingDesignDto>
+@{
+    ViewData["Title"] = ViewData["Title"] ?? "Project Units";
+    var projectId = ViewData["ProjectId"] as string;
+    var projectName = ViewData["ProjectName"] as string;
+    var message = TempData["UnitMessage"] as string;
+}
+
+<section class="p-8">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800">Units — @(projectName ?? "Project")</h1>
+            <p class="text-gray-600 mt-1">Building designs / unit types for this project</p>
+        </div>
+        <div class="flex gap-3">
+            <a asp-controller="Admin" asp-action="Projects" class="inline-block text-[#1E403F] hover:underline">&larr; Projects</a>
+            <a asp-controller="Admin" asp-action="AddUnit" asp-route-projectId="@projectId" class="inline-block bg-[#1E403F] text-white px-5 py-2.5 rounded-lg hover:bg-[#163332] transition-colors">Add Unit</a>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(message))
+    {
+        <div class="mb-6 p-4 rounded-lg bg-green-50 text-green-800 border border-green-200">@message</div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="bg-white border border-gray-200 rounded-xl p-12 text-center text-gray-600">
+            <p class="mb-4">No units added yet for this project.</p>
+            <a asp-controller="Admin" asp-action="AddUnit" asp-route-projectId="@projectId" class="inline-block bg-[#1E403F] text-white px-6 py-3 rounded-lg hover:bg-[#163332] transition-colors">Add first unit</a>
+        </div>
+    }
+    else
+    {
+        <div class="overflow-x-auto border border-gray-200 rounded-xl bg-white">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @foreach (var unit in Model)
+                    {
+                        <tr>
+                            <td class="px-6 py-4 font-medium text-gray-900">@unit.Name</td>
+                            <td class="px-6 py-4 text-gray-600">@(unit.Location ?? "—")</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right">
+                                <a asp-controller="Admin" asp-action="EditUnit" asp-route-projectId="@projectId" asp-route-id="@unit.Id" class="text-[#1E403F] hover:underline mr-4">Edit</a>
+                                <form asp-controller="Admin" asp-action="DeleteUnit" method="post" class="inline" onsubmit="return confirm('Remove this unit?');">
+                                    <input type="hidden" name="projectId" value="@projectId" />
+                                    <input type="hidden" name="id" value="@unit.Id" />
+                                    <button type="submit" class="text-red-600 hover:underline">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

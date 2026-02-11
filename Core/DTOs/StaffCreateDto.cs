@@ -2,16 +2,15 @@ using Core.Enum;
 
 namespace Core.DTOs
 {
-    public class TeamMemberDto
+    public class StaffCreateDto
     {
-        public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string Position { get; set; } = string.Empty;
-        public string ImageUrl { get; set; } = string.Empty;
+        public string? ImageUrl { get; set; }
         public string? Address { get; set; }
         public string? PhoneNumber { get; set; }
-        public string LinkedInUrl { get; set; } = string.Empty;
-        public string MemberInfo { get; set; } = string.Empty;
+        public string? LinkedInUrl { get; set; }
+        public string? MemberInfo { get; set; }
         public TeamMemeberCategory Category { get; set; }
     }
 }

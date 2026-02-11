@@ -1,0 +1,164 @@
+@model Core.ViewModels.DashboardVM
+@{
+    ViewData["Title"] = "Dashboard";
+    var hour = DateTime.Now.Hour;
+    var greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+    var dateStr = DateTime.Now.ToString("dddd, MMMM d, yyyy");
+    var total = Model.StaffCount + Model.ProjectCount + Model.VendorCount + Model.AffiliateCount + Model.ContactCount + Model.NewsletterCount;
+}
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<section class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50/30">
+    <!-- Subtle grid pattern -->
+    <div class="absolute inset-0 opacity-[0.02]" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%231E403F\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+
+    <div class="relative p-8 lg:p-12">
+        <!-- Header -->
+        <header class="mb-10 lg:mb-14">
+            <p class="text-sm font-medium text-[#1E403F]/70 uppercase tracking-widest mb-1" style="font-family: 'DM Sans', sans-serif;">@dateStr</p>
+            <h1 class="text-4xl lg:text-5xl font-bold text-slate-800 tracking-tight" style="font-family: 'Outfit', sans-serif;">@greeting</h1>
+            <p class="mt-2 text-lg text-slate-500" style="font-family: 'DM Sans', sans-serif;">Here’s what’s happening across your site.</p>
+        </header>
+
+        <!-- Summary card -->
+        <div class="mb-10 rounded-2xl bg-gradient-to-r from-[#1E403F] to-[#2a5856] p-6 lg:p-8 shadow-xl shadow-[#1E403F]/15 text-white">
+            <div class="flex flex-wrap items-center justify-between gap-6">
+                <div>
+                    <p class="text-white/80 text-sm font-medium uppercase tracking-wider mb-1" style="font-family: 'DM Sans', sans-serif;">Total records</p>
+                    <p class="text-4xl lg:text-5xl font-bold tabular-nums" style="font-family: 'Outfit', sans-serif;">@total</p>
+                    <p class="mt-1 text-white/70 text-sm" style="font-family: 'DM Sans', sans-serif;">Staff, projects, vendors, affiliates, contacts &amp; newsletters</p>
+                </div>
+                <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-sm">
+                    <i class="fa fa-bar-chart text-3xl text-white/90"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stat cards grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-12">
+            <a asp-controller="Admin" asp-action="Staffs" class="group block">
+                <div class="relative overflow-hidden rounded-2xl bg-white p-6 lg:p-8 shadow-lg shadow-slate-200/50 border border-slate-100 hover:shadow-xl hover:shadow-[#1E403F]/10 hover:border-[#1E403F]/20 transition-all duration-300 hover:-translate-y-1">
+                    <div class="absolute top-0 right-0 w-32 h-32 rounded-full bg-[#1E403F]/5 -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform duration-300"></div>
+                    <div class="relative flex items-start justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2" style="font-family: 'DM Sans', sans-serif;">Staff &amp; Team</p>
+                            <p class="text-4xl lg:text-5xl font-bold text-slate-800 tabular-nums" style="font-family: 'Outfit', sans-serif;">@Model.StaffCount</p>
+                            <p class="mt-1 text-slate-500 text-sm" style="font-family: 'DM Sans', sans-serif;">Team members</p>
+                        </div>
+                        <div class="w-14 h-14 rounded-xl bg-[#1E403F]/10 flex items-center justify-center text-[#1E403F] group-hover:bg-[#1E403F] group-hover:text-white transition-colors duration-300">
+                            <i class="fa fa-users text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-slate-100 flex items-center text-sm font-medium text-[#1E403F] opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="font-family: 'DM Sans', sans-serif;">
+                        <span>View all</span>
+                        <i class="fa fa-arrow-right ml-2 text-xs"></i>
+                    </div>
+                </div>
+            </a>
+
+            <a asp-controller="Admin" asp-action="Projects" class="group block">
+                <div class="relative overflow-hidden rounded-2xl bg-white p-6 lg:p-8 shadow-lg shadow-slate-200/50 border border-slate-100 hover:shadow-xl hover:shadow-[#b39359]/10 hover:border-[#b39359]/30 transition-all duration-300 hover:-translate-y-1">
+                    <div class="absolute top-0 right-0 w-32 h-32 rounded-full bg-[#b39359]/10 -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform duration-300"></div>
+                    <div class="relative flex items-start justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2" style="font-family: 'DM Sans', sans-serif;">Projects</p>
+                            <p class="text-4xl lg:text-5xl font-bold text-slate-800 tabular-nums" style="font-family: 'Outfit', sans-serif;">@Model.ProjectCount</p>
+                            <p class="mt-1 text-slate-500 text-sm" style="font-family: 'DM Sans', sans-serif;">Active projects</p>
+                        </div>
+                        <div class="w-14 h-14 rounded-xl bg-[#b39359]/10 flex items-center justify-center text-[#b39359] group-hover:bg-[#b39359] group-hover:text-white transition-colors duration-300">
+                            <i class="fa fa-building text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-slate-100 flex items-center text-sm font-medium text-[#b39359] opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="font-family: 'DM Sans', sans-serif;">
+                        <span>View all</span>
+                        <i class="fa fa-arrow-right ml-2 text-xs"></i>
+                    </div>
+                </div>
+            </a>
+
+            <div class="group block">
+                <div class="relative overflow-hidden rounded-2xl bg-white p-6 lg:p-8 shadow-lg shadow-slate-200/50 border border-slate-100">
+                    <div class="absolute top-0 right-0 w-32 h-32 rounded-full bg-emerald-500/5 -translate-y-1/2 translate-x-1/2"></div>
+                    <div class="relative flex items-start justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2" style="font-family: 'DM Sans', sans-serif;">Vendors</p>
+                            <p class="text-4xl lg:text-5xl font-bold text-slate-800 tabular-nums" style="font-family: 'Outfit', sans-serif;">@Model.VendorCount</p>
+                            <p class="mt-1 text-slate-500 text-sm" style="font-family: 'DM Sans', sans-serif;">Registrations</p>
+                        </div>
+                        <div class="w-14 h-14 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-600">
+                            <i class="fa fa-briefcase text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group block">
+                <div class="relative overflow-hidden rounded-2xl bg-white p-6 lg:p-8 shadow-lg shadow-slate-200/50 border border-slate-100">
+                    <div class="absolute top-0 right-0 w-32 h-32 rounded-full bg-violet-500/5 -translate-y-1/2 translate-x-1/2"></div>
+                    <div class="relative flex items-start justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2" style="font-family: 'DM Sans', sans-serif;">Affiliates</p>
+                            <p class="text-4xl lg:text-5xl font-bold text-slate-800 tabular-nums" style="font-family: 'Outfit', sans-serif;">@Model.AffiliateCount</p>
+                            <p class="mt-1 text-slate-500 text-sm" style="font-family: 'DM Sans', sans-serif;">Partners</p>
+                        </div>
+                        <div class="w-14 h-14 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-600">
+                            <i class="fa fa-handshake-o text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group block">
+                <div class="relative overflow-hidden rounded-2xl bg-white p-6 lg:p-8 shadow-lg shadow-slate-200/50 border border-slate-100">
+                    <div class="absolute top-0 right-0 w-32 h-32 rounded-full bg-blue-500/5 -translate-y-1/2 translate-x-1/2"></div>
+                    <div class="relative flex items-start justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2" style="font-family: 'DM Sans', sans-serif;">Contacts</p>
+                            <p class="text-4xl lg:text-5xl font-bold text-slate-800 tabular-nums" style="font-family: 'Outfit', sans-serif;">@Model.ContactCount</p>
+                            <p class="mt-1 text-slate-500 text-sm" style="font-family: 'DM Sans', sans-serif;">Inquiries</p>
+                        </div>
+                        <div class="w-14 h-14 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600">
+                            <i class="fa fa-envelope text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group block">
+                <div class="relative overflow-hidden rounded-2xl bg-white p-6 lg:p-8 shadow-lg shadow-slate-200/50 border border-slate-100">
+                    <div class="absolute top-0 right-0 w-32 h-32 rounded-full bg-amber-500/5 -translate-y-1/2 translate-x-1/2"></div>
+                    <div class="relative flex items-start justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-slate-500 uppercase tracking-wider mb-2" style="font-family: 'DM Sans', sans-serif;">Newsletter</p>
+                            <p class="text-4xl lg:text-5xl font-bold text-slate-800 tabular-nums" style="font-family: 'Outfit', sans-serif;">@Model.NewsletterCount</p>
+                            <p class="mt-1 text-slate-500 text-sm" style="font-family: 'DM Sans', sans-serif;">Subscribers</p>
+                        </div>
+                        <div class="w-14 h-14 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-600">
+                            <i class="fa fa-newspaper-o text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="rounded-2xl bg-white/80 backdrop-blur-sm border border-slate-100 p-6 shadow-lg shadow-slate-200/30">
+            <h2 class="text-lg font-semibold text-slate-800 mb-4" style="font-family: 'Outfit', sans-serif;">Quick actions</h2>
+            <div class="flex flex-wrap gap-4">
+                <a asp-controller="Admin" asp-action="AddStaff" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1E403F] text-white text-sm font-medium hover:bg-[#163332] transition-colors shadow-lg shadow-[#1E403F]/20" style="font-family: 'DM Sans', sans-serif;">
+                    <i class="fa fa-user-plus"></i>
+                    <span>Add staff</span>
+                </a>
+                <a asp-controller="Admin" asp-action="AddProject" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#b39359] text-white text-sm font-medium hover:bg-[#9a7a4a] transition-colors shadow-lg shadow-[#b39359]/20" style="font-family: 'DM Sans', sans-serif;">
+                    <i class="fa fa-plus"></i>
+                    <span>Add project</span>
+                </a>
+                <a asp-controller="Home" asp-action="Index" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-100 text-slate-700 text-sm font-medium hover:bg-slate-200 transition-colors" style="font-family: 'DM Sans', sans-serif;">
+                    <i class="fa fa-external-link"></i>
+                    <span>View site</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

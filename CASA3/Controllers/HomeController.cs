@@ -3,6 +3,7 @@ using Core.DTOs;
 using Core.Enum;
 using Core.ViewModels;
 using Logic.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -15,14 +16,18 @@ namespace CASA3.Controllers
         private readonly IAffiliateService _affiliateService;
         private readonly INewsletterSubscriptionService _newsletterSubscriptionService;
         private readonly IContactUsService _contactUsService;
+        private readonly IStaffService _staffService;
+        private readonly IProjectService _projectService;
 
-        public HomeController(ILogger<HomeController> logger, IVendorService vendorService, IAffiliateService affiliateService, INewsletterSubscriptionService newsletterSubscriptionService, IContactUsService contactUsService)
+        public HomeController(ILogger<HomeController> logger, IVendorService vendorService, IAffiliateService affiliateService, INewsletterSubscriptionService newsletterSubscriptionService, IContactUsService contactUsService, IStaffService staffService, IProjectService projectService)
         {
             _logger = logger;
             _vendorService = vendorService;
             _affiliateService = affiliateService;
             _newsletterSubscriptionService = newsletterSubscriptionService;
             _contactUsService = contactUsService;
+            _staffService = staffService;
+            _projectService = projectService;
         }
 
         public IActionResult Index()
@@ -157,26 +162,29 @@ namespace CASA3.Controllers
 
         private List<ProjectDto> GetProjects()
         {
+            var fromDb = _projectService.GetAllProjects();
+            if (fromDb != null && fromDb.Any())
+                return fromDb;
             return new List<ProjectDto>
             {
-                new ProjectDto { Id = 1, Name = "CAPRI ISLAND", Url = "/projects/capri" },
-                new ProjectDto { Id = 2, Name = "EMERALD", Url = "/projects/emerald" },
-                new ProjectDto { Id = 3, Name = "ONYX", Url = "/projects/onyx" },
-                new ProjectDto { Id = 4, Name = "OPAL", Url = "/projects/opal" },
-                new ProjectDto { Id = 5, Name = "AVENTURINE", Url = "/projects/aventurine" },
-                new ProjectDto { Id = 6, Name = "AMAZON", Url = "/projects/amazon" },
-                new ProjectDto { Id = 7, Name = "BAHAMAS", Url = "/projects/bahamas" },
-                new ProjectDto { Id = 8, Name = "BIMINI", Url = "/projects/bimini" },
-                new ProjectDto { Id = 9, Name = "BALI ISLAND", Url = "/projects/bali" },
-                new ProjectDto { Id = 10, Name = "BARBADOS ISLAND", Url = "/projects/barbados" },
-                new ProjectDto { Id = 11, Name = "BOBOWASI ISLAND", Url = "/projects/bobowasi" },
-                new ProjectDto { Id = 12, Name = "BORA BORA ISLAND", Url = "/projects/borabora" },
-                new ProjectDto { Id = 13, Name = "FIJI ISLAND", Url = "/projects/fiji" },
-                new ProjectDto { Id = 14, Name = "LANGKAWI ISLAND", Url = "/projects/langkawi" },
-                new ProjectDto { Id = 15, Name = "MALDIVES", Url = "/projects/maldives" },
-                new ProjectDto { Id = 16, Name = "MAURITIUS ISLAND", Url = "/projects/mauritius" },
-                new ProjectDto { Id = 17, Name = "SEYCHELLES", Url = "/projects/seychelles" },
-                new ProjectDto { Id = 18, Name = "ZANZIBAR", Url = "/projects/zanzibar" }
+                new ProjectDto { Id = "1", Name = "CAPRI ISLAND", Url = "/projects/capri" },
+                new ProjectDto { Id = "2", Name = "EMERALD", Url = "/projects/emerald" },
+                new ProjectDto { Id = "3", Name = "ONYX", Url = "/projects/onyx" },
+                new ProjectDto { Id = "4", Name = "OPAL", Url = "/projects/opal" },
+                new ProjectDto { Id = "5", Name = "AVENTURINE", Url = "/projects/aventurine" },
+                new ProjectDto { Id = "6", Name = "AMAZON", Url = "/projects/amazon" },
+                new ProjectDto { Id = "7", Name = "BAHAMAS", Url = "/projects/bahamas" },
+                new ProjectDto { Id = "8", Name = "BIMINI", Url = "/projects/bimini" },
+                new ProjectDto { Id = "9", Name = "BALI ISLAND", Url = "/projects/bali" },
+                new ProjectDto { Id = "10", Name = "BARBADOS ISLAND", Url = "/projects/barbados" },
+                new ProjectDto { Id = "11", Name = "BOBOWASI ISLAND", Url = "/projects/bobowasi" },
+                new ProjectDto { Id = "12", Name = "BORA BORA ISLAND", Url = "/projects/borabora" },
+                new ProjectDto { Id = "13", Name = "FIJI ISLAND", Url = "/projects/fiji" },
+                new ProjectDto { Id = "14", Name = "LANGKAWI ISLAND", Url = "/projects/langkawi" },
+                new ProjectDto { Id = "15", Name = "MALDIVES", Url = "/projects/maldives" },
+                new ProjectDto { Id = "16", Name = "MAURITIUS ISLAND", Url = "/projects/mauritius" },
+                new ProjectDto { Id = "17", Name = "SEYCHELLES", Url = "/projects/seychelles" },
+                new ProjectDto { Id = "18", Name = "ZANZIBAR", Url = "/projects/zanzibar" }
             };
         }
 
@@ -221,7 +229,9 @@ namespace CASA3.Controllers
         {
             var model = new HomePageVM();
 
-            var teamMembers = GetAllTeamMembers();
+            var teamMembers = _staffService.GetAllStaffAsTeamMembers();
+            if (teamMembers == null || !teamMembers.Any())
+                teamMembers = GetAllTeamMembers();
             // Board of Directors
             model.BoardOfDirectors = teamMembers.Where(tm => tm.Category == TeamMemeberCategory.BOD).ToList();
 
@@ -240,13 +250,13 @@ namespace CASA3.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetTeamMember(int id)
+        public async Task<IActionResult> GetTeamMember(string id)
         {
-            var member = GetAllTeamMembers().FirstOrDefault(x => x.Id == id);
-
+            var member = await _staffService.GetStaffByIdAsync(id);
+            if (member == null)
+                member = GetAllTeamMembers().FirstOrDefault(x => x.Id == id);
             if (member == null)
                 return NotFound();
-
             return Json(member);
         }
 
@@ -536,80 +546,93 @@ namespace CASA3.Controllers
             return View(post);
         }
 
-        public IActionResult ProjectDetails(int id)
+        public async Task<IActionResult> ProjectDetails(string id)
         {
-            // Dummy projects data
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
+            var project = await _projectService.GetProjectDetailsAsync(id);
+            if (project != null)
+            {
+                ViewData["Partners"] = GetPartners();
+                ViewData["Projects"] = GetProjects();
+                ViewData["Title"] = project.Name;
+                return View(project);
+            }
+
+            // Fallback dummy data when project not in DB
+            int numericId;
+            if (!int.TryParse(id, out numericId))
+                return NotFound();
+
             var dummyProjects = new List<ProjectDetailsDto>
             {
                 new ProjectDetailsDto
                 {
-                    Id = 1,
+                    Id = "1",
                     Name = "CAPRI ISLAND",
                     HeroImageUrl = "/images/projects/project-1.webp",
                     Description = "Spanning 210 hectares in Kalantan island, Abiaj Longterm Island is a refined residential estate offering 10 thoughtfully-planned homes. From elegant 5-bedroom mansions to the charm of 4-bedroom duplexes, each home is designed with meticulous attention to detail while featuring top-notch aesthetics and security. Long-term island delivers a luxurious lifestyle where every detail is built to elevate everyday living.",
-                    BrochurePdfUrl = "/files/capri-brochure.pdf"
+                    BrochurePdfUrl = "/files/capri-brochure.pdf",
+                    BuildingDesigns = new List<BuildingDesignDto>()
                 },
                 new ProjectDetailsDto
                 {
-                    Id = 2,
+                    Id = "2",
                     Name = "EMERALD",
                     HeroImageUrl = "/images/projects/emerald-hero.webp",
                     Description = "The Emerald is a majestically designed five-bedroom villa that embodies refined living spaces with the perfect balance of contemporary luxe and elegant details. This distinctively crafted villa features an elegant guest quarters and an exquisite guard house. Balconies with sweeping views every detail has been crafted for comfort and sophistication. The finessed design and fixtures suitable for those who crave style, serenity.",
-                    BrochurePdfUrl = "/files/emerald-brochure.pdf"
+                    BrochurePdfUrl = "/files/emerald-brochure.pdf",
+                    BuildingDesigns = new List<BuildingDesignDto>()
                 },
                 new ProjectDetailsDto
                 {
-                    Id = 3,
+                    Id = "3",
                     Name = "ONYX",
                     HeroImageUrl = "/images/projects/onyx-hero.webp",
                     Description = "This beautifully designed villa is a perfect blend of creativity and craftsmanship, emphasizing quality and comfort. It features five spacious generously suited two bedroom en-suite and an ultra-modern kitchen. The home is intelligently designed to offer a refined lifestyle and architectural opulence. Every space tells a story of sophistication with quality finishes and design excellence.",
-                    BrochurePdfUrl = "/files/onyx-brochure.pdf"
+                    BrochurePdfUrl = "/files/onyx-brochure.pdf",
+                    BuildingDesigns = new List<BuildingDesignDto>()
                 },
                 new ProjectDetailsDto
                 {
-                    Id = 4,
+                    Id = "4",
                     Name = "OPAL",
                     HeroImageUrl = "/images/projects/opal-hero.webp",
                     Description = "This beautifully designed townhouse showcase a perfect blend of creativity and meticulous craftsmanship, focusing on quality and comfort. With luxury spaces and suite bedrooms and an employees rest area with quality finishing throughout. Adventurine redefines the modern living experience that meets the needs of today's families seeking style, functionality and premium comfort and details.",
-                    BrochurePdfUrl = "/files/opal-brochure.pdf"
+                    BrochurePdfUrl = "/files/opal-brochure.pdf",
+                    BuildingDesigns = new List<BuildingDesignDto>()
                 },
                 new ProjectDetailsDto
                 {
-                    Id = 5,
+                    Id = "5",
                     Name = "AVENTURINE",
                     HeroImageUrl = "/images/projects/aventurine-hero.webp",
                     Description = "Aventurine showcases three spacious en-suite bedrooms along with a contemporary lounge. All interior surfaces are enhanced by festive liquors that color in your mood-making interior and create both warmth and relaxed feelings. Whi exquisite details and high quality finishes throughout Aventurine redefines the ultimate lifestyle where every corner is built for comfort.",
-                    BrochurePdfUrl = "/files/aventurine-brochure.pdf"
+                    BrochurePdfUrl = "/files/aventurine-brochure.pdf",
+                    BuildingDesigns = new List<BuildingDesignDto>()
                 }
             };
 
-            // Get the project by ID or default to first project
-            var project = dummyProjects.FirstOrDefault(p => p.Id == id) ?? dummyProjects.First();
-
-            // Generate random number of building designs (1-5)
-            var random = new Random();
-            int numberOfDesigns = random.Next(1, 6);
-
-            // Create dummy building designs
-            project.BuildingDesigns = new List<BuildingDesignDto>();
+            var fallback = dummyProjects.FirstOrDefault(p => p.Id == id) ?? dummyProjects.First();
+            var rand = new Random();
+            int numberOfDesigns = rand.Next(1, 6);
             for (int i = 1; i <= numberOfDesigns; i++)
             {
-                project.BuildingDesigns.Add(new BuildingDesignDto
+                fallback.BuildingDesigns.Add(new BuildingDesignDto
                 {
-                    Id = i,
-                    Name = $"{project.Name} - Design Type {i}",
-                    Description = $"This beautifully designed building showcases a perfect blend of modern architecture and luxury living. The unit features spacious living areas, state-of-the-art amenities, and exquisite finishes throughout. Every detail is meticulously crafted to provide the ultimate comfort and elegance for residents.",
-                    ImageUrl = $"/images/sample-project-details.webp",
+                    Id = i.ToString(),
+                    Name = $"{fallback.Name} - Design Type {i}",
+                    Description = "This beautifully designed building showcases a perfect blend of modern architecture and luxury living. The unit features spacious living areas, state-of-the-art amenities, and exquisite finishes throughout.",
+                    ImageUrl = "/images/sample-project-details.webp",
                     FloorPlanPdfUrl = $"/files/floorplan-{i}.pdf"
                 });
             }
 
-            // Set layout data
             ViewData["Partners"] = GetPartners();
             ViewData["Projects"] = GetProjects();
-            ViewData["Title"] = project.Name;
-
-            return View(project);
+            ViewData["Title"] = fallback.Name;
+            return View(fallback);
         }
 
         [HttpGet("Become-A-Vendor")]
@@ -737,8 +760,13 @@ namespace CASA3.Controllers
             }
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [Authorize]
+        public IActionResult Admin()
+        {
+            return RedirectToAction("Index", "Admin");
+        }
 
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
@@ -747,16 +775,16 @@ namespace CASA3.Controllers
         private List<TeamMemberDto> GetAllTeamMembers()
         {
             var dummy = @"{Name} is a multidisciplinary business executive and real estate professional whose career is anchored in a strong engineering foundation and shaped by extensive experience in finance, risk management, and strategic operations. He is recognized for driving innovation and value creation across real estate development, financial services, and enterprise transformation.
-            Trained as a Mechanical Engineer, Fawaz began his professional journey with a technical and systems-driven mindset that continues to influence his structured approach to problem-solving and execution. He later transitioned into the financial services sector, where he built deep expertise in underwriting, risk management, and portfolio analysis within Nigeria’s insurance industry.
+            Trained as a Mechanical Engineer, Fawaz began his professional journey with a technical and systems-driven mindset that continues to influence his structured approach to problem-solving and execution. He later transitioned into the financial services sector, where he built deep expertise in underwriting, risk management, and portfolio analysis within Nigeria?s insurance industry.
             At Consolidated Hallmark Insurance Plc, Fawaz progressed across underwriting and risk management roles, contributing to complex risk assessments, wealth management, and strategic decision-making. This phase of his career strengthened his financial discipline and sharpened his ability to manage risk at scale.
-            Building on this experience, Fawaz went on to co-found Harbourage Ltd, where he served as Chief Financial Officer, leading financial strategy and operational optimization with a strong focus on process improvement and scalable growth. He is a certified Financial Modeling and Valuation Analyst (FMVA®), a member of the Chartered Insurance Institute of Nigeria (CIIN), currently completing an MBA in Finance and Investment at Ahmadu Bello University, and a Harvard alumnus in Resilient Leadership, reflecting his commitment to world-class leadership and long-term value creation.
+            Building on this experience, Fawaz went on to co-found Harbourage Ltd, where he served as Chief Financial Officer, leading financial strategy and operational optimization with a strong focus on process improvement and scalable growth. He is a certified Financial Modeling and Valuation Analyst (FMVA?), a member of the Chartered Insurance Institute of Nigeria (CIIN), currently completing an MBA in Finance and Investment at Ahmadu Bello University, and a Harvard alumnus in Resilient Leadership, reflecting his commitment to world-class leadership and long-term value creation.
             Driven by impact, Fawaz continues to bridge global best practices with local market realities, shaping sustainable businesses, transformative real estate solutions, and future-ready enterprises across Nigeria and beyond.
                 ";
             var teamMembers = new List<TeamMemberDto>
             {
                 new TeamMemberDto
                 {
-                    Id = 1,
+                    Id = "1",
                     Name = "DR. SADIQ SULEIMAN ABDULLAHI",
                     Position = "CHAIRMAN, BOARD OF DIRECTORS",
                     ImageUrl = "/images/dummy user.jpg",
@@ -766,7 +794,7 @@ namespace CASA3.Controllers
                 },
                 new TeamMemberDto
                 {
-                    Id = 2,
+                    Id = "2",
                     Name = "ALIYU ALIYU",
                     Position = "EXECUTIVE DIRECTOR",
                     ImageUrl = "/images/dummy user.jpg",
@@ -776,7 +804,7 @@ namespace CASA3.Controllers
                 },
                 new TeamMemberDto
                 {
-                    Id = 3,
+                    Id = "3",
                     Name = "YAHYA AHMAD RUFAI",
                     Position = "NON-EXECUTIVE DIRECTOR",
                     ImageUrl = "/images/dummy user.jpg",
@@ -786,7 +814,7 @@ namespace CASA3.Controllers
                 },
                 new TeamMemberDto
                 {
-                    Id = 4,
+                    Id = "4",
                     Name = "ROSS OLUYEDE",
                     Position = "INDEPENDENT DIRECTOR",
                     ImageUrl = "/images/dummy user.jpg",
@@ -796,7 +824,7 @@ namespace CASA3.Controllers
                 },
                 new TeamMemberDto
                 {
-                    Id = 5,
+                    Id = "5",
                     Name = "MALLAM HALLIRU SA'AD MALAMI",
                     Position = "INDEPENDENT DIRECTOR",
                     ImageUrl = "/images/dummy user.jpg",
@@ -806,7 +834,7 @@ namespace CASA3.Controllers
                 },
                 new TeamMemberDto
                 {
-                    Id = 6,
+                    Id = "6",
                     Name = "DR. NURATU MUSA ABDULLAHI",
                     Position = "INDEPENDENT DIRECTOR",
                     ImageUrl = "/images/dummy user.jpg",
@@ -816,7 +844,7 @@ namespace CASA3.Controllers
                 },
                 new TeamMemberDto
                 {
-                    Id = 7,
+                    Id = "7",
                     Name = "DR. EMMANUEL BASSI USMAN",
                     Position = "CHIEF EXECUTIVE OFFICER",
                     ImageUrl = "/images/dummy user.jpg",
@@ -826,7 +854,7 @@ namespace CASA3.Controllers
                 },
                 new TeamMemberDto
                 {
-                    Id = 8,
+                    Id = "8",
                     Name = "ABDULFATAI MUSA",
                     Position = "CHIEF OPERATIONS OFFICER",
                     ImageUrl = "/images/dummy user.jpg",
@@ -836,7 +864,7 @@ namespace CASA3.Controllers
                 },
                 new TeamMemberDto
                 {
-                    Id = 9,
+                    Id = "9",
                     Name = "ABDULKADIR ABDULKADIR",
                     Position = "CHIEF BUSINESS AND STRATEGY OFFICER",
                     ImageUrl = "/images/dummy user.jpg",

@@ -1,14 +1,13 @@
-namespace Core.DTOs
+namespace Core.Model
 {
-    public class ProjectDto
+    public class Project : BaseModel
     {
-        public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string? Url { get; set; }
         public string? Slug { get; set; }
         public string? Description { get; set; }
         public string? HeroImageUrl { get; set; }
         public string? BrochurePdfUrl { get; set; }
+        public virtual ICollection<BuildingDesign> BuildingDesigns { get; set; } = new List<BuildingDesign>();
     }
 }
-

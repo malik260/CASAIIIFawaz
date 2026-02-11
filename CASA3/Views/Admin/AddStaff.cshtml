@@ -1,0 +1,70 @@
+@model Core.DTOs.StaffCreateDto
+@{
+    ViewData["Title"] = "Add Staff";
+}
+
+<section class="max-w-2xl mx-auto px-6 py-12">
+    <div class="mb-8">
+        <a asp-controller="Admin" asp-action="Staffs" class="text-[#1E403F] hover:underline">&larr; Back to Staff list</a>
+    </div>
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Add Staff</h1>
+
+    <form asp-controller="Admin" asp-action="AddStaff" method="post" enctype="multipart/form-data" class="space-y-5">
+        <div asp-validation-summary="All" class="text-red-600 text-sm"></div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Staff name <span class="text-red-500">*</span></label>
+            <input asp-for="Name" type="text" class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#b39359] focus:border-[#b39359]" placeholder="Full name" />
+            <span asp-validation-for="Name" class="text-red-600 text-sm"></span>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Role / Position <span class="text-red-500">*</span></label>
+            <input asp-for="Position" type="text" class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#b39359] focus:border-[#b39359]" placeholder="e.g. Chief Executive Officer" />
+            <span asp-validation-for="Position" class="text-red-600 text-sm"></span>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Image</label>
+            <input type="file" name="imageFile" accept=".jpg,.jpeg,.png,.gif,.webp" class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#b39359]" />
+            <p class="text-gray-500 text-xs mt-1">JPG, PNG, GIF or WebP. Max 5MB.</p>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+            <input asp-for="Address" type="text" class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#b39359] focus:border-[#b39359]" placeholder="Address" />
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Phone number</label>
+            <input asp-for="PhoneNumber" type="tel" class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#b39359] focus:border-[#b39359]" placeholder="Phone number" />
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">LinkedIn URL</label>
+            <input asp-for="LinkedInUrl" type="url" class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#b39359] focus:border-[#b39359]" placeholder="https://linkedin.com/in/..." />
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <select asp-for="Category" class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#b39359] focus:border-[#b39359]">
+                <option value="@((int)Core.Enum.TeamMemeberCategory.BOD)">Board of Directors</option>
+                <option value="@((int)Core.Enum.TeamMemeberCategory.MGT)">Management Team</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Bio / Member info (optional)</label>
+            <textarea asp-for="MemberInfo" rows="4" class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#b39359] focus:border-[#b39359]" placeholder="Short bio or description"></textarea>
+        </div>
+
+        <div class="flex gap-3 pt-2">
+            <button type="submit" class="bg-[#1E403F] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#163332] transition-colors">Add Staff</button>
+            <a asp-controller="Admin" asp-action="Staffs" class="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors">Cancel</a>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

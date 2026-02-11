@@ -1,8 +1,8 @@
-namespace Core.DTOs
+namespace Core.Model
 {
-    public class BuildingDesignDto
+    public class BuildingDesign : BaseModel
     {
-        public string Id { get; set; } = string.Empty;
+        public string ProjectId { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
         public string? Location { get; set; }
