@@ -4,7 +4,7 @@ namespace Core.ViewModels
 {
     public class HomePageVM
     {
-        public List<BannerDto> Banner { get; set; } = new();
+        public List<CarouselVM> Banner { get; set; } = new();
         public List<FeaturedProjectDto> FeaturedProjects { get; set; } = new();
         public List<FootprintYearDto> FootprintYears { get; set; } = new();
         public int SelectedFootprintYear { get; set; } = 2018;

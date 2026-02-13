@@ -264,7 +264,7 @@
                     <div class="dropdown-menu">
                         <a href="#" class="dropdown-item">My Profile</a>
                         <a href="#" class="dropdown-item">Settings</a>
-                        <a class="dropdown-item" asp-action="Logout" asp-controller="Account">Logout</a>
+                        <a href="/account/logout" class="dropdown-item">Logout</a>
                     </div>
                 </li>
             </ul>
@@ -275,7 +275,7 @@
                 <div class="dropdown-menu dropdown-menu-right">
                     @* <a class="dropdown-item" href="#">My Profile</a>
 						<a class="dropdown-item" href="#">Settings</a> *@
-                    <a class="dropdown-item" asp-action="Logout" asp-controller="Account">Logout</a>
+                    <a href="/account/logout" class="dropdown-item">Logout</a>
                 </div>
             </div>
             <!-- /Mobile Menu -->
@@ -300,11 +300,13 @@
                         <li class="menu-title"></li>
                         <li><a asp-action="Index" asp-controller="Partner"><i class="fa fa-handshake-o btnYellow"></i> <span>Partner Management</span></a></li>
                         <li class="menu-title"></li>
+                        <li><a asp-action="Index" asp-controller="Carousel"><i class="fa fa-clone btnYellow"></i> <span>Carousel Management</span></a></li>
+                        <li class="menu-title"></li>
                         <li class="submenu">
                             <a href="#"><i class="la la-key btnYellow"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
                                 <li><a href="#" onclick="popChangePasswordModal()">Change Password</a></li>
-                                <li><a asp-action="Logout" asp-controller="Account">LogOut</a></li>
+                                <li><a href="/account/logout">Logout</a></li>
                             </ul>
                         </li>
                     </ul>

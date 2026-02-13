@@ -132,14 +132,11 @@ namespace CASA3.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout(string? returnUrl = null)
+        public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            HttpContext.Session.Remove("currentuser");
-            _logger.LogInformation("User logged out.");
-            return Redirect(returnUrl ?? Url.Content("~/"));
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
 
         [AllowAnonymous]

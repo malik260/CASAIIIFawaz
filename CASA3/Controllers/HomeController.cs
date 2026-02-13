@@ -20,8 +20,9 @@ namespace CASA3.Controllers
         private readonly IProjectService _projectService;
         private readonly INewsLetterService _newsLetter;
         private readonly IPartnerService _partnerService;
+        private readonly ICarouselService _carouselService;
 
-        public HomeController(ILogger<HomeController> logger, IVendorService vendorService, IAffiliateService affiliateService, INewsletterSubscriptionService newsletterSubscriptionService, IContactUsService contactUsService, IStaffService staffService, IProjectService projectService, INewsLetterService newsLetter, IPartnerService partnerService)
+        public HomeController(ILogger<HomeController> logger, IVendorService vendorService, IAffiliateService affiliateService, INewsletterSubscriptionService newsletterSubscriptionService, IContactUsService contactUsService, IStaffService staffService, IProjectService projectService, INewsLetterService newsLetter, IPartnerService partnerService, ICarouselService carouselService)
         {
             _logger = logger;
             _vendorService = vendorService;
@@ -32,32 +33,13 @@ namespace CASA3.Controllers
             _projectService = projectService;
             _newsLetter = newsLetter;
             _partnerService = partnerService;
+            _carouselService = carouselService;
         }
 
         public IActionResult Index()
         {
             var model = new HomePageVM();
-            model.Banner = new List<BannerDto>
-            {
-                new BannerDto
-                {
-                    ImageUrl = "/images/banners/banner-1.jpg",
-                    Tag = "PROJECT OF THE MONTH",
-                    Title = "CAPRI ISLAND",
-                    Subtitle = "For those who dream in color",
-                    CtaText = "DOWNLOAD BROCHURE",
-                    CtaUrl = "#"
-                },
-                new BannerDto
-                {
-                    ImageUrl = "/images/banners/banner-2.jpg",
-                    Tag = "FEATURED DEVELOPMENT",
-                    Title = "CASA III",
-                    Subtitle = "Luxury meets serenity",
-                    CtaText = "VIEW PROJECT",
-                    CtaUrl = "#"
-                }
-            };
+            model.Banner = _carouselService.GetAllCarouselsService().Where(x => x.PageType == CarouselPageType.Home && x.IsActive).ToList();
 
             // Featured Projects data
             model.FeaturedProjects = new List<FeaturedProjectDto>
@@ -594,27 +576,7 @@ namespace CASA3.Controllers
         public IActionResult BecomeAVendor()
         {
             var model = new HomePageVM();
-            model.Banner = new List<BannerDto>
-            {
-                new BannerDto
-                {
-                    ImageUrl = "/images/banners/vbanner-1.jpg",
-                    Tag = null,
-                    Title = "Streamlined Vendor Management",
-                    Subtitle = "Connect with procurement opportunities and manage vendor relationships efficiently",
-                    CtaText = "Get Started",
-                    CtaUrl = "#"
-                },
-                new BannerDto
-                {
-                    ImageUrl = "/images/banners/vbanner-2.jpg",
-                    Tag = null,
-                    Title = "Transparent Bidding Process",
-                    Subtitle = "Access real-time bid opportunities with complete transparency and fairness",
-                    CtaText = "View Opportunities",
-                    CtaUrl = "#"
-                }
-            };
+            model.Banner = _carouselService.GetAllCarouselsService().Where(x => x.PageType == CarouselPageType.Vendor && x.IsActive).ToList();
             // Partners data - Set in ViewData for layout access
             ViewData["Partners"] = GetPartners();
 
@@ -832,6 +794,5 @@ namespace CASA3.Controllers
             return teamMembers;
         }
     }
-
     
 }

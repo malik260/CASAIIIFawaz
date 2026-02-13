@@ -1,5 +1,6 @@
 using Core.Model;
 using Core.Models;
+using Core.ViewModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,5 +23,6 @@ namespace Core.DB
         public DbSet<Media> Media { get; set; }
         public DbSet<NewsLetter> NewsLetters { get; set; }
         public DbSet<Partner> Partners { get; set; }
+        public DbSet<Carousel> Carousels { get; set; }
     }
 }
