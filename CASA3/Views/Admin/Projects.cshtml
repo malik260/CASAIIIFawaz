@@ -32,6 +32,7 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Year</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Featured</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">URL</th>
@@ -43,6 +44,23 @@
                     {
                         <tr>
                             <td class="px-6 py-4 font-medium text-gray-900">@project.Name</td>
+                            <td class="px-6 py-4 text-gray-600">
+                                @if (project.Category.HasValue)
+                                {
+                                    var catLabel = project.Category switch
+                                    {
+                                        Core.Enum.ProjectCategory.Luxury => "Luxury",
+                                        Core.Enum.ProjectCategory.Premium => "Premium",
+                                        Core.Enum.ProjectCategory.MidPremium => "Mid-Premium",
+                                        _ => "—"
+                                    };
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">@catLabel</span>
+                                }
+                                else
+                                {
+                                    <span>—</span>
+                                }
+                            </td>
                             <td class="px-6 py-4 text-gray-600">@(project.Year?.ToString() ?? "—")</td>
                             <td class="px-6 py-4">
                                 @if (project.IsFeatured)

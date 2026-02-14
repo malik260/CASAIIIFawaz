@@ -1,3 +1,5 @@
+using Core.Enum;
+
 namespace Core.DTOs
 {
     public class ProjectDto
@@ -11,6 +13,7 @@ namespace Core.DTOs
         public string? BrochurePdfUrl { get; set; }
         public int? Year { get; set; }
         public bool IsFeatured { get; set; }
+        public ProjectCategory? Category { get; set; }
     }
 }
 

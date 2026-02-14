@@ -275,7 +275,8 @@ namespace CASA3.Controllers
                 HeroImageUrl = dto.HeroImageUrl,
                 BrochurePdfUrl = dto.BrochurePdfUrl,
                 Year = dto.Year,
-                IsFeatured = dto.IsFeatured
+                IsFeatured = dto.IsFeatured,
+                Category = dto.Category
             };
             ViewData["Title"] = "Edit Project";
             ViewData["ProjectId"] = id;
