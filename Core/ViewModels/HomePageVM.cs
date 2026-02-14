@@ -23,4 +23,10 @@ namespace Core.ViewModels
         public string Title { get; set; }
         public string Url { get; set; }
     }
+
+    public class OurProjectVM
+    {
+        public List<ProjectDto> Projects { get; set; } = new();
+        public string SelectedCategory { get; set; } = "LUXURY";
+    }
 }
