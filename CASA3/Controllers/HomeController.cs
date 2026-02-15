@@ -124,8 +124,6 @@ namespace CASA3.Controllers
         {
             var member = await _staffService.GetStaffByIdAsync(id);
             if (member == null)
-                member = GetAllTeamMembers().FirstOrDefault(x => x.Id == id);
-            if (member == null)
                 return NotFound();
             return Json(member);
         }

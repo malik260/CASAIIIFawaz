@@ -29,7 +29,7 @@ namespace CASA3.Controllers
         [AllowAnonymous]
         public IActionResult Login(string? returnUrl = null)
         {
-            if (User.Identity?.IsAuthenticated == true && Util.GetCurrentUser().Id != null)
+            if (User.Identity?.IsAuthenticated == true && !string.IsNullOrEmpty(Util.GetCurrentUser().Id))
                 return Redirect(returnUrl ?? "/Admin");
 
             ViewData["ReturnUrl"] = returnUrl ?? Url.Content("~/Admin");
