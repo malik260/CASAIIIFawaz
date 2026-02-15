@@ -42,12 +42,7 @@ namespace CASA3.Controllers
             model.Banner = _carouselService.GetAllCarouselsService().Where(x => x.PageType == CarouselPageType.Home && x.IsActive).ToList();
 
             // Featured Projects data
-            model.FeaturedProjects = new List<FeaturedProjectDto>
-            {
-                new FeaturedProjectDto { ImageUrl = "/images/projects/project-1.webp", Title = "CAPRI ISLAND", Url = "/projects/capri" },
-                new FeaturedProjectDto { ImageUrl = "/images/projects/project-2.webp", Title = "LANGKAWI", Url = "/projects/langkawi" },
-                new FeaturedProjectDto { ImageUrl = "/images/projects/project-3.webp", Title = "MALDIVES", Url = "/projects/maldives" }
-            };
+            model.FeaturedProjects = _projectService.GetAllProjects().Where(p=>p.IsFeatured).ToList();
 
             // Bilaad Footprint data
             model.FootprintYears = new List<FootprintYearDto>
@@ -414,28 +409,10 @@ namespace CASA3.Controllers
             return View(model);
         }
 
-        public IActionResult OurProject(string category = "LUXURY")
+        public IActionResult OurProject()
         {
-            var model = new OurProjectVM();
-            
             // Get all projects from database
-            var allProjects = _projectService.GetAllProjects();
-            
-            // If no projects in DB, use dummy data
-            if (allProjects == null || !allProjects.Any())
-            {
-                allProjects = new List<ProjectDto>
-                {
-                    new ProjectDto { Id = "6", Name = "AMAZON", HeroImageUrl = "/images/projects/amazon.webp", Url = "/projects/amazon" },
-                    new ProjectDto { Id = "8", Name = "BIMINI", HeroImageUrl = "/images/projects/bimini.webp", Url = "/projects/bimini" },
-                    new ProjectDto { Id = "16", Name = "MAURITIUS", HeroImageUrl = "/images/projects/mauritius.webp", Url = "/projects/mauritius" },
-                    new ProjectDto { Id = "17", Name = "SEYCHELLES", HeroImageUrl = "/images/projects/seychelles.webp", Url = "/projects/seychelles" },
-                    new ProjectDto { Id = "18", Name = "ZANZIBAR", HeroImageUrl = "/images/projects/zanzibar.webp", Url = "/projects/zanzibar" }
-                };
-            }
-
-            model.Projects = allProjects;
-            model.SelectedCategory = category;
+            var model = _projectService.GetAllProjects();
 
             // Partners data - Set in ViewData for layout access
             ViewData["Partners"] = GetPartners();

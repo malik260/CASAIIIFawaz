@@ -5,7 +5,7 @@ namespace Core.ViewModels
     public class HomePageVM
     {
         public List<CarouselVM> Banner { get; set; } = new();
-        public List<FeaturedProjectDto> FeaturedProjects { get; set; } = new();
+        public List<ProjectDto> FeaturedProjects { get; set; } = new();
         public List<FootprintYearDto> FootprintYears { get; set; } = new();
         public int SelectedFootprintYear { get; set; } = 2018;
         public List<NewsLetterVM> Newsletters { get; set; } = new();
@@ -16,17 +16,4 @@ namespace Core.ViewModels
         public PaginationVM Pagination { get; set; } = new();
     }
 
-
-    public class FeaturedProjectDto
-    {
-        public string ImageUrl { get; set; }
-        public string Title { get; set; }
-        public string Url { get; set; }
-    }
-
-    public class OurProjectVM
-    {
-        public List<ProjectDto> Projects { get; set; } = new();
-        public string SelectedCategory { get; set; } = "LUXURY";
-    }
 }
