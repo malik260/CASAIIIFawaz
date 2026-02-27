@@ -1,0 +1,228 @@
+@model Core.DTOs.ClientUpdateDto
+@{
+    ViewData["Title"] = "Edit Client";
+    var clientId = ViewData["ClientId"] as string ?? Model.Id;
+    var nigerianStates = new[] { "Abia","Adamawa","Akwa Ibom","Anambra","Bauchi","Bayelsa","Benue","Borno","Cross River","Delta","Ebonyi","Edo","Ekiti","Enugu","Gombe","Imo","Jigawa","Kaduna","Kano","Katsina","Kebbi","Kogi","Kwara","Lagos","Nasarawa","Niger","Ogun","Ondo","Osun","Oyo","Plateau","Rivers","Sokoto","Taraba","Yobe","Zamfara","Federal Capital Territory (FCT)" };
+}
+
+<section class="p-8 max-w-4xl mx-auto">
+
+    <div class="mb-6">
+        <a asp-controller="Admin" asp-action="Clients" class="text-[#1E403F] hover:underline text-sm flex items-center gap-1 mb-2">
+            <i class="fa fa-arrow-left text-xs"></i> Back to Clients
+        </a>
+        <h1 class="text-2xl font-bold text-gray-800">Edit Client</h1>
+        <p class="text-gray-500 text-sm mt-1">@Model.FullName</p>
+    </div>
+
+    <form asp-controller="Admin" asp-action="EditClient" asp-route-id="@clientId" method="post"
+          enctype="multipart/form-data" class="space-y-8">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="All" class="text-red-600 text-sm bg-red-50 border border-red-200 rounded-xl p-4"></div>
+
+        <!-- Personal Info -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+            <h2 class="text-base font-bold text-[#1E403F] mb-5 pb-3 border-b border-gray-100">Personal Information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Client Type</label>
+                    <select asp-for="ClientType" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-[#1E403F]">
+                        <option value="1">Individual</option>
+                        <option value="2">Corporate</option>
+                        <option value="3">Joint</option>
+                    </select>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Full Name <span class="text-red-500">*</span></label>
+                    <input asp-for="FullName" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F]" />
+                    <span asp-validation-for="FullName" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Phone <span class="text-red-500">*</span></label>
+                    <input asp-for="PhoneNumber" type="tel" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F]" />
+                    <span asp-validation-for="PhoneNumber" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Email <span class="text-red-500">*</span></label>
+                    <input asp-for="Email" type="email" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F]" />
+                    <span asp-validation-for="Email" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Date of Birth / Incorporation</label>
+                    <input asp-for="DateOfBirthOrIncorporation" type="date" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F]" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Means of ID</label>
+                    <select asp-for="MeansOfID" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-[#1E403F]">
+                        <option value="">-- Select --</option>
+                        <option value="1">National ID Card</option>
+                        <option value="2">Driver's License</option>
+                        <option value="3">International Passport</option>
+                        <option value="4">Voter's Card</option>
+                        <option value="5">NIN Slip</option>
+                    </select>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Upload New ID Document <span class="text-gray-400 font-normal">(leave blank to keep existing)</span></label>
+                    <input type="file" name="idFile" accept=".jpg,.jpeg,.png,.pdf"
+                           class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-white" />
+                    @if (!string.IsNullOrEmpty(Model.IDFilePath))
+                    {
+                        <p class="text-xs text-gray-500 mt-1">Current: <a href="@Model.IDFilePath" target="_blank" class="text-[#1E403F] underline">View existing document</a></p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Address -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+            <h2 class="text-base font-bold text-[#1E403F] mb-5 pb-3 border-b border-gray-100">Address Information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Address Type</label>
+                    <select asp-for="AddressType" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-[#1E403F]">
+                        <option value="1">Residential</option>
+                        <option value="2">Office</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">State <span class="text-red-500">*</span></label>
+                    <select asp-for="State" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-[#1E403F]">
+                        <option value="">-- Select State --</option>
+                        @foreach (var state in nigerianStates)
+                        {
+                            <option value="@state" selected="@(Model.State == state ? "selected" : null)">@state</option>
+                        }
+                    </select>
+                    <span asp-validation-for="State" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Address Line 1 <span class="text-red-500">*</span></label>
+                    <input asp-for="AddressLine1" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F]" />
+                    <span asp-validation-for="AddressLine1" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Address Line 2 <span class="text-gray-400 font-normal">(Optional)</span></label>
+                    <input asp-for="AddressLine2" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F]" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">City <span class="text-red-500">*</span></label>
+                    <input asp-for="City" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F]" />
+                    <span asp-validation-for="City" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Country</label>
+                    <input asp-for="Country" type="text" class="w-full border-2 border-gray-100 bg-gray-50 rounded-xl px-4 py-3 text-gray-500" readonly />
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Next of Kin -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+            <h2 class="text-base font-bold text-[#1E403F] mb-5 pb-3 border-b border-gray-100">Next of Kin</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">First Name <span class="text-red-500">*</span></label>
+                    <input asp-for="NextOfKinFirstName" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F]" />
+                    <span asp-validation-for="NextOfKinFirstName" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Last Name <span class="text-red-500">*</span></label>
+                    <input asp-for="NextOfKinLastName" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F]" />
+                    <span asp-validation-for="NextOfKinLastName" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Other Names</label>
+                    <input asp-for="NextOfKinOtherNames" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F]" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Phone <span class="text-red-500">*</span></label>
+                    <input asp-for="NextOfKinPhoneNumber" type="tel" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F]" />
+                    <span asp-validation-for="NextOfKinPhoneNumber" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                    <input asp-for="NextOfKinEmail" type="email" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F]" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Relationship <span class="text-red-500">*</span></label>
+                    <select asp-for="NextOfKinRelationship" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-[#1E403F]">
+                        <option value="1">Parent</option>
+                        <option value="2">Sibling</option>
+                        <option value="3">In-law</option>
+                        <option value="4">Spouse</option>
+                        <option value="5">Friend</option>
+                        <option value="6">Other</option>
+                    </select>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Residential Address <span class="text-red-500">*</span></label>
+                    <input asp-for="NextOfKinResidentialAddress" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F]" />
+                    <span asp-validation-for="NextOfKinResidentialAddress" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Office Address <span class="text-gray-400 font-normal">(Optional)</span></label>
+                    <input asp-for="NextOfKinOfficeAddress" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F]" />
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Admin Status & Notes -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+            <h2 class="text-base font-bold text-[#1E403F] mb-5 pb-3 border-b border-gray-100">Admin Settings</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Status</label>
+                    <select asp-for="Status" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:border-[#1E403F]">
+                        <option value="1">Initiated</option>
+                        <option value="2">Approved</option>
+                        <option value="3">Rejected</option>
+                    </select>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Notes <span class="text-gray-400 font-normal">(Internal — not visible to client)</span></label>
+                    <textarea asp-for="Notes" rows="3" placeholder="Add internal notes..."
+                              class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] resize-none"></textarea>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex gap-3">
+            <button type="submit" class="bg-[#1E403F] text-white px-8 py-3 rounded-xl font-semibold hover:bg-[#163332] transition-colors">Save Changes</button>
+            <a asp-controller="Admin" asp-action="ClientDetails" asp-route-id="@clientId"
+               class="bg-gray-100 text-gray-700 px-8 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-colors">Cancel</a>
+        </div>
+
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,253 @@
+@model Core.DTOs.ClientRegistrationDto
+@{
+    ViewData["Title"] = "Client Registration";
+    var nigerianStates = new[] { "Abia","Adamawa","Akwa Ibom","Anambra","Bauchi","Bayelsa","Benue","Borno","Cross River","Delta","Ebonyi","Edo","Ekiti","Enugu","Gombe","Imo","Jigawa","Kaduna","Kano","Katsina","Kebbi","Kogi","Kwara","Lagos","Nasarawa","Niger","Ogun","Ondo","Osun","Oyo","Plateau","Rivers","Sokoto","Taraba","Yobe","Zamfara","Federal Capital Territory (FCT)" };
+}
+
+<!-- Hero Banner -->
+<section class="relative bg-[#1E403F] py-20">
+    <div class="absolute inset-0 opacity-10" style="background-image: url('/images/pattern.webp'); background-size: cover;"></div>
+    <div class="relative max-w-4xl mx-auto px-6 text-center">
+        <p class="text-[#b39359] uppercase tracking-widest text-sm font-semibold mb-3">Casa III Real Estate</p>
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Client Registration</h1>
+        <p class="text-white/70 text-lg max-w-xl mx-auto">Please have your documents &amp; ID at hand before filling the form.</p>
+    </div>
+</section>
+
+<!-- Form Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-6">
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="mb-8 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm">
+                <div asp-validation-summary="All"></div>
+            </div>
+        }
+
+        <form asp-controller="Client" asp-action="Register" method="post" enctype="multipart/form-data" class="space-y-10" id="clientRegForm">
+            @Html.AntiForgeryToken()
+
+            <!-- ── Section 1: Client Info ── -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                <h2 class="text-xl font-bold text-[#1E403F] mb-6 pb-3 border-b border-gray-100">Personal / Business Information</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Client Type <span class="text-red-500">*</span></label>
+                        <div class="flex gap-4 flex-wrap">
+                            @foreach (Core.Enum.ClientType type in Enum.GetValues(typeof(Core.Enum.ClientType)))
+                            {
+                                <label class="flex items-center gap-2 cursor-pointer px-5 py-3 rounded-xl border-2 border-gray-200 has-[:checked]:border-[#1E403F] has-[:checked]:bg-[#1E403F]/5 transition-all">
+                                    <input type="radio" asp-for="ClientType" value="@((int)type)" class="accent-[#1E403F]" />
+                                    <span class="font-medium text-gray-700">@type</span>
+                                </label>
+                            }
+                        </div>
+                        <span asp-validation-for="ClientType" class="text-red-500 text-xs mt-1 block"></span>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Full Name <span class="text-red-500">*</span></label>
+                        <input asp-for="FullName" type="text" placeholder="Enter full name / company name"
+                               class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors" />
+                        <span asp-validation-for="FullName" class="text-red-500 text-xs mt-1 block"></span>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Number <span class="text-red-500">*</span></label>
+                        <input asp-for="PhoneNumber" type="tel" placeholder="e.g. 08012345678"
+                               class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors" />
+                        <span asp-validation-for="PhoneNumber" class="text-red-500 text-xs mt-1 block"></span>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address <span class="text-red-500">*</span></label>
+                        <input asp-for="Email" type="email" placeholder="you@example.com"
+                               class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors" />
+                        <span asp-validation-for="Email" class="text-red-500 text-xs mt-1 block"></span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ── Section 2: Address ── -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                <h2 class="text-xl font-bold text-[#1E403F] mb-6 pb-3 border-b border-gray-100">Address Information</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Address Type <span class="text-red-500">*</span></label>
+                        <div class="flex gap-4 flex-wrap">
+                            @foreach (Core.Enum.AddressType type in Enum.GetValues(typeof(Core.Enum.AddressType)))
+                            {
+                                <label class="flex items-center gap-2 cursor-pointer px-5 py-3 rounded-xl border-2 border-gray-200 has-[:checked]:border-[#1E403F] has-[:checked]:bg-[#1E403F]/5 transition-all">
+                                    <input type="radio" asp-for="AddressType" value="@((int)type)" class="accent-[#1E403F]" />
+                                    <span class="font-medium text-gray-700">@type Address</span>
+                                </label>
+                            }
+                        </div>
+                        <span asp-validation-for="AddressType" class="text-red-500 text-xs mt-1 block"></span>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Address Line 1 <span class="text-red-500">*</span></label>
+                        <input asp-for="AddressLine1" type="text" placeholder="Street address, P.O. box"
+                               class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors" />
+                        <span asp-validation-for="AddressLine1" class="text-red-500 text-xs mt-1 block"></span>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Address Line 2 <span class="text-gray-400 font-normal">(Optional)</span></label>
+                        <input asp-for="AddressLine2" type="text" placeholder="Apartment, suite, floor, etc."
+                               class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Country</label>
+                        <input asp-for="Country" type="text" value="Nigeria" readonly
+                               class="w-full border-2 border-gray-100 bg-gray-50 rounded-xl px-4 py-3 text-gray-500" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">State <span class="text-red-500">*</span></label>
+                        <select asp-for="State" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors bg-white">
+                            <option value="">-- Select State --</option>
+                            @foreach (var state in nigerianStates)
+                            {
+                                <option value="@state">@state</option>
+                            }
+                        </select>
+                        <span asp-validation-for="State" class="text-red-500 text-xs mt-1 block"></span>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">City <span class="text-red-500">*</span></label>
+                        <input asp-for="City" type="text" placeholder="City"
+                               class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors" />
+                        <span asp-validation-for="City" class="text-red-500 text-xs mt-1 block"></span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ── Section 3: ID & DOB ── -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                <h2 class="text-xl font-bold text-[#1E403F] mb-6 pb-3 border-b border-gray-100">Identity &amp; Date of Birth</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Date of Birth / Date of Incorporation</label>
+                        <input asp-for="DateOfBirthOrIncorporation" type="date"
+                               class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Means of ID</label>
+                        <select asp-for="MeansOfID" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors bg-white">
+                            <option value="">-- Select Means of ID --</option>
+                            <option value="1">National ID Card</option>
+                            <option value="2">Driver's License</option>
+                            <option value="3">International Passport</option>
+                            <option value="4">Voter's Card</option>
+                            <option value="5">NIN Slip</option>
+                        </select>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Upload ID Document <span class="text-gray-400 font-normal">(Optional)</span></label>
+                        <input type="file" name="idFile" accept=".jpg,.jpeg,.png,.pdf"
+                               class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors bg-white" />
+                        <p class="text-gray-400 text-xs mt-1">Accepted formats: JPG, PNG, PDF (max 10MB)</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ── Section 4: Next of Kin ── -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                <h2 class="text-xl font-bold text-[#1E403F] mb-6 pb-3 border-b border-gray-100">Next of Kin Information</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">First Name <span class="text-red-500">*</span></label>
+                        <input asp-for="NextOfKinFirstName" type="text" placeholder="First name"
+                               class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors" />
+                        <span asp-validation-for="NextOfKinFirstName" class="text-red-500 text-xs mt-1 block"></span>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Last Name <span class="text-red-500">*</span></label>
+                        <input asp-for="NextOfKinLastName" type="text" placeholder="Last name"
+                               class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors" />
+                        <span asp-validation-for="NextOfKinLastName" class="text-red-500 text-xs mt-1 block"></span>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Other Names <span class="text-gray-400 font-normal">(Optional)</span></label>
+                        <input asp-for="NextOfKinOtherNames" type="text" placeholder="Middle / other names"
+                               class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Number <span class="text-red-500">*</span></label>
+                        <input asp-for="NextOfKinPhoneNumber" type="tel" placeholder="e.g. 08012345678"
+                               class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors" />
+                        <span asp-validation-for="NextOfKinPhoneNumber" class="text-red-500 text-xs mt-1 block"></span>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address <span class="text-gray-400 font-normal">(Optional)</span></label>
+                        <input asp-for="NextOfKinEmail" type="email" placeholder="email@example.com"
+                               class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Relationship <span class="text-red-500">*</span></label>
+                        <select asp-for="NextOfKinRelationship" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors bg-white">
+                            <option value="">-- Select Relationship --</option>
+                            <option value="1">Parent</option>
+                            <option value="2">Sibling</option>
+                            <option value="3">In-law</option>
+                            <option value="4">Spouse</option>
+                            <option value="5">Friend</option>
+                            <option value="6">Other</option>
+                        </select>
+                        <span asp-validation-for="NextOfKinRelationship" class="text-red-500 text-xs mt-1 block"></span>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Residential Address <span class="text-red-500">*</span></label>
+                        <input asp-for="NextOfKinResidentialAddress" type="text" placeholder="Next of kin residential address"
+                               class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors" />
+                        <span asp-validation-for="NextOfKinResidentialAddress" class="text-red-500 text-xs mt-1 block"></span>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Office Address <span class="text-gray-400 font-normal">(Optional)</span></label>
+                        <input asp-for="NextOfKinOfficeAddress" type="text" placeholder="Next of kin office address"
+                               class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1E403F] transition-colors" />
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ── Submit ── -->
+            <div class="flex justify-center">
+                <button type="submit"
+                        class="bg-[#1E403F] text-white px-12 py-4 rounded-xl text-lg font-semibold hover:bg-[#163332] transition-colors shadow-lg shadow-[#1E403F]/20 w-full md:w-auto">
+                    Complete Registration
+                </button>
+            </div>
+
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

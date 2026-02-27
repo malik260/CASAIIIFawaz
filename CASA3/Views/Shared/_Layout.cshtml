@@ -15,7 +15,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
 
     <!-- Tailwind -->
@@ -141,7 +141,7 @@
 
                 <!-- Logo -->
                 <a asp-controller="Home" asp-action="Index" class="flex items-center">
-                    <img src="~/images/logo.png" alt="CASA III REALTY" class="h-10 md:h-12">
+                    <img src="~/images/logo.png" alt="CASA III REALTY" class="h-11 md:h-13 rounded-lg">
                 </a>
 
                 <!-- Desktop Nav -->
@@ -164,6 +164,7 @@
                     <a asp-controller="Home" asp-action="Blog" class="text-gray-700 hover:text-gray-900 transition-colors">Blog</a>
                     <a href="/Become-A-Vendor" class="text-gray-700 hover:text-gray-900 transition-colors">Become A Vendor</a>
                     <a asp-controller="Home" asp-action="BecomeAnAffiliate" class="text-gray-700 hover:text-gray-900 transition-colors">Become An Affiliate</a>
+                    <a asp-controller="Client" asp-action="Register" class="text-gray-700 hover:text-gray-900 transition-colors">Become A Client</a>
                     <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="/Admin" class="text-gray-700 hover:text-gray-900 transition-colors">Admin</a>
                 </nav>
 
@@ -188,6 +189,7 @@
                 <a asp-controller="Home" asp-action="Blog" class="block text-gray-800">Blog</a>
                 <a href="/Become-A-Vendor" class="block text-gray-800">Become A Vendor</a>
                 <a asp-controller="Home" asp-action="BecomeAnAffiliate" class="block text-gray-800">Become An Affiliate</a>
+                <a asp-controller="Client" asp-action="Register" class="block text-gray-800">Become A Clients</a>
                 <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="/Admin" class="block text-gray-800">Admin</a>
             </div>
         </div>
@@ -217,10 +219,10 @@
                     <div class="flex items-center justify-between mb-12">
                         <!-- Social Icons -->
                         <div class="flex items-center gap-4 text-2xl text-gray-800">
-                            <a href="#" class="hover:text-gray-600 transition"><i class="fa fa-facebook"></i></a>
-                            <a href="#" class="hover:text-gray-600 transition"><i class="fa fa-instagram"></i></a>
-                            <a href="#" class="hover:text-gray-600 transition"><i class="fa fa-linkedin"></i></a>
-                            <a href="#" class="hover:text-gray-600 transition"><i class="fa fa-twitter"></i></a>
+                            <a href="https://web.facebook.com/profile.php?id=61587713982691" target="_blank" rel="noopener noreferrer" class="hover:text-gray-600 transition"><i class="fa fa-facebook"></i></a>
+                            <a href="https://www.instagram.com/thecasaiii?igsh=MW40N2o4OGgzaGttOQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" class="hover:text-gray-600 transition"><i class="fa fa-instagram"></i></a>
+                            <a href="https://www.linkedin.com/company/casaiii" target="_blank" rel="noopener noreferrer" class="hover:text-gray-600 transition"><i class="fa fa-linkedin"></i></a>
+                            <a href="https://x.com/thecasaiii" target="_blank" rel="noopener noreferrer" class="hover:text-gray-600 transition"><i class="fa fa-twitter"></i></a>
                         </div>
 
                         <!-- Vertical Divider -->
@@ -261,7 +263,7 @@
 
                 <!-- Mobile Layout -->
                 <div class="flex flex-col gap-3 md:hidden">
-                    <img src="~/images/logo.png" class="h-8 self-start">
+                    <img src="~/images/logo.png" class="h-12 self-start rounded-lg">
                     <p class="text-center font-bold text-gray-400 hover:text-black transition-colors duration-200 cursor-default">
                         © No 47 ML Wushishi Crescent Utako Abuja, Adjacent CBN Quarters
                     </p>
@@ -269,7 +271,7 @@
 
                 <!-- Desktop Layout -->
                 <div class="hidden md:flex items-center relative">
-                    <img src="~/images/logo.png" class="h-8">
+                    <img src="~/images/logo.png" class="h-12 rounded-lg">
 
                     <p class="absolute left-1/2 -translate-x-1/2 text-center font-bold text-gray-400 hover:text-black transition-colors duration-200 cursor-default">
                         © No 47 ML Wushishi Crescent Utako Abuja, Adjacent CBN Quarters

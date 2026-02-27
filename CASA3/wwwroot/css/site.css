@@ -1,4 +1,13 @@
-﻿/* Team Member Card Styling */
+/* ==================== GLOBAL FONT ==================== */
+:root {
+    --bs-body-font-family: 'Libre Baskerville', Baskerville, Georgia, serif;
+}
+
+body, input, button, select, textarea {
+    font-family: 'Libre Baskerville', Baskerville, Georgia, serif;
+}
+
+/* Team Member Card Styling */
 .team-member-card {
     position: relative;
     transition: all 0.3s ease;

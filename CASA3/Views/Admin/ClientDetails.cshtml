@@ -1,0 +1,171 @@
+@model Core.ViewModels.ClientVM
+@{
+    ViewData["Title"] = "Client Details";
+    var statusClass = Model.Status == Core.Enum.RegistrationStatus.Approved
+        ? "bg-green-100 text-green-800 border-green-200"
+        : Model.Status == Core.Enum.RegistrationStatus.Rejected
+            ? "bg-red-100 text-red-800 border-red-200"
+            : "bg-yellow-100 text-yellow-800 border-yellow-200";
+}
+
+<section class="p-8 max-w-5xl mx-auto">
+
+    <!-- Header -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+        <div>
+            <a asp-controller="Admin" asp-action="Clients" class="text-[#1E403F] hover:underline text-sm flex items-center gap-1 mb-2">
+                <i class="fa fa-arrow-left text-xs"></i> Back to Clients
+            </a>
+            <h1 class="text-2xl font-bold text-gray-800">@Model.FullName</h1>
+            <p class="text-gray-500 text-sm mt-1">Registered @Model.CreatedAt.ToString("dd MMMM yyyy, hh:mm tt")</p>
+        </div>
+        <div class="flex gap-3">
+            <span class="px-4 py-2 rounded-full text-sm font-semibold border @statusClass">@Model.Status</span>
+            <a asp-controller="Admin" asp-action="EditClient" asp-route-id="@Model.Id"
+               class="bg-[#1E403F] text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-[#163332] transition-colors">
+                <i class="fa fa-edit mr-1"></i> Edit
+            </a>
+        </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+        <!-- Personal Info -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+            <h2 class="text-base font-bold text-[#1E403F] mb-4 pb-3 border-b border-gray-100 flex items-center gap-2">
+                <i class="fa fa-user text-[#b39359]"></i> Personal Information
+            </h2>
+            <dl class="space-y-3 text-sm">
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">Client Type</dt>
+                    <dd class="font-semibold text-gray-800">@Model.ClientType</dd>
+                </div>
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">Full Name</dt>
+                    <dd class="font-semibold text-gray-800">@Model.FullName</dd>
+                </div>
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">Email</dt>
+                    <dd class="font-semibold text-gray-800">@Model.Email</dd>
+                </div>
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">Phone</dt>
+                    <dd class="font-semibold text-gray-800">@Model.PhoneNumber</dd>
+                </div>
+                @if (Model.DateOfBirthOrIncorporation.HasValue)
+                {
+                    <div class="flex justify-between">
+                        <dt class="text-gray-500">DOB / Incorporation</dt>
+                        <dd class="font-semibold text-gray-800">@Model.DateOfBirthOrIncorporation.Value.ToString("dd MMM yyyy")</dd>
+                    </div>
+                }
+                @if (Model.MeansOfID.HasValue)
+                {
+                    <div class="flex justify-between">
+                        <dt class="text-gray-500">Means of ID</dt>
+                        <dd class="font-semibold text-gray-800">@Model.MeansOfID</dd>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.IDFilePath))
+                {
+                    <div class="flex justify-between items-center">
+                        <dt class="text-gray-500">ID Document</dt>
+                        <dd>
+                            <a href="@Model.IDFilePath" target="_blank"
+                               class="text-[#1E403F] hover:underline font-medium flex items-center gap-1">
+                                <i class="fa fa-file text-xs"></i> View Document
+                            </a>
+                        </dd>
+                    </div>
+                }
+            </dl>
+        </div>
+
+        <!-- Address -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+            <h2 class="text-base font-bold text-[#1E403F] mb-4 pb-3 border-b border-gray-100 flex items-center gap-2">
+                <i class="fa fa-map-marker text-[#b39359]"></i> Address Information
+            </h2>
+            <dl class="space-y-3 text-sm">
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">Address Type</dt>
+                    <dd class="font-semibold text-gray-800">@Model.AddressType</dd>
+                </div>
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">Address Line 1</dt>
+                    <dd class="font-semibold text-gray-800 text-right max-w-[60%]">@Model.AddressLine1</dd>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.AddressLine2))
+                {
+                    <div class="flex justify-between">
+                        <dt class="text-gray-500">Address Line 2</dt>
+                        <dd class="font-semibold text-gray-800 text-right max-w-[60%]">@Model.AddressLine2</dd>
+                    </div>
+                }
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">City</dt>
+                    <dd class="font-semibold text-gray-800">@Model.City</dd>
+                </div>
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">State</dt>
+                    <dd class="font-semibold text-gray-800">@Model.State</dd>
+                </div>
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">Country</dt>
+                    <dd class="font-semibold text-gray-800">@Model.Country</dd>
+                </div>
+            </dl>
+        </div>
+
+        <!-- Next of Kin -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:col-span-2">
+            <h2 class="text-base font-bold text-[#1E403F] mb-4 pb-3 border-b border-gray-100 flex items-center gap-2">
+                <i class="fa fa-users text-[#b39359]"></i> Next of Kin
+            </h2>
+            <div class="grid md:grid-cols-2 gap-x-12 gap-y-3 text-sm">
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">Full Name</dt>
+                    <dd class="font-semibold text-gray-800">@Model.NextOfKinFirstName @Model.NextOfKinOtherNames @Model.NextOfKinLastName</dd>
+                </div>
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">Relationship</dt>
+                    <dd class="font-semibold text-gray-800">@Model.NextOfKinRelationship</dd>
+                </div>
+                <div class="flex justify-between">
+                    <dt class="text-gray-500">Phone</dt>
+                    <dd class="font-semibold text-gray-800">@Model.NextOfKinPhoneNumber</dd>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.NextOfKinEmail))
+                {
+                    <div class="flex justify-between">
+                        <dt class="text-gray-500">Email</dt>
+                        <dd class="font-semibold text-gray-800">@Model.NextOfKinEmail</dd>
+                    </div>
+                }
+                <div class="flex justify-between md:col-span-2">
+                    <dt class="text-gray-500">Residential Address</dt>
+                    <dd class="font-semibold text-gray-800 text-right">@Model.NextOfKinResidentialAddress</dd>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.NextOfKinOfficeAddress))
+                {
+                    <div class="flex justify-between md:col-span-2">
+                        <dt class="text-gray-500">Office Address</dt>
+                        <dd class="font-semibold text-gray-800 text-right">@Model.NextOfKinOfficeAddress</dd>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Admin Notes -->
+        @if (!string.IsNullOrEmpty(Model.Notes))
+        {
+            <div class="bg-amber-50 rounded-2xl border border-amber-100 p-6 md:col-span-2">
+                <h2 class="text-base font-bold text-amber-800 mb-2 flex items-center gap-2">
+                    <i class="fa fa-sticky-note text-amber-500"></i> Admin Notes
+                </h2>
+                <p class="text-amber-900 text-sm leading-relaxed">@Model.Notes</p>
+            </div>
+        }
+
+    </div>
+</section>

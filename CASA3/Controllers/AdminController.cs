@@ -17,9 +17,10 @@ namespace CASA3.Controllers
         private readonly IAffiliateService _affiliateService;
         private readonly IContactUsService _contactUsService;
         private readonly INewsletterSubscriptionService _newsletterSubscriptionService;
+        private readonly IClientService _clientService;
         private readonly IWebHostEnvironment _env;
 
-        public AdminController(IStaffService staffService, IProjectService projectService, IMediaService mediaService, IVendorService vendorService, IAffiliateService affiliateService, IContactUsService contactUsService, INewsletterSubscriptionService newsletterSubscriptionService, IWebHostEnvironment env)
+        public AdminController(IStaffService staffService, IProjectService projectService, IMediaService mediaService, IVendorService vendorService, IAffiliateService affiliateService, IContactUsService contactUsService, INewsletterSubscriptionService newsletterSubscriptionService, IClientService clientService, IWebHostEnvironment env)
         {
             _staffService = staffService;
             _projectService = projectService;
@@ -28,6 +29,7 @@ namespace CASA3.Controllers
             _affiliateService = affiliateService;
             _contactUsService = contactUsService;
             _newsletterSubscriptionService = newsletterSubscriptionService;
+            _clientService = clientService;
             _env = env;
         }
 
@@ -40,6 +42,7 @@ namespace CASA3.Controllers
             var affiliates = _affiliateService.GetAllRegisteredAffiliatesService();
             var contacts = _contactUsService.GetAllContactUsService();
             var newsletters = _newsletterSubscriptionService.GetAllNewsletterSubscriptionsService();
+            var clients = _clientService.GetAllClientsService();
             var model = new DashboardVM
             {
                 StaffCount = staff?.Count ?? 0,
@@ -47,7 +50,8 @@ namespace CASA3.Controllers
                 VendorCount = vendors?.Count ?? 0,
                 AffiliateCount = affiliates?.Count ?? 0,
                 ContactCount = contacts?.Count ?? 0,
-                NewsletterCount = newsletters?.Count ?? 0
+                NewsletterCount = newsletters?.Count ?? 0,
+                ClientCount = clients?.Count ?? 0
             };
             return View(model);
         }
@@ -723,6 +727,157 @@ namespace CASA3.Controllers
             var result = await _affiliateService.DeleteAffiliateByIdService(id);
             TempData["AffiliateMessage"] = result.Message;
             return RedirectToAction(nameof(Affiliates));
+        }
+
+        // ───────── Client Management ─────────
+
+        public IActionResult Clients()
+        {
+            var list = _clientService.GetAllClientsService();
+            ViewData["Title"] = "Client Management";
+            return View(list);
+        }
+
+        [HttpGet]
+        public IActionResult AddClient()
+        {
+            ViewData["Title"] = "Add Client";
+            return View(new Core.DTOs.ClientRegistrationDto());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddClient(Core.DTOs.ClientRegistrationDto model, IFormFile? idFile)
+        {
+            if (idFile != null && idFile.Length > 0)
+            {
+                var uploadsDir = Path.Combine(_env.WebRootPath, "uploads", "clients");
+                if (!Directory.Exists(uploadsDir))
+                    Directory.CreateDirectory(uploadsDir);
+                var ext = Path.GetExtension(idFile.FileName).ToLowerInvariant();
+                var fileName = $"{Guid.NewGuid()}{ext}";
+                var filePath = Path.Combine(uploadsDir, fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                    await idFile.CopyToAsync(stream);
+                model.IDFilePath = $"/uploads/clients/{fileName}";
+            }
+
+            var result = await _clientService.CreateClientService(model);
+            if (result.success)
+            {
+                TempData["ClientMessage"] = result.Message;
+                return RedirectToAction(nameof(Clients));
+            }
+            ModelState.AddModelError(string.Empty, result.Message);
+            ViewData["Title"] = "Add Client";
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ClientDetails(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return RedirectToAction(nameof(Clients));
+            var client = await _clientService.GetClientByIdMain(id);
+            if (client == null)
+            {
+                TempData["ClientError"] = "Client not found.";
+                return RedirectToAction(nameof(Clients));
+            }
+            ViewData["Title"] = "Client Details";
+            return View(client);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditClient(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return RedirectToAction(nameof(Clients));
+            var client = await _clientService.GetClientByIdMain(id);
+            if (client == null)
+            {
+                TempData["ClientError"] = "Client not found.";
+                return RedirectToAction(nameof(Clients));
+            }
+            var model = new Core.DTOs.ClientUpdateDto
+            {
+                Id = client.Id,
+                ClientType = client.ClientType,
+                FullName = client.FullName,
+                PhoneNumber = client.PhoneNumber,
+                Email = client.Email,
+                AddressType = client.AddressType,
+                AddressLine1 = client.AddressLine1,
+                AddressLine2 = client.AddressLine2,
+                Country = client.Country,
+                State = client.State,
+                City = client.City,
+                DateOfBirthOrIncorporation = client.DateOfBirthOrIncorporation,
+                MeansOfID = client.MeansOfID,
+                IDFilePath = client.IDFilePath,
+                NextOfKinFirstName = client.NextOfKinFirstName,
+                NextOfKinLastName = client.NextOfKinLastName,
+                NextOfKinOtherNames = client.NextOfKinOtherNames,
+                NextOfKinPhoneNumber = client.NextOfKinPhoneNumber,
+                NextOfKinEmail = client.NextOfKinEmail,
+                NextOfKinRelationship = client.NextOfKinRelationship,
+                NextOfKinResidentialAddress = client.NextOfKinResidentialAddress,
+                NextOfKinOfficeAddress = client.NextOfKinOfficeAddress,
+                Status = client.Status,
+                Notes = client.Notes,
+            };
+            ViewData["Title"] = "Edit Client";
+            ViewData["ClientId"] = id;
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditClient(string id, Core.DTOs.ClientUpdateDto model, IFormFile? idFile)
+        {
+            if (string.IsNullOrEmpty(id))
+                return RedirectToAction(nameof(Clients));
+            model.Id = id;
+
+            if (idFile != null && idFile.Length > 0)
+            {
+                var uploadsDir = Path.Combine(_env.WebRootPath, "uploads", "clients");
+                if (!Directory.Exists(uploadsDir))
+                    Directory.CreateDirectory(uploadsDir);
+                var ext = Path.GetExtension(idFile.FileName).ToLowerInvariant();
+                var fileName = $"{Guid.NewGuid()}{ext}";
+                var filePath = Path.Combine(uploadsDir, fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                    await idFile.CopyToAsync(stream);
+                model.IDFilePath = $"/uploads/clients/{fileName}";
+            }
+            else
+            {
+                var current = await _clientService.GetClientByIdMain(id);
+                if (current != null)
+                    model.IDFilePath = current.IDFilePath;
+            }
+
+            var result = await _clientService.UpdateClientService(model);
+            if (result.success)
+            {
+                TempData["ClientMessage"] = result.Message;
+                return RedirectToAction(nameof(Clients));
+            }
+            ModelState.AddModelError(string.Empty, result.Message);
+            ViewData["ClientId"] = id;
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteClient(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return RedirectToAction(nameof(Clients));
+            var result = await _clientService.DeleteClientByIdService(id);
+            TempData["ClientMessage"] = result.Message;
+            return RedirectToAction(nameof(Clients));
         }
 
         /// <summary>

@@ -26,5 +26,6 @@ namespace Core.DB
         public DbSet<Carousel> Carousels { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<BlogView> BlogViews { get; set; }
+        public DbSet<Client> Clients { get; set; }
     }
 }

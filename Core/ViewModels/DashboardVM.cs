@@ -8,5 +8,6 @@ namespace Core.ViewModels
         public int AffiliateCount { get; set; }
         public int ContactCount { get; set; }
         public int NewsletterCount { get; set; }
+        public int ClientCount { get; set; }
     }
 }

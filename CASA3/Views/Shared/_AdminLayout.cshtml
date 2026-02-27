@@ -10,6 +10,11 @@
     <meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
     <title>@ViewData["Title"] - CASAIII</title>
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/font-awesome.min.css" />
@@ -225,7 +230,7 @@
             <!-- Logo -->
 
             <div class="header-left">
-                <a asp-action="Index" asp-controller="Admin" class="logo"><img src="~/images/logo.png" width="40" height="40" alt=""></a>
+                <a asp-action="Index" asp-controller="Admin" class="logo"><img src="~/images/logo.png" width="48" height="48" alt="CASA III" style="border-radius:8px;"></a>
             </div>
             <!-- /Logo -->
 
@@ -290,6 +295,8 @@
                         <li><a asp-action="Vendors" asp-controller="Admin"><i class="fa fa-truck btnYellow"></i> <span>Vendor Management</span></a></li>
                         <li class="menu-title"></li>
                         <li><a asp-action="Affiliates" asp-controller="Admin"><i class="fa fa-user-plus btnYellow"></i> <span>Affiliate Management</span></a></li>
+                        <li class="menu-title"></li>
+                        <li><a asp-action="Clients" asp-controller="Admin"><i class="fa fa-id-card-o btnYellow"></i> <span>Client Management</span></a></li>
                         <li class="menu-title"></li>
                         <li><a asp-action="Contacts" asp-controller="Admin"><i class="fa fa-envelope btnYellow"></i> <span>Contact Us</span></a></li>
                         <li class="menu-title"></li>
