@@ -317,6 +317,52 @@ namespace CASA3.Controllers
             return RedirectToAction(nameof(Projects));
         }
 
+        // ───────── Project Gallery Images ─────────
+
+        [HttpPost]
+        public async Task<IActionResult> AddGalleryImage(string projectId, IFormFile imageFile, string? caption)
+        {
+            if (string.IsNullOrEmpty(projectId) || imageFile == null || imageFile.Length == 0)
+                return Json(new { success = false, message = "Project ID and image file are required." });
+
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+            var ext = Path.GetExtension(imageFile.FileName).ToLowerInvariant();
+            if (!allowedExtensions.Contains(ext))
+                return Json(new { success = false, message = "Invalid image type. Only JPG, PNG, GIF, WebP allowed." });
+
+            if (imageFile.Length > 10 * 1024 * 1024)
+                return Json(new { success = false, message = "Image size must be 10MB or less." });
+
+            var imageUrl = await _cloudinaryService.UploadImageAsync(imageFile, "casa3/project-gallery");
+            if (string.IsNullOrEmpty(imageUrl))
+                return Json(new { success = false, message = "Failed to upload image." });
+
+            var result = await _projectService.AddGalleryImageAsync(projectId, imageUrl, caption);
+            return Json(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteGalleryImage(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return Json(new { success = false, message = "Image ID is required." });
+
+            var result = await _projectService.DeleteGalleryImageAsync(id);
+            if (result.success && result.Data is string imageUrl)
+                await _cloudinaryService.DeleteAsync(imageUrl);
+
+            return Json(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetGalleryImages(string projectId)
+        {
+            if (string.IsNullOrEmpty(projectId))
+                return Json(new List<object>());
+            var images = await _projectService.GetGalleryImagesAsync(projectId);
+            return Json(images);
+        }
+
         public IActionResult ProjectUnits(string projectId)
         {
             if (string.IsNullOrEmpty(projectId))

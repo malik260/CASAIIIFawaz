@@ -137,3 +137,92 @@
     </div>
 </section>
 }
+
+<!-- Project Gallery -->
+@if (Model?.GalleryImages != null && Model.GalleryImages.Any())
+{
+<section class="py-16 md:py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <h2 class="text-3xl md:text-4xl font-bold mb-10 text-center" style="color: #4A4A4A;">Gallery</h2>
+
+        <!-- Masonry-style responsive grid -->
+        <div class="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+            @foreach (var img in Model.GalleryImages)
+            {
+                <div class="break-inside-avoid overflow-hidden group cursor-pointer"
+                     onclick="openLightbox('@img.ImageUrl', '@(img.Caption ?? string.Empty)')">
+                    <img src="@img.ImageUrl"
+                         alt="@(img.Caption ?? Model.Name)"
+                         class="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105" />
+                    @if (!string.IsNullOrEmpty(img.Caption))
+                    {
+                        <p class="text-sm text-gray-500 mt-1 px-1">@img.Caption</p>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Lightbox -->
+<div id="galleryLightbox"
+     class="fixed inset-0 z-50 hidden bg-black/90 flex items-center justify-center p-4"
+     onclick="closeLightbox()">
+    <button class="absolute top-5 right-6 text-white text-4xl font-light leading-none hover:text-gray-300"
+            onclick="closeLightbox()">&times;</button>
+    <button id="lightboxPrev"
+            class="absolute left-4 top-1/2 -translate-y-1/2 text-white text-5xl font-light leading-none hover:text-gray-300 px-3"
+            onclick="event.stopPropagation(); shiftLightbox(-1)">&#8249;</button>
+    <button id="lightboxNext"
+            class="absolute right-4 top-1/2 -translate-y-1/2 text-white text-5xl font-light leading-none hover:text-gray-300 px-3"
+            onclick="event.stopPropagation(); shiftLightbox(1)">&#8250;</button>
+    <div class="max-w-5xl w-full text-center" onclick="event.stopPropagation()">
+        <img id="lightboxImg" src="" alt="" class="max-h-[80vh] mx-auto object-contain" />
+        <p id="lightboxCaption" class="text-gray-300 text-sm mt-3"></p>
+    </div>
+</div>
+
+<script>
+    const galleryImages = [
+        @foreach (var img in Model.GalleryImages)
+        {
+            <text>{ url: '@img.ImageUrl', caption: '@(img.Caption?.Replace("'", "\\'") ?? string.Empty)' },</text>
+        }
+    ];
+    let lightboxIndex = 0;
+
+    function openLightbox(url, caption) {
+        lightboxIndex = galleryImages.findIndex(i => i.url === url);
+        showLightboxAt(lightboxIndex);
+        document.getElementById('galleryLightbox').classList.remove('hidden');
+        document.getElementById('galleryLightbox').classList.add('flex');
+    }
+
+    function closeLightbox() {
+        document.getElementById('galleryLightbox').classList.add('hidden');
+        document.getElementById('galleryLightbox').classList.remove('flex');
+    }
+
+    function shiftLightbox(dir) {
+        lightboxIndex = (lightboxIndex + dir + galleryImages.length) % galleryImages.length;
+        showLightboxAt(lightboxIndex);
+    }
+
+    function showLightboxAt(index) {
+        const item = galleryImages[index];
+        document.getElementById('lightboxImg').src = item.url;
+        document.getElementById('lightboxImg').alt = item.caption;
+        document.getElementById('lightboxCaption').textContent = item.caption;
+        document.getElementById('lightboxPrev').style.display = galleryImages.length > 1 ? 'block' : 'none';
+        document.getElementById('lightboxNext').style.display = galleryImages.length > 1 ? 'block' : 'none';
+    }
+
+    document.addEventListener('keydown', e => {
+        const lb = document.getElementById('galleryLightbox');
+        if (lb.classList.contains('hidden')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') shiftLightbox(-1);
+        if (e.key === 'ArrowRight') shiftLightbox(1);
+    });
+</script>
+}

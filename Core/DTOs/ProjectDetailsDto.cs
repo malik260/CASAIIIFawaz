@@ -8,5 +8,6 @@ namespace Core.DTOs
         public string? Description { get; set; }
         public string? BrochurePdfUrl { get; set; }
         public List<BuildingDesignDto> BuildingDesigns { get; set; } = new();
+        public List<ProjectGalleryImageDto> GalleryImages { get; set; } = new();
     }
 }

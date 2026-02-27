@@ -15,5 +15,10 @@ namespace Logic.IServices
         List<BuildingDesignDto> GetBuildingDesignsByProjectId(string projectId);
         Task<Core.ViewModels.HeplerResponseVM> UpdateBuildingDesignAsync(string id, BuildingDesignCreateDto dto);
         Task<Core.ViewModels.HeplerResponseVM> DeleteBuildingDesignAsync(string id);
+
+        // Gallery images
+        Task<List<ProjectGalleryImageDto>> GetGalleryImagesAsync(string projectId);
+        Task<Core.ViewModels.HeplerResponseVM> AddGalleryImageAsync(string projectId, string imageUrl, string? caption);
+        Task<Core.ViewModels.HeplerResponseVM> DeleteGalleryImageAsync(string imageId);
     }
 }

@@ -14,5 +14,6 @@ namespace Core.Model
         public bool IsFeatured { get; set; }
         public ProjectCategory? Category { get; set; }
         public virtual ICollection<BuildingDesign> BuildingDesigns { get; set; } = new List<BuildingDesign>();
+        public virtual ICollection<ProjectGalleryImage> GalleryImages { get; set; } = new List<ProjectGalleryImage>();
     }
 }

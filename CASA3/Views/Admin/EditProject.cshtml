@@ -83,6 +83,138 @@
     </form>
 </section>
 
+@if (!string.IsNullOrEmpty(projectId))
+{
+<!-- Gallery Images -->
+<section class="p-8 max-w-4xl mt-4 border-t border-gray-200">
+    <h2 class="text-xl font-bold text-gray-800 mb-2">Gallery Images</h2>
+    <p class="text-sm text-gray-500 mb-6">These appear as a photo gallery on the public project detail page, below the Download Brochure section.</p>
+
+    <!-- Upload form -->
+    <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl p-6 mb-6">
+        <h3 class="text-sm font-semibold text-gray-700 mb-3">Add New Image</h3>
+        <div class="flex flex-col sm:flex-row gap-3">
+            <input type="file" id="galleryFileInput" accept=".jpg,.jpeg,.png,.gif,.webp"
+                   class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#1E403F] file:text-white file:font-medium hover:file:bg-[#163332]" />
+            <input type="text" id="galleryCaptionInput" placeholder="Caption (optional)"
+                   class="border-2 border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#b39359] focus:border-[#b39359] w-full sm:w-64" />
+            <button onclick="uploadGalleryImage()" id="galleryUploadBtn"
+                    class="bg-[#b39359] text-white px-5 py-2 rounded-lg font-semibold hover:bg-[#9a7d47] transition-colors whitespace-nowrap text-sm">
+                Upload Image
+            </button>
+        </div>
+        <p id="galleryUploadMsg" class="text-sm mt-2 hidden"></p>
+    </div>
+
+    <!-- Gallery grid -->
+    <div id="galleryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <div id="galleryLoading" class="col-span-full text-center py-6 text-gray-400 text-sm">Loading images...</div>
+    </div>
+</section>
+}
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    @if (!string.IsNullOrEmpty(projectId))
+    {
+    <script>
+        const projectId = '@projectId';
+        const antiForgeryToken = document.querySelector('input[name="__RequestVerificationToken"]')?.value ?? '';
+
+        async function loadGallery() {
+            const res = await fetch(`/Admin/GetGalleryImages?projectId=${projectId}`);
+            const images = await res.json();
+            renderGallery(images);
+        }
+
+        function renderGallery(images) {
+            const grid = document.getElementById('galleryGrid');
+            if (!images || images.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-sm text-gray-400 py-4">No gallery images yet. Upload some above.</p>';
+                return;
+            }
+            grid.innerHTML = images.map(img => `
+                <div id="gallery-item-${img.id}" class="relative group rounded-xl overflow-hidden shadow border border-gray-100">
+                    <img src="${img.imageUrl}" alt="${img.caption ?? ''}" class="w-full h-40 object-cover" />
+                    ${img.caption ? `<p class="text-xs text-gray-600 px-2 py-1 truncate">${img.caption}</p>` : ''}
+                    <button onclick="deleteGalleryImage('${img.id}')"
+                            class="absolute top-2 right-2 bg-red-600 text-white rounded-full w-7 h-7 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-xs font-bold hover:bg-red-700">
+                        ✕
+                    </button>
+                </div>`).join('');
+        }
+
+        async function uploadGalleryImage() {
+            const fileInput = document.getElementById('galleryFileInput');
+            const captionInput = document.getElementById('galleryCaptionInput');
+            const btn = document.getElementById('galleryUploadBtn');
+            const msg = document.getElementById('galleryUploadMsg');
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                showGalleryMsg('Please select an image file.', false);
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('projectId', projectId);
+            formData.append('imageFile', fileInput.files[0]);
+            formData.append('caption', captionInput.value);
+            formData.append('__RequestVerificationToken', antiForgeryToken);
+
+            btn.disabled = true;
+            btn.textContent = 'Uploading…';
+            msg.classList.add('hidden');
+
+            try {
+                const res = await fetch('/Admin/AddGalleryImage', { method: 'POST', body: formData });
+                const data = await res.json();
+                if (data.success) {
+                    showGalleryMsg('Image uploaded successfully!', true);
+                    fileInput.value = '';
+                    captionInput.value = '';
+                    loadGallery();
+                } else {
+                    showGalleryMsg(data.message ?? 'Upload failed.', false);
+                }
+            } catch {
+                showGalleryMsg('An error occurred. Please try again.', false);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Upload Image';
+            }
+        }
+
+        async function deleteGalleryImage(imageId) {
+            if (!confirm('Remove this image from the gallery?')) return;
+
+            const formData = new FormData();
+            formData.append('id', imageId);
+            formData.append('__RequestVerificationToken', antiForgeryToken);
+
+            try {
+                const res = await fetch('/Admin/DeleteGalleryImage', { method: 'POST', body: formData });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById(`gallery-item-${imageId}`)?.remove();
+                    const grid = document.getElementById('galleryGrid');
+                    if (grid.children.length === 0) {
+                        grid.innerHTML = '<p class="col-span-full text-sm text-gray-400 py-4">No gallery images yet. Upload some above.</p>';
+                    }
+                } else {
+                    alert(data.message ?? 'Failed to delete image.');
+                }
+            } catch {
+                alert('An error occurred. Please try again.');
+            }
+        }
+
+        function showGalleryMsg(text, success) {
+            const msg = document.getElementById('galleryUploadMsg');
+            msg.textContent = text;
+            msg.className = `text-sm mt-2 ${success ? 'text-green-600' : 'text-red-600'}`;
+        }
+
+        loadGallery();
+    </script>
+    }
 }

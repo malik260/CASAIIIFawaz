@@ -143,6 +143,7 @@ namespace Logic.Services
             {
                 var project = await _context.Projects
                     .Include(p => p.BuildingDesigns)
+                    .Include(p => p.GalleryImages)
                     .FirstOrDefaultAsync(p => (p.Id == id || p.Slug == id) && !p.IsDeleted)
                     .ConfigureAwait(false);
                 if (project == null) return null;
@@ -153,6 +154,13 @@ namespace Logic.Services
                     .Select(MapBuildingDesignToDto)
                     .ToList();
 
+                var gallery = project.GalleryImages
+                    .Where(g => !g.IsDeleted)
+                    .OrderBy(g => g.DisplayOrder)
+                    .ThenBy(g => g.CreatedAt)
+                    .Select(MapGalleryImageToDto)
+                    .ToList();
+
                 return new ProjectDetailsDto
                 {
                     Id = project.Id,
@@ -160,7 +168,8 @@ namespace Logic.Services
                     HeroImageUrl = project.HeroImageUrl,
                     Description = project.Description,
                     BrochurePdfUrl = project.BrochurePdfUrl,
-                    BuildingDesigns = designs
+                    BuildingDesigns = designs,
+                    GalleryImages = gallery
                 };
             }
             catch (Exception ex)
@@ -381,6 +390,120 @@ namespace Logic.Services
                 BrochurePdfUrl = b.BrochurePdfUrl,
                 FloorPlanPdfUrl = b.FloorPlanPdfUrl
             };
+        }
+
+        private static ProjectGalleryImageDto MapGalleryImageToDto(ProjectGalleryImage g)
+        {
+            return new ProjectGalleryImageDto
+            {
+                Id = g.Id,
+                ProjectId = g.ProjectId,
+                ImageUrl = g.ImageUrl,
+                Caption = g.Caption,
+                DisplayOrder = g.DisplayOrder
+            };
+        }
+
+        public async Task<List<ProjectGalleryImageDto>> GetGalleryImagesAsync(string projectId)
+        {
+            try
+            {
+                return await _context.ProjectGalleryImages
+                    .Where(g => g.ProjectId == projectId && !g.IsDeleted)
+                    .OrderBy(g => g.DisplayOrder)
+                    .ThenBy(g => g.CreatedAt)
+                    .Select(g => MapGalleryImageToDto(g))
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _log.LogError(MethodBase.GetCurrentMethod()!, $"{ex?.Message} {ex?.InnerException?.Message}");
+                return new List<ProjectGalleryImageDto>();
+            }
+        }
+
+        public async Task<HeplerResponseVM> AddGalleryImageAsync(string projectId, string imageUrl, string? caption)
+        {
+            var response = new HeplerResponseVM();
+            try
+            {
+                if (string.IsNullOrEmpty(projectId) || string.IsNullOrEmpty(imageUrl))
+                {
+                    response.Message = "Invalid parameters.";
+                    return response;
+                }
+
+                var project = await _context.Projects
+                    .FirstOrDefaultAsync(p => p.Id == projectId && !p.IsDeleted);
+                if (project == null)
+                {
+                    response.Message = "Project not found.";
+                    return response;
+                }
+
+                var maxOrder = await _context.ProjectGalleryImages
+                    .Where(g => g.ProjectId == projectId && !g.IsDeleted)
+                    .Select(g => (int?)g.DisplayOrder)
+                    .MaxAsync() ?? -1;
+
+                var image = new ProjectGalleryImage
+                {
+                    ProjectId = projectId,
+                    ImageUrl = imageUrl,
+                    Caption = string.IsNullOrWhiteSpace(caption) ? null : caption.Trim(),
+                    DisplayOrder = maxOrder + 1
+                };
+
+                await _context.ProjectGalleryImages.AddAsync(image);
+                await _context.SaveChangesAsync();
+
+                response.success = true;
+                response.Message = "Image added successfully.";
+                response.Data = MapGalleryImageToDto(image);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _log.LogError(MethodBase.GetCurrentMethod()!, $"{ex?.Message} {ex?.InnerException?.Message}");
+                response.Message = "An error occurred while adding the image.";
+                return response;
+            }
+        }
+
+        public async Task<HeplerResponseVM> DeleteGalleryImageAsync(string imageId)
+        {
+            var response = new HeplerResponseVM();
+            try
+            {
+                if (string.IsNullOrEmpty(imageId))
+                {
+                    response.Message = "Invalid parameter.";
+                    return response;
+                }
+
+                var image = await _context.ProjectGalleryImages
+                    .FirstOrDefaultAsync(g => g.Id == imageId && !g.IsDeleted);
+                if (image == null)
+                {
+                    response.Message = "Image not found.";
+                    return response;
+                }
+
+                image.IsDeleted = true;
+                image.UpdatedAt = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+
+                response.success = true;
+                response.Message = "Image deleted successfully.";
+                response.Data = image.ImageUrl;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _log.LogError(MethodBase.GetCurrentMethod()!, $"{ex?.Message} {ex?.InnerException?.Message}");
+                response.Message = "An error occurred while deleting the image.";
+                return response;
+            }
         }
     }
 }
