@@ -3,6 +3,7 @@ using Core.Enum;
 using Logic.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CASA3.Controllers
 {
@@ -11,11 +12,19 @@ namespace CASA3.Controllers
     {
         private readonly ICarouselService _carouselService;
         private readonly ICloudinaryService _cloudinaryService;
+        private readonly IMemoryCache _cache;
 
-        public CarouselController(ICarouselService carouselService, ICloudinaryService cloudinaryService)
+        public CarouselController(ICarouselService carouselService, ICloudinaryService cloudinaryService, IMemoryCache cache)
         {
             _carouselService = carouselService;
             _cloudinaryService = cloudinaryService;
+            _cache = cache;
+        }
+
+        private void InvalidateBannerCache()
+        {
+            _cache.Remove("HomeBanner");
+            _cache.Remove("VendorCarousel");
         }
 
         public IActionResult Index()
@@ -71,6 +80,7 @@ namespace CASA3.Controllers
                 }
 
                 var result = await _carouselService.CreateCarouselService(model, backgroundImageUrl, brochureUrl);
+                if (result.success) InvalidateBannerCache();
                 return Json(result);
             }
             catch
@@ -128,6 +138,7 @@ namespace CASA3.Controllers
                 }
 
                 var result = await _carouselService.UpdateCarouselService(model, backgroundImageUrl, brochureUrl);
+                if (result.success) InvalidateBannerCache();
                 return Json(result);
             }
             catch
@@ -140,6 +151,7 @@ namespace CASA3.Controllers
         public async Task<IActionResult> DeleteCarousel(string id)
         {
             var result = await _carouselService.DeleteCarouselByIdService(id);
+            if (result.success) InvalidateBannerCache();
             return Json(result);
         }
 
@@ -147,6 +159,7 @@ namespace CASA3.Controllers
         public async Task<IActionResult> ToggleCarouselStatus(string id)
         {
             var result = await _carouselService.ToggleCarouselStatusService(id);
+            if (result.success) InvalidateBannerCache();
             return Json(result);
         }
     }
