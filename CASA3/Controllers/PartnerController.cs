@@ -2,6 +2,7 @@ using Core.DTOs;
 using Logic.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CASA3.Controllers
 {
@@ -10,12 +11,16 @@ namespace CASA3.Controllers
     {
         private readonly IPartnerService _partnerService;
         private readonly ICloudinaryService _cloudinaryService;
+        private readonly IMemoryCache _cache;
 
-        public PartnerController(IPartnerService partnerService, ICloudinaryService cloudinaryService)
+        public PartnerController(IPartnerService partnerService, ICloudinaryService cloudinaryService, IMemoryCache cache)
         {
             _partnerService = partnerService;
             _cloudinaryService = cloudinaryService;
+            _cache = cache;
         }
+
+        private void BustPartnersCache() => _cache.Remove("Partners");
 
         public IActionResult Index()
         {
@@ -47,6 +52,7 @@ namespace CASA3.Controllers
                     return Json(new { success = false, message = "Failed to upload partner logo." });
 
                 var result = await _partnerService.CreatePartnerService(model, logoUrl);
+                if (result.success) BustPartnersCache();
                 return Json(result);
             }
             catch
@@ -88,6 +94,7 @@ namespace CASA3.Controllers
                 }
 
                 var result = await _partnerService.UpdatePartnerService(model, logoUrl);
+                if (result.success) BustPartnersCache();
                 return Json(result);
             }
             catch
@@ -100,6 +107,7 @@ namespace CASA3.Controllers
         public async Task<IActionResult> DeletePartner(string id)
         {
             var result = await _partnerService.DeletePartnerByIdService(id);
+            if (result.success) BustPartnersCache();
             return Json(result);
         }
 
@@ -107,6 +115,7 @@ namespace CASA3.Controllers
         public async Task<IActionResult> TogglePartnerStatus(string id)
         {
             var result = await _partnerService.TogglePartnerStatusService(id);
+            if (result.success) BustPartnersCache();
             return Json(result);
         }
     }

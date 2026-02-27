@@ -2,6 +2,7 @@ using Core.DTOs;
 using Logic.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CASA3.Controllers
 {
@@ -10,12 +11,16 @@ namespace CASA3.Controllers
     {
         private readonly IBlogService _blogService;
         private readonly ICloudinaryService _cloudinaryService;
+        private readonly IMemoryCache _cache;
 
-        public BlogController(IBlogService blogService, ICloudinaryService cloudinaryService)
+        public BlogController(IBlogService blogService, ICloudinaryService cloudinaryService, IMemoryCache cache)
         {
             _blogService = blogService;
             _cloudinaryService = cloudinaryService;
+            _cache = cache;
         }
+
+        private void BustBlogsCache() => _cache.Remove("PublishedBlogs");
 
         public IActionResult Index()
         {
@@ -52,6 +57,7 @@ namespace CASA3.Controllers
                 }
 
                 var result = await _blogService.CreateBlogService(model, coverImageUrl);
+                if (result.success) BustBlogsCache();
                 return Json(result);
             }
             catch
@@ -96,6 +102,7 @@ namespace CASA3.Controllers
                 }
 
                 var result = await _blogService.UpdateBlogService(model, coverImageUrl);
+                if (result.success) BustBlogsCache();
                 return Json(result);
             }
             catch
@@ -108,6 +115,7 @@ namespace CASA3.Controllers
         public async Task<IActionResult> DeleteBlog(string id)
         {
             var result = await _blogService.DeleteBlogByIdService(id);
+            if (result.success) BustBlogsCache();
             return Json(result);
         }
 
@@ -115,6 +123,7 @@ namespace CASA3.Controllers
         public async Task<IActionResult> ToggleBlogStatus(string id)
         {
             var result = await _blogService.ToggleBlogStatusService(id);
+            if (result.success) BustBlogsCache();
             return Json(result);
         }
     }

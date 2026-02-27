@@ -2,6 +2,7 @@ using Core.DTOs;
 using Logic.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CASA3.Controllers
 {
@@ -10,12 +11,16 @@ namespace CASA3.Controllers
     {
         private readonly INewsLetterService _newsLetterService;
         private readonly ICloudinaryService _cloudinaryService;
+        private readonly IMemoryCache _cache;
 
-        public NewsLetterController(INewsLetterService newsLetterService, ICloudinaryService cloudinaryService)
+        public NewsLetterController(INewsLetterService newsLetterService, ICloudinaryService cloudinaryService, IMemoryCache cache)
         {
             _newsLetterService = newsLetterService;
             _cloudinaryService = cloudinaryService;
+            _cache = cache;
         }
+
+        private void BustNewslettersCache() => _cache.Remove("Newsletters");
 
         public IActionResult Index()
         {
@@ -64,6 +69,7 @@ namespace CASA3.Controllers
                     return Json(new { success = false, message = "Failed to upload document." });
 
                 var result = await _newsLetterService.CreateNewsLetterservice(model, coverImageUrl, documentUrl);
+                if (result.success) BustNewslettersCache();
                 return Json(result);
             }
             catch
@@ -121,6 +127,7 @@ namespace CASA3.Controllers
                 }
 
                 var result = await _newsLetterService.UpdateNewsLetterService(model, coverImageUrl, documentUrl);
+                if (result.success) BustNewslettersCache();
                 return Json(result);
             }
             catch
@@ -133,6 +140,7 @@ namespace CASA3.Controllers
         public async Task<IActionResult> DeleteNewsLetter(string id)
         {
             var result = await _newsLetterService.DeleteNewsLetterByIdService(id);
+            if (result.success) BustNewslettersCache();
             return Json(result);
         }
     }

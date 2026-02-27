@@ -4,6 +4,7 @@ using Core.ViewModels;
 using Logic.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CASA3.Controllers
 {
@@ -19,8 +20,9 @@ namespace CASA3.Controllers
         private readonly INewsletterSubscriptionService _newsletterSubscriptionService;
         private readonly IClientService _clientService;
         private readonly ICloudinaryService _cloudinaryService;
+        private readonly IMemoryCache _cache;
 
-        public AdminController(IStaffService staffService, IProjectService projectService, IMediaService mediaService, IVendorService vendorService, IAffiliateService affiliateService, IContactUsService contactUsService, INewsletterSubscriptionService newsletterSubscriptionService, IClientService clientService, ICloudinaryService cloudinaryService)
+        public AdminController(IStaffService staffService, IProjectService projectService, IMediaService mediaService, IVendorService vendorService, IAffiliateService affiliateService, IContactUsService contactUsService, INewsletterSubscriptionService newsletterSubscriptionService, IClientService clientService, ICloudinaryService cloudinaryService, IMemoryCache cache)
         {
             _staffService = staffService;
             _projectService = projectService;
@@ -31,7 +33,13 @@ namespace CASA3.Controllers
             _newsletterSubscriptionService = newsletterSubscriptionService;
             _clientService = clientService;
             _cloudinaryService = cloudinaryService;
+            _cache = cache;
         }
+
+        private void BustProjectsCache() => _cache.Remove("Projects");
+        private void BustPartnersCache() => _cache.Remove("Partners");
+        private void BustBlogsCache() => _cache.Remove("PublishedBlogs");
+        private void BustNewslettersCache() => _cache.Remove("Newsletters");
 
         public IActionResult Index()
         {
@@ -241,6 +249,7 @@ namespace CASA3.Controllers
                 if (model.HeroImageUrl != null || model.BrochurePdfUrl != null)
                     await _projectService.UpdateProjectAsync(projectId, model);
             }
+            if (result.success) BustProjectsCache();
             TempData["ProjectMessage"] = result.Message;
             return RedirectToAction(nameof(Projects));
         }
@@ -298,6 +307,7 @@ namespace CASA3.Controllers
             var result = await _projectService.UpdateProjectAsync(id, model);
             if (result.success)
             {
+                BustProjectsCache();
                 TempData["ProjectMessage"] = result.Message;
                 return RedirectToAction(nameof(Projects));
             }
@@ -313,6 +323,7 @@ namespace CASA3.Controllers
             if (string.IsNullOrEmpty(id))
                 return RedirectToAction(nameof(Projects));
             var result = await _projectService.DeleteProjectAsync(id);
+            if (result.success) BustProjectsCache();
             TempData["ProjectMessage"] = result.Message;
             return RedirectToAction(nameof(Projects));
         }
@@ -430,6 +441,7 @@ namespace CASA3.Controllers
                 if (model.ImageUrl != null || model.BrochurePdfUrl != null || model.FloorPlanPdfUrl != null)
                     await _projectService.UpdateBuildingDesignAsync(unitId, model);
             }
+            if (result.success) BustProjectsCache();
             TempData["UnitMessage"] = result.Message;
             return RedirectToAction(nameof(ProjectUnits), new { projectId });
         }
@@ -491,6 +503,7 @@ namespace CASA3.Controllers
             var result = await _projectService.UpdateBuildingDesignAsync(id, model);
             if (result.success)
             {
+                BustProjectsCache();
                 TempData["UnitMessage"] = result.Message;
                 return RedirectToAction(nameof(ProjectUnits), new { projectId });
             }
@@ -507,6 +520,7 @@ namespace CASA3.Controllers
             if (string.IsNullOrEmpty(id))
                 return RedirectToAction(nameof(Projects));
             var result = await _projectService.DeleteBuildingDesignAsync(id);
+            if (result.success) BustProjectsCache();
             TempData["UnitMessage"] = result.Message;
             if (!string.IsNullOrEmpty(projectId))
                 return RedirectToAction(nameof(ProjectUnits), new { projectId });
