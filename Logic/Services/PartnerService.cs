@@ -1,4 +1,4 @@
-﻿using Core.DB;
+using Core.DB;
 using Core.DTOs;
 using Core.Models;
 using Core.ViewModels;
@@ -12,11 +12,13 @@ namespace Logic.Services
     {
         private readonly ILoggerManager _log;
         private readonly EFContext _context;
+        private readonly ICloudinaryService _cloudinaryService;
 
-        public PartnerService(EFContext context, ILoggerManager log)
+        public PartnerService(EFContext context, ILoggerManager log, ICloudinaryService cloudinaryService)
         {
             _context = context;
             _log = log;
+            _cloudinaryService = cloudinaryService;
         }
 
         public List<PartnerVM> GetAllPartnersService()
@@ -192,7 +194,7 @@ namespace Logic.Services
                 // If new logo is provided, delete old logo and update URL
                 if (!string.IsNullOrEmpty(logoUrl))
                 {
-                    DeleteFileIfExists(existingRecord.LogoUrl);
+                    await _cloudinaryService.DeleteAsync(existingRecord.LogoUrl);
                     existingRecord.LogoUrl = logoUrl;
                 }
 
@@ -228,10 +230,7 @@ namespace Logic.Services
                     .FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
 
                 if (partner != null)
-                {
-                    // Delete logo file from server
-                    DeleteFileIfExists(partner.LogoUrl);
-                }
+                    await _cloudinaryService.DeleteAsync(partner.LogoUrl);
 
                 // Soft delete the record
                 var rex = await _context.Partners
@@ -325,24 +324,5 @@ namespace Logic.Services
             };
         }
 
-        // Helper method to delete files from server
-        private void DeleteFileIfExists(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath)) return;
-
-            try
-            {
-                var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", filePath);
-                if (File.Exists(fullPath))
-                {
-                    File.Delete(fullPath);
-                    _log.Loginfo(MethodBase.GetCurrentMethod()!, $"Deleted file: {filePath}");
-                }
-            }
-            catch (Exception ex)
-            {
-                _log.LogError(MethodBase.GetCurrentMethod()!, $"Failed to delete file {filePath}: {ex.Message}");
-            }
-        }
     }
 }

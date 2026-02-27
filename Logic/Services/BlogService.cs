@@ -12,11 +12,13 @@ namespace Logic.Services
     {
         private readonly ILoggerManager _log;
         private readonly EFContext _context;
+        private readonly ICloudinaryService _cloudinaryService;
 
-        public BlogService(EFContext context, ILoggerManager log)
+        public BlogService(EFContext context, ILoggerManager log, ICloudinaryService cloudinaryService)
         {
             _context = context;
             _log = log;
+            _cloudinaryService = cloudinaryService;
         }
 
         public List<BlogVM> GetAllBlogsService()
@@ -215,7 +217,7 @@ namespace Logic.Services
                 // If new cover image is provided, delete old image and update URL
                 if (!string.IsNullOrEmpty(coverImageUrl))
                 {
-                    DeleteFileIfExists(existingRecord.CoverImageUrl);
+                    await _cloudinaryService.DeleteAsync(existingRecord.CoverImageUrl);
                     existingRecord.CoverImageUrl = coverImageUrl;
                 }
 
@@ -251,10 +253,7 @@ namespace Logic.Services
                     .FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
 
                 if (blog != null)
-                {
-                    // Delete cover image file from server
-                    DeleteFileIfExists(blog.CoverImageUrl);
-                }
+                    await _cloudinaryService.DeleteAsync(blog.CoverImageUrl);
 
                 // Soft delete the record
                 var rex = await _context.Blogs
@@ -436,25 +435,6 @@ namespace Logic.Services
             }
         }
 
-        // Helper method to delete files from server
-        private void DeleteFileIfExists(string? filePath)
-        {
-            if (string.IsNullOrEmpty(filePath)) return;
-
-            try
-            {
-                var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", filePath);
-                if (File.Exists(fullPath))
-                {
-                    File.Delete(fullPath);
-                    _log.Loginfo(MethodBase.GetCurrentMethod()!, $"Deleted file: {filePath}");
-                }
-            }
-            catch (Exception ex)
-            {
-                _log.LogError(MethodBase.GetCurrentMethod()!, $"Failed to delete file {filePath}: {ex.Message}");
-            }
-        }
     }
 }
 

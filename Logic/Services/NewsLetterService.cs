@@ -1,4 +1,4 @@
-﻿using Core.DB;
+using Core.DB;
 using Core.DTOs;
 using Core.Model;
 using Core.Models;
@@ -13,11 +13,13 @@ namespace Logic.Services
     {
         private readonly ILoggerManager _log;
         private readonly EFContext _context;
+        private readonly ICloudinaryService _cloudinaryService;
 
-        public NewsLetterService(EFContext context, ILoggerManager log)
+        public NewsLetterService(EFContext context, ILoggerManager log, ICloudinaryService cloudinaryService)
         {
             _context = context;
             _log = log;
+            _cloudinaryService = cloudinaryService;
         }
 
         public List<NewsLetterVM> GetAllNewsLetterService()
@@ -159,15 +161,13 @@ namespace Logic.Services
                 // If new files are provided, delete old files and update URLs
                 if (!string.IsNullOrEmpty(coverImgUrl))
                 {
-                    // Delete old cover image file
-                    DeleteFileIfExists(existingRecord.CoverImageUrl);
+                    await _cloudinaryService.DeleteAsync(existingRecord.CoverImageUrl);
                     existingRecord.CoverImageUrl = coverImgUrl;
                 }
 
                 if (!string.IsNullOrEmpty(documentUrl))
                 {
-                    // Delete old document file
-                    DeleteFileIfExists(existingRecord.DocumentUrl);
+                    await _cloudinaryService.DeleteAsync(existingRecord.DocumentUrl);
                     existingRecord.DocumentUrl = documentUrl;
                 }
 
@@ -200,9 +200,8 @@ namespace Logic.Services
                 var newsletter = await _context.NewsLetters.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
                 if (newsletter != null)
                 {
-                    // Delete associated files from server
-                    DeleteFileIfExists(newsletter.CoverImageUrl);
-                    DeleteFileIfExists(newsletter.DocumentUrl);
+                    await _cloudinaryService.DeleteAsync(newsletter.CoverImageUrl);
+                    await _cloudinaryService.DeleteAsync(newsletter.DocumentUrl);
                 }
 
                 // Soft delete the record
@@ -245,26 +244,6 @@ namespace Logic.Services
                 UpdatedAt = NewsLetter.UpdatedAt,
                 CreatedBy = NewsLetter.CreatedBy != null ? $"{NewsLetter.CreatedBy.FirstName} {NewsLetter.CreatedBy.LastName}" : "N/A",
             };
-        }
-
-        // Helper method to delete files from server
-        private void DeleteFileIfExists(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath)) return;
-
-            try
-            {
-                var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", filePath);
-                if (File.Exists(fullPath))
-                {
-                    File.Delete(fullPath);
-                    _log.Loginfo(MethodBase.GetCurrentMethod()!, $"Deleted file: {filePath}");
-                }
-            }
-            catch (Exception ex)
-            {
-                _log.LogError(MethodBase.GetCurrentMethod()!, $"Failed to delete file {filePath}: {ex.Message}");
-            }
         }
     }
 }

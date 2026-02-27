@@ -1,3 +1,4 @@
+using CASA3.Services;
 using Core.DB;
 using Core.Model;
 using Logic;
@@ -51,6 +52,7 @@ internal class Program
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<ICarouselService, CarouselService>();
         builder.Services.AddScoped<IClientService, ClientService>();
+        builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
         builder.Services.AddMemoryCache();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddSession(options =>

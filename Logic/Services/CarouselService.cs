@@ -1,4 +1,4 @@
-﻿using Core.DB;
+using Core.DB;
 using Core.DTOs;
 using Core.Enum;
 using Core.Models;
@@ -13,11 +13,13 @@ namespace Logic.Services
     {
         private readonly ILoggerManager _log;
         private readonly EFContext _context;
+        private readonly ICloudinaryService _cloudinaryService;
 
-        public CarouselService(EFContext context, ILoggerManager log)
+        public CarouselService(EFContext context, ILoggerManager log, ICloudinaryService cloudinaryService)
         {
             _context = context;
             _log = log;
+            _cloudinaryService = cloudinaryService;
         }
 
         public List<CarouselVM> GetAllCarouselsService()
@@ -230,14 +232,14 @@ namespace Logic.Services
                 // If new background image is provided, delete old image and update URL
                 if (!string.IsNullOrEmpty(backgroundImageUrl))
                 {
-                    DeleteFileIfExists(existingRecord.BackgroundImageUrl);
+                    await _cloudinaryService.DeleteAsync(existingRecord.BackgroundImageUrl);
                     existingRecord.BackgroundImageUrl = backgroundImageUrl;
                 }
 
                 // If new brochure is provided, delete old brochure and update URL
                 if (!string.IsNullOrEmpty(brochureUrl))
                 {
-                    DeleteFileIfExists(existingRecord.BrochureUrl);
+                    await _cloudinaryService.DeleteAsync(existingRecord.BrochureUrl);
                     existingRecord.BrochureUrl = brochureUrl;
                 }
 
@@ -274,9 +276,8 @@ namespace Logic.Services
 
                 if (carousel != null)
                 {
-                    // Delete background image and brochure files from server
-                    DeleteFileIfExists(carousel.BackgroundImageUrl);
-                    DeleteFileIfExists(carousel.BrochureUrl);
+                    await _cloudinaryService.DeleteAsync(carousel.BackgroundImageUrl);
+                    await _cloudinaryService.DeleteAsync(carousel.BrochureUrl);
                 }
 
                 // Soft delete the record
@@ -375,24 +376,5 @@ namespace Logic.Services
             };
         }
 
-        // Helper method to delete files from server
-        private void DeleteFileIfExists(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath)) return;
-
-            try
-            {
-                var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", filePath);
-                if (File.Exists(fullPath))
-                {
-                    File.Delete(fullPath);
-                    _log.Loginfo(MethodBase.GetCurrentMethod()!, $"Deleted file: {filePath}");
-                }
-            }
-            catch (Exception ex)
-            {
-                _log.LogError(MethodBase.GetCurrentMethod()!, $"Failed to delete file {filePath}: {ex.Message}");
-            }
-        }
     }
 }
