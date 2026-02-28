@@ -24,24 +24,22 @@
                         <div class="max-w-7xl px-6 text-white">
 
                             <!-- Tag -->
-                            @if(banner.BadgeText != null)
+                            @if (banner.BadgeText != null)
                             {
                                 <div class="inline-block bg-black px-6 py-2 text-xs tracking-widest font-semibold mb-4">
                                     @banner.BadgeText
                                 </div>
                             }
 
+
                             <!-- Title -->
-                            <h1 class="text-5xl md:text-7xl font-serif tracking-wider mb-3">
+                            <h1 class="text-5xl md:text-7xl font-serif tracking-wider leading-tight mb-3 max-w-4xl">
                                 @banner.Title
                             </h1>
 
-                            <!-- Subtitle -->
-                            <p class="text-lg tracking-wide mb-6">
+                            <p class="text-lg tracking-wide mb-6 max-w-2xl">
                                 @banner.Subtitle
-                            </p>
-
-                            <!-- CTA -->
+                            </p>                            <!-- CTA -->
                             <a href="@banner.ButtonLink"
                                class="inline-block bg-white text-black px-8 py-3 text-sm font-semibold tracking-wide
                                       hover:bg-black hover:text-white transition">
