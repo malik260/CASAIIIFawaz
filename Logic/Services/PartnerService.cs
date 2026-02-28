@@ -74,7 +74,7 @@ namespace Logic.Services
                             LogoUrl = logoUrl,
                             DisplayOrder = 0,
                             IsActive = true,
-                            CreatedById = cuser.Id
+                            CreatedById = "e9d1712f-4e03-480d-b512-c85dc1be971f"
                         };
 
                         await _context.AddAsync(partner).ConfigureAwait(false);
