@@ -3,7 +3,6 @@ using Core.Enum;
 using Logic.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace CASA3.Controllers
 {
@@ -12,19 +11,11 @@ namespace CASA3.Controllers
     {
         private readonly ICarouselService _carouselService;
         private readonly ICloudinaryService _cloudinaryService;
-        private readonly IMemoryCache _cache;
 
-        public CarouselController(ICarouselService carouselService, ICloudinaryService cloudinaryService, IMemoryCache cache)
+        public CarouselController(ICarouselService carouselService, ICloudinaryService cloudinaryService)
         {
             _carouselService = carouselService;
             _cloudinaryService = cloudinaryService;
-            _cache = cache;
-        }
-
-        private void InvalidateBannerCache()
-        {
-            _cache.Remove("HomeBanner");
-            _cache.Remove("VendorCarousel");
         }
 
         public IActionResult Index()
@@ -38,17 +29,17 @@ namespace CASA3.Controllers
         {
             try
             {
-                //if (string.IsNullOrEmpty(model.Title))
-                //    return Json(new { success = false, message = "Title is required." });
+                if (string.IsNullOrEmpty(model.Title))
+                    return Json(new { success = false, message = "Title is required." });
 
-                //if (string.IsNullOrEmpty(model.ButtonText))
-                //    return Json(new { success = false, message = "Button Text is required." });
+                if (string.IsNullOrEmpty(model.ButtonText))
+                    return Json(new { success = false, message = "Button Text is required." });
 
                 if (model.BackgroundImage == null || model.BackgroundImage.Length == 0)
                     return Json(new { success = false, message = "Background Image is required." });
 
-                //if (model.PageType == CarouselPageType.Home && (model.Brochure == null || model.Brochure.Length == 0))
-                //    return Json(new { success = false, message = "Brochure (PDF) is required for Home carousel." });
+                if (model.PageType == CarouselPageType.Home && (model.Brochure == null || model.Brochure.Length == 0))
+                    return Json(new { success = false, message = "Brochure (PDF) is required for Home carousel." });
 
                 // Validate background image
                 if (model.BackgroundImage.Length > 5 * 1024 * 1024)
@@ -80,7 +71,6 @@ namespace CASA3.Controllers
                 }
 
                 var result = await _carouselService.CreateCarouselService(model, backgroundImageUrl, brochureUrl);
-                if (result.success) InvalidateBannerCache();
                 return Json(result);
             }
             catch
@@ -101,11 +91,8 @@ namespace CASA3.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(model.Id))
-                    //|| string.IsNullOrEmpty(model.Title) 
-                    //|| string.IsNullOrEmpty(model.ButtonText))
-                    //return Json(new { success = false, message = "ID, Title and Button Text are required." });
-                    return Json(new { success = false, message = "ID is required." });
+                if (string.IsNullOrEmpty(model.Id) || string.IsNullOrEmpty(model.Title) || string.IsNullOrEmpty(model.ButtonText))
+                    return Json(new { success = false, message = "ID, Title and Button Text are required." });
 
                 string? backgroundImageUrl = null;
                 string? brochureUrl = null;
@@ -141,7 +128,6 @@ namespace CASA3.Controllers
                 }
 
                 var result = await _carouselService.UpdateCarouselService(model, backgroundImageUrl, brochureUrl);
-                if (result.success) InvalidateBannerCache();
                 return Json(result);
             }
             catch
@@ -154,7 +140,6 @@ namespace CASA3.Controllers
         public async Task<IActionResult> DeleteCarousel(string id)
         {
             var result = await _carouselService.DeleteCarouselByIdService(id);
-            if (result.success) InvalidateBannerCache();
             return Json(result);
         }
 
@@ -162,7 +147,6 @@ namespace CASA3.Controllers
         public async Task<IActionResult> ToggleCarouselStatus(string id)
         {
             var result = await _carouselService.ToggleCarouselStatusService(id);
-            if (result.success) InvalidateBannerCache();
             return Json(result);
         }
     }
