@@ -38,8 +38,8 @@ namespace CASA3.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(model.Title))
-                    return Json(new { success = false, message = "Title is required." });
+                //if (string.IsNullOrEmpty(model.Title))
+                //    return Json(new { success = false, message = "Title is required." });
 
                 //if (string.IsNullOrEmpty(model.ButtonText))
                 //    return Json(new { success = false, message = "Button Text is required." });
@@ -47,8 +47,8 @@ namespace CASA3.Controllers
                 if (model.BackgroundImage == null || model.BackgroundImage.Length == 0)
                     return Json(new { success = false, message = "Background Image is required." });
 
-                if (model.PageType == CarouselPageType.Home && (model.Brochure == null || model.Brochure.Length == 0))
-                    return Json(new { success = false, message = "Brochure (PDF) is required for Home carousel." });
+                //if (model.PageType == CarouselPageType.Home && (model.Brochure == null || model.Brochure.Length == 0))
+                //    return Json(new { success = false, message = "Brochure (PDF) is required for Home carousel." });
 
                 // Validate background image
                 if (model.BackgroundImage.Length > 5 * 1024 * 1024)
