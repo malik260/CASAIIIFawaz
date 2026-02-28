@@ -41,8 +41,8 @@ namespace CASA3.Controllers
                 if (string.IsNullOrEmpty(model.Title))
                     return Json(new { success = false, message = "Title is required." });
 
-                if (string.IsNullOrEmpty(model.ButtonText))
-                    return Json(new { success = false, message = "Button Text is required." });
+                //if (string.IsNullOrEmpty(model.ButtonText))
+                //    return Json(new { success = false, message = "Button Text is required." });
 
                 if (model.BackgroundImage == null || model.BackgroundImage.Length == 0)
                     return Json(new { success = false, message = "Background Image is required." });
@@ -101,8 +101,11 @@ namespace CASA3.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(model.Id) || string.IsNullOrEmpty(model.Title) || string.IsNullOrEmpty(model.ButtonText))
-                    return Json(new { success = false, message = "ID, Title and Button Text are required." });
+                if (string.IsNullOrEmpty(model.Id))
+                    //|| string.IsNullOrEmpty(model.Title) 
+                    //|| string.IsNullOrEmpty(model.ButtonText))
+                    //return Json(new { success = false, message = "ID, Title and Button Text are required." });
+                    return Json(new { success = false, message = "ID is required." });
 
                 string? backgroundImageUrl = null;
                 string? brochureUrl = null;
