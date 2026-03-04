@@ -111,39 +111,34 @@ max-h-96 overflow-y-auto z-50">
 		</div>
 
 		<!-- Mobile Menu -->
+		<div id="mobileMenu"
+			 class="hidden md:hidden absolute top-16 left-0 w-full bg-white shadow-lg border-t z-50">
 
-		<div id="mobileMenu" class="hidden md:hidden border-t bg-white">
+			<div class="px-6 py-6 space-y-4 text-base font-medium">
 
-			<div class="px-4 py-4 space-y-3 text-sm">
-
-				<a asp-controller="Home" asp-action="AboutUs">About Us</a>
+				<a asp-controller="Home" asp-action="AboutUs" class="block">About Us</a>
 
 				<details>
-
-					<summary>Our Projects</summary>
+					<summary class="cursor-pointer">Our Projects</summary>
 
 					<div class="ml-4 mt-2 space-y-2">
-
 						@await Component.InvokeAsync("Navigation")
-
 					</div>
-
 				</details>
 
-				<a asp-controller="Client" asp-action="Register">Client Registration</a>
+				<a asp-controller="Client" asp-action="Register" class="block">Client Registration</a>
 
-				<a asp-controller="Home" asp-action="BecomeAnAffiliate">Become An Affiliate</a>
+				<a asp-controller="Home" asp-action="BecomeAnAffiliate" class="block">Become An Affiliate</a>
 
-				<a href="/Become-A-Vendor">Become A Vendor</a>
+				<a href="/Become-A-Vendor" class="block">Become A Vendor</a>
 
-				<a asp-controller="Home" asp-action="ContactUs">Contact Us</a>
+				<a asp-controller="Home" asp-action="ContactUs" class="block">Contact Us</a>
 
-				<a asp-controller="Home" asp-action="Blog">Blog</a>
+				<a asp-controller="Home" asp-action="Blog" class="block">Blog</a>
 
 			</div>
 
 		</div>
-
 	</header>
 
 	<!-- ================= MAIN ================= -->
