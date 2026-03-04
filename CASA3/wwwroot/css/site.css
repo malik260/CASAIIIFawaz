@@ -7,6 +7,25 @@ body, input, button, select, textarea {
     font-family: 'Libre Baskerville', Baskerville, Georgia, serif;
 }
 
+.footer-bg {
+    background-image: url('/images/SIDE ELEVATION.png');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+    .footer-bg::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to right,rgba(0,0,0,0.75),rgba(0,0,0,0.45));
+    }
+
+.footer-content {
+    position: relative;
+    z-index: 2;
+}
+
 /* ==================== NAV (Deep Navy Blue) ==================== */
 .nav-deep-navy {
     color: #001f3f !important;

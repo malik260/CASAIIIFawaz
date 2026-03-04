@@ -1,332 +1,318 @@
-@{
-    var controller = ViewContext.RouteData.Values["Controller"]?.ToString();
-    var action = ViewContext.RouteData.Values["Action"]?.ToString();
-    var isAboutUsPage = controller == "Home" && action == "AboutUs";
-}
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@ViewData["Title"] - Casa III</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
+	<title>@ViewData["Title"] - Casa III</title>
 
-    <!-- Icons -->
-    <link rel="stylesheet" href="~/css/font-awesome.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+	<!-- Tailwind -->
+	<script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Sweetalert -->
-    <link rel="stylesheet" href="~/css/sweetalert2.min.css" />
+	<!-- Icons -->
+	<link rel="stylesheet" href="~/css/font-awesome.min.css" />
+	<link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<!-- SweetAlert -->
+	<link rel="stylesheet" href="~/css/sweetalert2.min.css" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+	<!-- Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
-    <!-- jQuery -->
-    <script src="~/js/jquery-3.5.1.min.js"></script>
-    <script src="~/js/jquery-ui.min.js"></script>
-    <script src="~/js/jquery.ui.touch-punch.min.js"></script>
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
-    <!-- Core JS -->
-    <script src="~/js/popper.min.js"></script>
-    <script src="~/js/sweetalert2.all.min.js"></script>
-    <script src="~/js/sweetalert.min.js"></script>
-    <script src="~/js/common.js" asp-append-version="true"></script>
-    <script src="~/js/account.js" asp-append-version="true"></script>
+	<!-- jQuery -->
+	<script src="~/js/jquery-3.5.1.min.js"></script>
+	<script src="~/js/jquery-ui.min.js"></script>
+	<script src="~/js/jquery.ui.touch-punch.min.js"></script>
 
-    <script>
-
-        function errorAlert(message){
-        Swal.fire({
-        icon:'error',
-        text:message,
-        confirmButtonColor:"#1E403F",
-        timer:30000
-        })
-        }
-
-        function infoAlert(message){
-        Swal.fire({
-        icon:'info',
-        text:message,
-        confirmButtonColor:"#1E403F"
-        })
-        }
-
-        function successAlert(message){
-        Swal.fire({
-        icon:'success',
-        text:message,
-        timer:60000,
-        confirmButtonColor:"#FF9B44"
-        })
-        }
-
-        function successAlertWithRedirect(message,url){
-
-        Swal.fire({
-        title:"Success",
-        text:message,
-        icon:"success",
-        timer:30000,
-        confirmButtonColor:"#1E403F"
-        }).then(function(){
-        location.href=url
-        })
-
-        }
-
-    </script>
+	<!-- Core -->
+	<script src="~/js/popper.min.js"></script>
+	<script src="~/js/sweetalert2.all.min.js"></script>
+	<script src="~/js/common.js"></script>
+	<script src="~/js/account.js"></script>
 
 </head>
 
 <body class="flex flex-col min-h-screen text-gray-800">
 
-    <!-- ================= HEADER ================= -->
+	<!-- ================= HEADER ================= -->
 
-    <header class="bg-white border-b sticky top-0 z-50">
+	<header id="siteHeader" class="bg-transparent border-b sticky top-0 z-50 transition-all duration-300">
 
-        <div class="max-w-7xl mx-auto px-4">
+		<div class="max-w-7xl mx-auto px-4">
 
-            <div class="flex justify-between items-center h-16">
+			<div class="flex justify-between items-center h-16">
 
-                <!-- Logo -->
+				<!-- Logo -->
 
-                <a asp-controller="Home" asp-action="Index" class="flex items-center">
+				<a asp-controller="Home" asp-action="Index" class="flex items-center">
 
-                    <img src="~/images/CASA III PNG.png" class="h-11 md:h-13 rounded-lg" />
+					<img id="siteLogo" src="~/images/CASA III PNG.png" class="h-14 transition-all duration-300 rounded-lg" />
 
-                </a>
+				</a>
 
-                <!-- Desktop Menu -->
+				<!-- Desktop Navigation -->
 
-                <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
+				<nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
 
-                    <a asp-controller="Home" asp-action="AboutUs" class="nav-deep-navy">About Us</a>
+					<a asp-controller="Home" asp-action="AboutUs" class="nav-deep-navy">About Us</a>
 
-                    <div class="relative group">
+					<div class="relative group">
 
-                        <a asp-controller="Home" asp-action="OurProject" class="flex items-center gap-1 nav-deep-navy">
+						<a asp-controller="Home" asp-action="OurProject" class="flex items-center gap-1 nav-deep-navy">
 
-                            Our Projects <i class="fa fa-chevron-down text-xs"></i>
+							Our Projects <i class="fa fa-chevron-down text-xs"></i>
 
-                        </a>
+						</a>
 
-                        <div class="absolute left-0 top-full w-full h-2"></div>
+						<div class="absolute left-0 top-full w-full h-2"></div>
 
-                        <div class="absolute left-0 top-full pt-2 w-56 bg-white shadow-xl border border-gray-200 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 max-h-96 overflow-y-auto z-50">
+						<div class="absolute left-0 top-full pt-2 w-56 bg-white shadow-xl border border-gray-200 rounded-lg
 
-                            @await Component.InvokeAsync("Navigation")
+opacity-0 invisible translate-y-3
+group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
+transition-all duration-300
+max-h-96 overflow-y-auto z-50">
 
-                        </div>
+							@await Component.InvokeAsync("Navigation")
 
-                    </div>
+						</div>
 
-                    <a asp-controller="Client" asp-action="Register" class="nav-deep-navy">Client Registration</a>
+					</div>
 
-                    <a asp-controller="Home" asp-action="BecomeAnAffiliate" class="nav-deep-navy">Become An Affiliate</a>
+					<a asp-controller="Client" asp-action="Register" class="nav-deep-navy">Client Registration</a>
 
-                    <a href="/Become-A-Vendor" class="nav-deep-navy">Become A Vendor</a>
+					<a asp-controller="Home" asp-action="BecomeAnAffiliate" class="nav-deep-navy">Become An Affiliate</a>
 
-                    <a asp-controller="Home" asp-action="ContactUs" class="nav-deep-navy">Contact Us</a>
+					<a href="/Become-A-Vendor" class="nav-deep-navy">Become A Vendor</a>
 
-                    <a asp-controller="Home" asp-action="Blog" class="nav-deep-navy">Blog</a>
+					<a asp-controller="Home" asp-action="ContactUs" class="nav-deep-navy">Contact Us</a>
 
-                </nav>
+					<a asp-controller="Home" asp-action="Blog" class="nav-deep-navy">Blog</a>
 
-                <!-- Mobile Button -->
+				</nav>
 
-                <button id="mobileMenuBtn" class="md:hidden text-2xl">
+				<!-- Mobile Button -->
 
-                    <i class="fa fa-bars"></i>
+				<button id="mobileMenuBtn" class="md:hidden text-2xl">
 
-                </button>
+					<i class="fa fa-bars"></i>
 
-            </div>
+				</button>
 
-        </div>
+			</div>
 
-        <!-- Mobile Menu -->
+		</div>
 
-        <div id="mobileMenu" class="hidden md:hidden border-t bg-white">
+		<!-- Mobile Menu -->
 
-            <div class="px-4 py-4 space-y-3 text-sm">
+		<div id="mobileMenu" class="hidden md:hidden border-t bg-white">
 
-                <a asp-controller="Home" asp-action="AboutUs">About Us</a>
+			<div class="px-4 py-4 space-y-3 text-sm">
 
-                <details>
+				<a asp-controller="Home" asp-action="AboutUs">About Us</a>
 
-                    <summary>Our Projects</summary>
+				<details>
 
-                    <div class="ml-4 mt-2 space-y-2">
+					<summary>Our Projects</summary>
 
-                        @await Component.InvokeAsync("Navigation")
+					<div class="ml-4 mt-2 space-y-2">
 
-                    </div>
+						@await Component.InvokeAsync("Navigation")
 
-                </details>
+					</div>
 
-                <a asp-controller="Client" asp-action="Register">Client Registration</a>
+				</details>
 
-                <a asp-controller="Home" asp-action="BecomeAnAffiliate">Become An Affiliate</a>
+				<a asp-controller="Client" asp-action="Register">Client Registration</a>
 
-                <a href="/Become-A-Vendor">Become A Vendor</a>
+				<a asp-controller="Home" asp-action="BecomeAnAffiliate">Become An Affiliate</a>
 
-                <a asp-controller="Home" asp-action="ContactUs">Contact Us</a>
+				<a href="/Become-A-Vendor">Become A Vendor</a>
 
-                <a asp-controller="Home" asp-action="Blog">Blog</a>
+				<a asp-controller="Home" asp-action="ContactUs">Contact Us</a>
 
-            </div>
+				<a asp-controller="Home" asp-action="Blog">Blog</a>
 
-        </div>
+			</div>
 
-    </header>
+		</div>
 
-    <!-- ================= MAIN ================= -->
+	</header>
 
-    <main class="flex-grow">
+	<!-- ================= MAIN ================= -->
 
-        @RenderBody()
+	<main class="flex-grow">
 
-    </main>
+		@RenderBody()
 
-    <!-- ================= FOOTER ================= -->
+	</main>
 
-    <footer class="bg-gray-100 mt-20">
+	<!-- ================= FOOTER ================= -->
 
-        <section class="relative flex bg-cover bg-center"
-                 style="background-image:url('/images/@(isAboutUsPage ? "SIDE ELEVATION.png" : "STREET-VIEW.webp")');">
+	<footer class="bg-gray-100 mt-20">
 
-            <div class="w-full lg:w-2/3 py-16 lg:py-20">
+		<section class="relative flex footer-bg">
 
-                <div class="max-w-4xl mx-auto px-6 lg:px-12">
+			<div class="w-full lg:w-2/3 py-16 lg:py-20 footer-content">
 
-                    <div class="mb-8 text-center">
+				<div class="max-w-4xl mx-auto px-6 lg:px-12">
 
-                        <h2 class="inline-block border px-10 py-4 text-2xl md:text-3xl lg:text-4xl font-semibold tracking-widest uppercase @(isAboutUsPage ? "border-gray-900 text-gray-900 bg-white/70" : "border-white text-white")">
+					<div class="mb-8 text-center">
 
-                            Experience the CASA III Edge
+						<h2 class="inline-block border border-white text-white px-10 py-4 text-2xl md:text-3xl lg:text-4xl font-semibold tracking-widest uppercase">
 
-                        </h2>
+							Experience the CASA III Edge
 
-                    </div>
+						</h2>
 
-                    <div class="flex items-center justify-between mb-12">
+					</div>
 
-                        <div class="flex items-center gap-4 text-2xl @(isAboutUsPage ? "text-gray-900" : "text-white")">
+					<div class="flex items-center justify-between mb-12 text-white">
 
-                            <a href="https://web.facebook.com/profile.php?id=61587713982691" target="_blank">
+						<div class="flex items-center gap-4 text-2xl">
 
-                                <i class="fa fa-facebook"></i>
+							<a href="https://web.facebook.com/profile.php?id=61587713982691" target="_blank">
 
-                            </a>
+								<i class="fa fa-facebook"></i>
 
-                            <a href="https://www.instagram.com/thecasaiii" target="_blank">
+							</a>
 
-                                <i class="fa fa-instagram"></i>
+							<a href="https://www.instagram.com/thecasaiii" target="_blank">
 
-                            </a>
+								<i class="fa fa-instagram"></i>
 
-                            <a href="https://www.linkedin.com/company/casaiii" target="_blank">
+							</a>
 
-                                <i class="fa fa-linkedin"></i>
+							<a href="https://www.linkedin.com/company/casaiii" target="_blank">
 
-                            </a>
+								<i class="fa fa-linkedin"></i>
 
-                            <a href="https://x.com/thecasaiii" target="_blank">
+							</a>
 
-                                <i class="fa fa-twitter"></i>
+							<a href="https://x.com/thecasaiii" target="_blank">
 
-                            </a>
+								<i class="fa fa-twitter"></i>
 
-                        </div>
+							</a>
 
-                        <span class="w-px h-8 bg-gray-800"></span>
+						</div>
 
-                        <div class="flex items-center gap-2 font-medium @(isAboutUsPage ? "text-gray-900" : "text-white")">
+						<span class="w-px h-8 bg-white"></span>
 
-                            <i class="fa fa-phone"></i>
+						<div class="flex items-center gap-2 font-medium">
 
-                            <span>(+234) 8108333303</span>
+							<i class="fa fa-phone"></i>
 
-                        </div>
+							<span>(+234) 8108333303</span>
 
-                    </div>
+						</div>
 
-                    <form asp-controller="Home" asp-action="SubscribeNewsletter" method="post" class="flex flex-col gap-3">
+					</div>
 
-                        <input type="email"
-                               name="Email"
-                               placeholder="Enter your email address"
-                               class="w-full border-2 border-[#b39359] bg-white px-4 py-3" />
+					<form asp-controller="Home" asp-action="SubscribeNewsletter" method="post" class="flex flex-col gap-3">
 
-                        <button type="submit"
-                                class="w-1/2 mx-auto bg-black text-white px-8 py-3 font-medium hover:bg-[#b39359] rounded-lg">
+						<input type="email"
+							   name="Email"
+							   placeholder="Enter your email address"
+							   class="w-full border-2 border-[#b39359] bg-white px-4 py-3" />
 
-                            Subscribe
+						<button type="submit"
+								class="w-1/2 mx-auto bg-black text-white px-8 py-3 font-medium hover:bg-[#b39359] rounded-lg">
 
-                        </button>
+							Subscribe
 
-                    </form>
+						</button>
 
-                </div>
+					</form>
 
-            </div>
+				</div>
 
-            <div class="hidden lg:block w-1/3 relative">
+			</div>
 
-                <div class="absolute inset-0 bg-black/10"></div>
+			<div class="hidden lg:block w-1/3 relative">
 
-            </div>
+				<div class="absolute inset-0 bg-black/20"></div>
 
-        </section>
+			</div>
 
-        @await Component.InvokeAsync("Partners")
+		</section>
 
-        <div class="bg-gray-200 py-6">
+		@await Component.InvokeAsync("Partners")
 
-            <div class="max-w-7xl mx-auto px-4 text-sm">
+		<div class="bg-gray-200 py-6">
 
-                <div class="hidden md:flex items-center relative">
+			<div class="max-w-7xl mx-auto px-4 text-sm">
 
-                    <img src="~/images/CASA III PNG.png" class="h-12 rounded-lg" />
+				<div class="hidden md:flex items-center relative">
 
-                    <p class="absolute left-1/2 -translate-x-1/2 text-center font-bold text-gray-400">
+					<img src="~/images/CASA III PNG.png" class="h-12 rounded-lg" />
 
-                        © No. 22, Mambilla Street, Aso Drive, Abuja
+					<p class="absolute left-1/2 -translate-x-1/2 text-center font-bold text-gray-400">
 
-                    </p>
+						© No. 22, Mambilla Street, Aso Drive, Abuja
 
-                </div>
+					</p>
 
-            </div>
+				</div>
 
-        </div>
+			</div>
 
-    </footer>
+		</div>
 
-    <script>
+	</footer>
 
-        document.getElementById("mobileMenuBtn").onclick=()=>{
+	<!-- Scripts -->
 
-        document.getElementById("mobileMenu").classList.toggle("hidden")
+	<script>
 
-        }
+		document.getElementById("mobileMenuBtn").onclick=()=>{
 
-    </script>
+		document.getElementById("mobileMenu").classList.toggle("hidden")
 
-    <script src="~/js/site.js"></script>
-    <script src="~/js/scroll-effects.js" asp-append-version="true"></script>
+		}
 
-    @RenderSection("Scripts", required: false)
+		/* Header Scroll Effect */
+
+		window.addEventListener("scroll",function(){
+
+		const header=document.getElementById("siteHeader")
+		const logo=document.getElementById("siteLogo")
+
+		if(window.scrollY>50){
+
+		header.classList.remove("bg-transparent")
+		header.classList.add("bg-white","shadow-md")
+
+		logo.classList.remove("h-14")
+		logo.classList.add("h-11")
+
+		}
+		else{
+
+		header.classList.remove("bg-white","shadow-md")
+		header.classList.add("bg-transparent")
+
+		logo.classList.remove("h-11")
+		logo.classList.add("h-14")
+
+		}
+
+		})
+
+	</script>
+
+	<script src="~/js/site.js"></script>
+	<script src="~/js/scroll-effects.js"></script>
+
+	@RenderSection("Scripts", required: false)
 
 </body>
+
 </html>
