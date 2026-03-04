@@ -1,33 +1,41 @@
+@{
+    var controller = ViewContext.RouteData.Values["Controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["Action"]?.ToString();
+    var isAboutUsPage = controller == "Home" && action == "AboutUs";
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@ViewData["Title"] - Casa III</title>
 
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="~/css/sweetalert2.min.css" />    
+
     <!-- Icons -->
     <link rel="stylesheet" href="~/css/font-awesome.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
 
+    <!-- Sweetalert -->
+    <link rel="stylesheet" href="~/css/sweetalert2.min.css" />
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
-    <!-- Tailwind -->
-    <script src="~/js/tailwind.js" asp-append-version="true"></script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-
 
     <!-- jQuery -->
     <script src="~/js/jquery-3.5.1.min.js"></script>
     <script src="~/js/jquery-ui.min.js"></script>
     <script src="~/js/jquery.ui.touch-punch.min.js"></script>
-    <!-- Bootstrap Core JS -->
+
+    <!-- Core JS -->
     <script src="~/js/popper.min.js"></script>
     <script src="~/js/sweetalert2.all.min.js"></script>
     <script src="~/js/sweetalert.min.js"></script>
@@ -35,424 +43,290 @@
     <script src="~/js/account.js" asp-append-version="true"></script>
 
     <script>
-        function errorAlert(message) {
-            Swal.fire({
-                icon: 'error',
-                text: message,
-                confirmButtonColor: "#1E403F",
-                timer: 30000,
-            })
+
+        function errorAlert(message){
+        Swal.fire({
+        icon:'error',
+        text:message,
+        confirmButtonColor:"#1E403F",
+        timer:30000
+        })
         }
 
-        function infoAlert(message) {
-            Swal.fire({
-                icon: 'info',
-                text: message,
-                confirmButtonColor: "#1E403F",
-            })
+        function infoAlert(message){
+        Swal.fire({
+        icon:'info',
+        text:message,
+        confirmButtonColor:"#1E403F"
+        })
         }
 
-        function infoAlertWithStyles(message) {
-            Swal.fire({
-                title: 'Notification',
-                icon: 'info',
-                text: message,
-            })
+        function successAlert(message){
+        Swal.fire({
+        icon:'success',
+        text:message,
+        timer:60000,
+        confirmButtonColor:"#FF9B44"
+        })
         }
 
-        function errorAlertWithRedirect(message, url) {
-            Swal.fire({
-                title: "Error",
-                text: message,
-                icon: "error",
-                timer: 30000,
-                confirmButtonColor: "#1E403F",
-                overlay: "background - color: rgba(43, 165, 137, 0.45)",
-            }).then(function () {
-                location.href = url;
-            })
+        function successAlertWithRedirect(message,url){
+
+        Swal.fire({
+        title:"Success",
+        text:message,
+        icon:"success",
+        timer:30000,
+        confirmButtonColor:"#1E403F"
+        }).then(function(){
+        location.href=url
+        })
+
         }
 
-        function newInfoAlert(message, url) {
-            Swal.fire({
-                icon: 'info',
-                text: message,
-                confirmButtonColor: "#FF9B44",
-            }).then((isConfirm) => {
-                if (isConfirm) {
-                    location.href = url;
-                }
-            })
-        }
-
-        function successAlert(message) {
-            Swal.fire({
-                icon: 'success',
-                text: message,
-                timer: 60000,
-                confirmButtonColor: "#FF9B44",
-            })
-        }
-
-        function newErrorAlert(message, url) {
-            Swal.fire({
-                icon: 'error',
-                text: message,
-                confirmButtonColor: "#FF9B44",
-            }).then((isConfirm) => {
-                if (isConfirm) {
-                    location.href = url;
-                }
-            })
-        }
-
-        function newSuccessAlert(message, url) {
-            Swal({
-                icon: 'success',
-                text: message,
-                confirmButtonColor: "#1E403F",
-            }).then((isConfirm) => {
-                if (isConfirm) {
-                    location.reload(url);
-                }
-            })
-        }
-
-        function successAlertWithRedirect(message, url) {
-            Swal.fire({
-                title: "Success",
-                text: message,
-                icon: "success",
-                timer: 30000,
-                confirmButtonColor: "#1E403F",
-                overlay: "background - color: rgba(43, 165, 137, 0.45)",
-            }).then(function () {
-                location.href = url;
-            })
-        }
     </script>
+
 </head>
+
 <body class="flex flex-col min-h-screen text-gray-800">
 
     <!-- ================= HEADER ================= -->
+
     <header class="bg-white border-b sticky top-0 z-50">
+
         <div class="max-w-7xl mx-auto px-4">
+
             <div class="flex justify-between items-center h-16">
 
                 <!-- Logo -->
+
                 <a asp-controller="Home" asp-action="Index" class="flex items-center">
-                    <img src="~/images/logo.png" alt="CASA III REALTY" class="h-11 md:h-13 rounded-lg">
+
+                    <img src="~/images/CASA III PNG.png" class="h-11 md:h-13 rounded-lg" />
+
                 </a>
 
-                <!-- Desktop Nav -->
-                <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
-                    <a asp-controller="Home" asp-action="AboutUs" class="text-gray-700 hover:text-gray-900 transition-colors">About Us</a>
+                <!-- Desktop Menu -->
 
-                    <!-- Dropdown -->
+                <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
+
+                    <a asp-controller="Home" asp-action="AboutUs" class="nav-deep-navy">About Us</a>
+
                     <div class="relative group">
-                        <a asp-controller="Home" asp-action="OurProject" class="flex items-center gap-1 text-gray-700 hover:text-gray-900 transition-colors border-b-2 border-transparent hover:border-gray-700">
+
+                        <a asp-controller="Home" asp-action="OurProject" class="flex items-center gap-1 nav-deep-navy">
+
                             Our Projects <i class="fa fa-chevron-down text-xs"></i>
+
                         </a>
-                        <!-- Invisible padding area to prevent dropdown from closing -->
+
                         <div class="absolute left-0 top-full w-full h-2"></div>
+
                         <div class="absolute left-0 top-full pt-2 w-56 bg-white shadow-xl border border-gray-200 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 max-h-96 overflow-y-auto z-50">
+
                             @await Component.InvokeAsync("Navigation")
+
                         </div>
+
                     </div>
 
-                    <a asp-controller="Home" asp-action="ContactUs" class="text-gray-700 hover:text-gray-900 transition-colors">Contact Us</a>
-                    <a asp-controller="Home" asp-action="Blog" class="text-gray-700 hover:text-gray-900 transition-colors">Blog</a>
-                    <a href="/Become-A-Vendor" class="text-gray-700 hover:text-gray-900 transition-colors">Become A Vendor</a>
-                    <a asp-controller="Home" asp-action="BecomeAnAffiliate" class="text-gray-700 hover:text-gray-900 transition-colors">Become An Affiliate</a>
-                    <a asp-controller="Client" asp-action="Register" class="text-gray-700 hover:text-gray-900 transition-colors">Client Registration</a>
-                  @*   <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="/Admin" class="text-gray-700 hover:text-gray-900 transition-colors">Admin</a> *@
+                    <a asp-controller="Client" asp-action="Register" class="nav-deep-navy">Client Registration</a>
+
+                    <a asp-controller="Home" asp-action="BecomeAnAffiliate" class="nav-deep-navy">Become An Affiliate</a>
+
+                    <a href="/Become-A-Vendor" class="nav-deep-navy">Become A Vendor</a>
+
+                    <a asp-controller="Home" asp-action="ContactUs" class="nav-deep-navy">Contact Us</a>
+
+                    <a asp-controller="Home" asp-action="Blog" class="nav-deep-navy">Blog</a>
+
                 </nav>
 
-                <!-- Mobile Menu Button -->
+                <!-- Mobile Button -->
+
                 <button id="mobileMenuBtn" class="md:hidden text-2xl">
+
                     <i class="fa fa-bars"></i>
+
                 </button>
+
             </div>
+
         </div>
 
         <!-- Mobile Menu -->
+
         <div id="mobileMenu" class="hidden md:hidden border-t bg-white">
+
             <div class="px-4 py-4 space-y-3 text-sm">
-                <a asp-controller="Home" asp-action="AboutUs" class="block text-gray-800">About Us</a>
+
+                <a asp-controller="Home" asp-action="AboutUs">About Us</a>
+
                 <details>
-                    <summary class="cursor-pointer text-gray-800">Our Projects</summary>
+
+                    <summary>Our Projects</summary>
+
                     <div class="ml-4 mt-2 space-y-2">
+
                         @await Component.InvokeAsync("Navigation")
+
                     </div>
+
                 </details>
-                <a asp-controller="Home" asp-action="ContactUs" class="block text-gray-800">Contact Us</a>
-                <a asp-controller="Home" asp-action="Blog" class="block text-gray-800">Blog</a>
-                <a href="/Become-A-Vendor" class="block text-gray-800">Become A Vendor</a>
-                <a asp-controller="Home" asp-action="BecomeAnAffiliate" class="block text-gray-800">Become An Affiliate</a>
-                <a asp-controller="Client" asp-action="Register" class="block text-gray-800">Client Registration</a>
-@*                 <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="/Admin" class="block text-gray-800">Admin</a>
- *@            </div>
+
+                <a asp-controller="Client" asp-action="Register">Client Registration</a>
+
+                <a asp-controller="Home" asp-action="BecomeAnAffiliate">Become An Affiliate</a>
+
+                <a href="/Become-A-Vendor">Become A Vendor</a>
+
+                <a asp-controller="Home" asp-action="ContactUs">Contact Us</a>
+
+                <a asp-controller="Home" asp-action="Blog">Blog</a>
+
+            </div>
+
         </div>
+
     </header>
 
     <!-- ================= MAIN ================= -->
+
     <main class="flex-grow">
+
         @RenderBody()
+
     </main>
 
     <!-- ================= FOOTER ================= -->
+
     <footer class="bg-gray-100 mt-20">
 
-        <!-- Newsletter -->
-        <section class="relative flex bg-cover bg-center" style="background-image: url('/images/STREET-VIEW.webp');">
-            <!-- Left Section (2/3 width) - Light Grey Background -->
+        <section class="relative flex bg-cover bg-center"
+                 style="background-image:url('/images/@(isAboutUsPage ? "SIDE ELEVATION.png" : "STREET-VIEW.webp")');">
+
             <div class="w-full lg:w-2/3 py-16 lg:py-20">
+
                 <div class="max-w-4xl mx-auto px-6 lg:px-12">
-                    <!-- Main Title -->
+
                     <div class="mb-8 text-center">
-                        <h2 class="inline-block border border-white px-10 py-4 text-2xl md:text-3xl lg:text-4xl font-semibold tracking-widest uppercase text-white">
-                            GET THE CASA III ADVANTAGE
+
+                        <h2 class="inline-block border px-10 py-4 text-2xl md:text-3xl lg:text-4xl font-semibold tracking-widest uppercase @(isAboutUsPage ? "border-gray-900 text-gray-900 bg-white/70" : "border-white text-white")">
+
+                            Experience the CASA III Edge
+
                         </h2>
+
                     </div>
 
-                    <!-- Social Media Icons and Phone -->
                     <div class="flex items-center justify-between mb-12">
-                        <!-- Social Icons -->
-                        <div class="flex items-center gap-4 text-2xl text-white">
-                            <a href="https://web.facebook.com/profile.php?id=61587713982691" target="_blank" rel="noopener noreferrer" class="hover:text-gray-300 transition">
+
+                        <div class="flex items-center gap-4 text-2xl @(isAboutUsPage ? "text-gray-900" : "text-white")">
+
+                            <a href="https://web.facebook.com/profile.php?id=61587713982691" target="_blank">
+
                                 <i class="fa fa-facebook"></i>
+
                             </a>
-                            <a href="https://www.instagram.com/thecasaiii" target="_blank" rel="noopener noreferrer" class="hover:text-gray-300 transition">
+
+                            <a href="https://www.instagram.com/thecasaiii" target="_blank">
+
                                 <i class="fa fa-instagram"></i>
+
                             </a>
-                            <a href="https://www.linkedin.com/company/casaiii" target="_blank" rel="noopener noreferrer" class="hover:text-gray-300 transition">
+
+                            <a href="https://www.linkedin.com/company/casaiii" target="_blank">
+
                                 <i class="fa fa-linkedin"></i>
+
                             </a>
-                            <a href="https://x.com/thecasaiii" target="_blank" rel="noopener noreferrer" class="hover:text-gray-300 transition">
+
+                            <a href="https://x.com/thecasaiii" target="_blank">
+
                                 <i class="fa fa-twitter"></i>
+
                             </a>
+
                         </div>
 
-                        <!-- Vertical Divider -->
                         <span class="w-px h-8 bg-gray-800"></span>
 
-                        <!-- Phone - Far Right -->
-                        <div class="flex items-center gap-2 text-white font-medium">
+                        <div class="flex items-center gap-2 font-medium @(isAboutUsPage ? "text-gray-900" : "text-white")">
+
                             <i class="fa fa-phone"></i>
+
                             <span>(+234) 8108333303</span>
+
                         </div>
+
                     </div>
 
-                    <!-- Newsletter Subscription Form -->
-                    <form id="newsletterForm" asp-controller="Home" asp-action="SubscribeNewsletter" class="flex flex-col gap-3" method="post">
-                        <input id="newsletterEmail" type="email" name="Email" placeholder="Enter your email address to subscribe to our newsletter"
-                               class="w-full border-2 border-[#b39359] bg-white px-4 py-3 text-gray-800 placeholder-gray-500
-                                      focus:outline-none focus:ring-2 focus:ring-[#b39359] focus:border-[#b39359]" />
+                    <form asp-controller="Home" asp-action="SubscribeNewsletter" method="post" class="flex flex-col gap-3">
 
-                        <button id="newsletterSubmit" type="submit" class="w-1/2 mx-auto bg-black text-white px-8 py-3 font-medium hover:bg-[#b39359] rounded-lg transition-colors duration-200">
+                        <input type="email"
+                               name="Email"
+                               placeholder="Enter your email address"
+                               class="w-full border-2 border-[#b39359] bg-white px-4 py-3" />
+
+                        <button type="submit"
+                                class="w-1/2 mx-auto bg-black text-white px-8 py-3 font-medium hover:bg-[#b39359] rounded-lg">
+
                             Subscribe
+
                         </button>
+
                     </form>
+
                 </div>
+
             </div>
 
-            <!-- Right Section (1/3 width) - Architectural Image -->
             <div class="hidden lg:block w-1/3 relative">
+
                 <div class="absolute inset-0 bg-black/10"></div>
+
             </div>
+
         </section>
 
-        <!-- Partners -->
         @await Component.InvokeAsync("Partners")
 
-        <!-- Bottom Bar -->
         <div class="bg-gray-200 py-6">
+
             <div class="max-w-7xl mx-auto px-4 text-sm">
 
-                <!-- Mobile Layout -->
-                <div class="flex flex-col gap-3 md:hidden">
-                    <img src="~/images/logo.png" class="h-12 self-start rounded-lg">
-                    <p class="text-center font-bold text-gray-400 hover:text-black transition-colors duration-200 cursor-default">
-                        © No. 22, Mambilla Street, Aso Drive, Abuja
-                    </p>
-                </div>
-
-                <!-- Desktop Layout -->
                 <div class="hidden md:flex items-center relative">
-                    <img src="~/images/logo.png" class="h-12 rounded-lg">
 
-                    <p class="absolute left-1/2 -translate-x-1/2 text-center font-bold text-gray-400 hover:text-black transition-colors duration-200 cursor-default">
+                    <img src="~/images/CASA III PNG.png" class="h-12 rounded-lg" />
+
+                    <p class="absolute left-1/2 -translate-x-1/2 text-center font-bold text-gray-400">
+
                         © No. 22, Mambilla Street, Aso Drive, Abuja
+
                     </p>
+
                 </div>
 
             </div>
+
         </div>
+
     </footer>
 
-    <!-- Fixed Floating Buttons -->
-    <div class="fixed right-0 top-1/2 -translate-y-1/2 z-50 flex flex-col items-end gap-2">
-        <!-- Toggle Button (Hide/Show Contact & WhatsApp) -->
-        <button id="toggleContactButtons" class="bg-black text-white p-3 hover:bg-gray-800 transition-colors duration-200">
-            <i class="fa fa-chevron-left" id="toggleIcon"></i>
-        </button>
-
-        <!-- Contact Us Button (Vertical Gold Bar) -->
-        <div id="contactButtonsGroup" class="flex flex-col gap-2">
-            <div class="relative group">
-                <button class="bg-[#b39359] text-white px-4 py-6 flex flex-col items-center justify-center gap-2 hover:bg-[#9a7a4a] transition-colors duration-200">
-                    <i class="fa fa-envelope text-xl"></i>
-                    <span class="writing-vertical text-sm font-medium">Contact Us</span>
-                </button>
-                
-                <!-- Contact Form Modal (Shows on Hover) -->
-                <div class="absolute right-full mr-4 top-0 w-80 bg-white rounded-lg shadow-2xl p-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-semibold text-purple-600">Contact Form</h3>
-                        <button class="text-gray-400 hover:text-gray-600">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <form asp-controller="Home" asp-action="ContactUs" id="modalContactForm" class="space-y-4" method="post">
-                        <input id="modal_Name" name="FirstName" type="text" placeholder="Name" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#b39359]">
-                        <input id="modal_Phone" name="Phone" type="tel" placeholder="Phone*" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#b39359]">
-                        <input id="modal_Email" name="Email" type="email" placeholder="Email*" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#b39359]">
-                        <textarea id="modal_Message" name="Message" placeholder="Message" rows="4" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#b39359]"></textarea>
-                        <button id="modalContactSubmit" type="submit" class="w-full bg-[#b39359] text-white py-2 rounded-lg hover:bg-[#9a7a4a] transition-colors duration-200">
-                            Submit
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- WhatsApp Button -->
-            <div class="relative group">
-                <a href="https://wa.me/2348108333303" target="_blank" class="bg-[#25D366] text-white p-4 rounded-lg flex items-center justify-center hover:bg-[#20BA5A] transition-colors duration-200 shadow-lg">
-                    <i class="ri-whatsapp-fill text-2xl"></i>
-                </a>
-                
-                <!-- WhatsApp Tooltip (Shows on Hover) -->
-                <div class="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 whitespace-nowrap">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-[#25D366] text-white p-2 rounded-full">
-                            <i class="ri-whatsapp-fill"></i>
-                        </div>
-                        <div>
-                            <p class="font-semibold text-gray-800">WhatsApp</p>
-                            <p class="text-sm text-gray-600">Chat with us</p>
-                        </div>
-                    </div>
-                    <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full">
-                        <div class="w-0 h-0 border-t-8 border-t-transparent border-l-8 border-l-white border-b-8 border-b-transparent"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Live Chat Button (Fixed Bottom Right) -->
-    <div class="fixed bottom-6 right-6 z-50">
-        <button class="bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-colors duration-200">
-            <svg width="32" height="30" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#ffffff"><g clip-path="url(#messages__clip0_14307_15730)"><path fill-opacity="0.01" d="M0 0h24v24H0z"></path><mask id="messages__b" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24" style="mask-type: alpha;"><g clip-path="url(#messages__clip1_14307_15730)"><g clip-path="url(#messages__clip2_14307_15730)"><mask id="messages__a" maskUnits="userSpaceOnUse" x="1" y="0" width="23" height="23" style="mask-type: alpha;"><path d="M2.571 22.286h-.008.008z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M17.143 4.286c1.414 0 2.571 1.157 2.571 2.571v8.572c0 1.414-1.157 2.571-2.571 2.571H7.209l-4.037 4.037c-.162.162-.384.247-.606.248-.11 0-.219-.017-.32-.068-.317-.128-.532-.445-.532-.788V6.857c0-1.414 1.157-2.571 2.572-2.571h12.857zM4.286 6c-.472 0-.857.386-.857.857v12.506l2.82-2.82c.162-.163.377-.249.608-.249h10.286c.471 0 .857-.385.857-.857V6.866c0-.472-.386-.857-.857-.857H4.286V6z"></path><path d="M20.571.857c1.415 0 2.572 1.158 2.572 2.572V12c0 .472-.386.857-.857.857-.472 0-.857-.385-.857-.857V3.43c0-.472-.386-.857-.858-.857H7.714c-.471 0-.857-.386-.857-.857 0-.472.386-.858.857-.858h12.857z"></path></mask><g mask="url(#messages__a)"><path d="M-1.714-1.714h27.429v27.429H-1.714z"></path></g></g></g></mask><g mask="url(#messages__b)"><path d="M0 0h24v24H0V0z"></path></g></g><defs><clipPath id="messages__clip0_14307_15730"><path d="M0 0h24v24H0z"></path></clipPath><clipPath id="messages__clip1_14307_15730"><path d="M0 0h24v24H0z"></path></clipPath><clipPath id="messages__clip2_14307_15730"><path transform="translate(-1.714 -1.714)" d="M0 0h27.429v27.429H0z"></path></clipPath></defs></svg>
-        </button>
-    </div>
-
-    <!-- Scripts -->
     <script>
-        document.getElementById("mobileMenuBtn").onclick = () => {
-            document.getElementById("mobileMenu").classList.toggle("hidden");
-        };
 
-        // Toggle Contact Buttons
-        const toggleButton = document.getElementById("toggleContactButtons");
-        const contactButtonsGroup = document.getElementById("contactButtonsGroup");
-        const toggleIcon = document.getElementById("toggleIcon");
-        let isExpanded = true;
+        document.getElementById("mobileMenuBtn").onclick=()=>{
 
-        toggleButton.addEventListener("click", () => {
-            isExpanded = !isExpanded;
-            if (isExpanded) {
-                contactButtonsGroup.classList.remove("hidden");
-                toggleIcon.classList.remove("fa-chevron-right");
-                toggleIcon.classList.add("fa-chevron-left");
-            } else {
-                contactButtonsGroup.classList.add("hidden");
-                toggleIcon.classList.remove("fa-chevron-left");
-                toggleIcon.classList.add("fa-chevron-right");
-            }
-        });
+        document.getElementById("mobileMenu").classList.toggle("hidden")
 
-        // Partners Slider - Seamless infinite scroll
-        (function() {
-            const partnersSlider = document.getElementById("partnersSlider");
-            if (!partnersSlider) return;
-            
-            const logos = partnersSlider.querySelectorAll(".partner-logo");
-            if (logos.length === 0) return;
-            
-            const partnersCount = parseInt(partnersSlider.getAttribute("data-partners-count")) || 1;
-            let currentIndex = 0;
-            let scrollInterval;
-            
-            // Calculate scroll amount based on logo width + gap
-            function getScrollAmount() {
-                if (logos.length === 0) return 0;
-                const firstLogo = logos[0];
-                const logoWidth = firstLogo.offsetWidth;
-                // gap-12 = 3rem = 48px, gap-16 = 4rem = 64px, gap-20 = 5rem = 80px
-                const gap = window.innerWidth >= 1024 ? 80 : window.innerWidth >= 768 ? 64 : 48;
-                return logoWidth + gap;
-            }
+        }
 
-            function scrollPartners() {
-                const scrollAmount = getScrollAmount();
-                currentIndex++;
-                
-                // When we've scrolled through one complete set, reset instantly (no transition)
-                // This happens seamlessly because we have 3 sets, so reset happens in the middle
-                if (currentIndex >= partnersCount) {
-                    currentIndex = 0;
-                    partnersSlider.style.transition = "none";
-                    partnersSlider.style.transform = "translateX(0)";
-                    // Force reflow to apply the reset
-                    void partnersSlider.offsetWidth;
-                    // Re-enable transition for next scroll
-                    partnersSlider.style.transition = "transform 0.8s ease-in-out";
-                } else {
-                    partnersSlider.style.transition = "transform 0.8s ease-in-out";
-                    partnersSlider.style.transform = `translateX(-${scrollAmount * currentIndex}px)`;
-                }
-            }
-
-            // Wait for images to load and DOM to be ready
-            function initSlider() {
-                if (logos.length > 0 && partnersCount > 0) {
-                    // Start scrolling every 3 seconds
-                    scrollInterval = setInterval(scrollPartners, 3000);
-                }
-            }
-
-            // Initialize when page loads
-            if (document.readyState === "loading") {
-                window.addEventListener("load", initSlider);
-            } else {
-                initSlider();
-            }
-        })();
     </script>
 
-    <style>
-        .writing-vertical {
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-        }
-    </style>
-
-    <script src="~/js/jquery-3.5.1.min.js"></script>
-    <script src="~/js/common.js"></script>
     <script src="~/js/site.js"></script>
     <script src="~/js/scroll-effects.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
+
 </body>
 </html>

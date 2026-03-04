@@ -7,6 +7,20 @@ body, input, button, select, textarea {
     font-family: 'Libre Baskerville', Baskerville, Georgia, serif;
 }
 
+/* ==================== NAV (Deep Navy Blue) ==================== */
+.nav-deep-navy {
+    color: #001f3f !important;
+}
+
+.nav-deep-navy:hover,
+.nav-deep-navy:focus {
+    color: #001f3f !important;
+}
+
+.nav-deep-navy-hover-border:hover {
+    border-color: #001f3f !important;
+}
+
 /* Team Member Card Styling */
 .team-member-card {
     position: relative;
