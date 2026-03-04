@@ -7,7 +7,7 @@
 
         <!-- Slider Container -->
         <div class="relative w-full overflow-hidden">
-            <div id="partnersSlider" class="flex items-center justify-center gap-12 md:gap-16 lg:gap-20" data-partners-count="@Model.Count">
+            <div id="partnersSlider" class="flex flex-nowrap items-center gap-12 md:gap-16 lg:gap-20" style="width: max-content; will-change: transform;" data-partners-count="@Model.Count">
                 <!-- Partner Logos - Multiple sets for seamless infinite loop -->
                 @for (int i = 0; i < 3; i++)
                 {

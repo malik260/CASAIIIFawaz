@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
+@{
+    var isAboutUsPage = string.Equals(ViewContext.RouteData.Values["controller"]?.ToString(), "Home", StringComparison.OrdinalIgnoreCase)
+        && string.Equals(ViewContext.RouteData.Values["action"]?.ToString(), "AboutUs", StringComparison.OrdinalIgnoreCase);
+}
 <head>
 
 	<meta charset="utf-8" />
@@ -266,41 +269,73 @@ max-h-96 overflow-y-auto z-50">
 	<!-- Scripts -->
 
 	<script>
-
-		document.getElementById("mobileMenuBtn").onclick=()=>{
-
-		document.getElementById("mobileMenu").classList.toggle("hidden")
-
+		var mobileMenuBtn = document.getElementById("mobileMenuBtn");
+		if (mobileMenuBtn) {
+			mobileMenuBtn.onclick = function () {
+				var menu = document.getElementById("mobileMenu");
+				if (menu) menu.classList.toggle("hidden");
+			};
 		}
 
-		/* Header Scroll Effect */
+		window.addEventListener("scroll", function () {
+			var header = document.getElementById("siteHeader");
+			var logo = document.getElementById("siteLogo");
+			if (!header || !logo) return;
+			if (window.scrollY > 50) {
+				header.classList.remove("bg-transparent");
+				header.classList.add("bg-white", "shadow-md");
+				logo.classList.remove("h-14");
+				logo.classList.add("h-11");
+			} else {
+				header.classList.remove("bg-white", "shadow-md");
+				header.classList.add("bg-transparent");
+				logo.classList.remove("h-11");
+				logo.classList.add("h-14");
+			}
+		});
+	</script>
 
-		window.addEventListener("scroll",function(){
+	<script>
+		/* Partners Slider - runs after page and images load */
+		window.addEventListener("load", function () {
+			var partnersSlider = document.getElementById("partnersSlider");
+			if (!partnersSlider) return;
 
-		const header=document.getElementById("siteHeader")
-		const logo=document.getElementById("siteLogo")
+			var logos = partnersSlider.querySelectorAll(".partner-logo");
+			if (logos.length === 0) return;
 
-		if(window.scrollY>50){
+			var partnersCount = parseInt(partnersSlider.getAttribute("data-partners-count"), 10) || 1;
+			var currentIndex = 0;
 
-		header.classList.remove("bg-transparent")
-		header.classList.add("bg-white","shadow-md")
+			function getScrollAmount() {
+				var first = logos[0];
+				if (!first) return 0;
+				var logoWidth = first.offsetWidth || 160;
+				var gap = window.innerWidth >= 1024 ? 80 : window.innerWidth >= 768 ? 64 : 48;
+				return logoWidth + gap;
+			}
 
-		logo.classList.remove("h-14")
-		logo.classList.add("h-11")
+			function scrollPartners() {
+				var scrollAmount = getScrollAmount();
+				if (scrollAmount <= 0) return;
+				currentIndex++;
 
-		}
-		else{
+				if (currentIndex >= partnersCount) {
+					currentIndex = 0;
+					partnersSlider.style.transition = "none";
+					partnersSlider.style.transform = "translateX(0)";
+					partnersSlider.offsetHeight;
+					partnersSlider.style.transition = "transform 0.8s ease-in-out";
+				} else {
+					partnersSlider.style.transition = "transform 0.8s ease-in-out";
+					partnersSlider.style.transform = "translateX(-" + (scrollAmount * currentIndex) + "px)";
+				}
+			}
 
-		header.classList.remove("bg-white","shadow-md")
-		header.classList.add("bg-transparent")
-
-		logo.classList.remove("h-11")
-		logo.classList.add("h-14")
-
-		}
-
-		})
-
+			if (partnersCount > 0 && logos.length > 0) {
+				setInterval(scrollPartners, 3000);
+			}
+		});
 	</script>
 
 	<script src="~/js/site.js"></script>
