@@ -1,4 +1,4 @@
-﻿@model Core.ViewModels.HomePageVM
+@model Core.ViewModels.HomePageVM
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -42,11 +42,26 @@
                             </p>
 
                             <!-- CTA -->
-                            <a href="@banner.ButtonLink"
-                               class="inline-block bg-white text-black px-8 py-3 text-sm font-semibold tracking-wide
-                                              hover:bg-black hover:text-white transition">
-                                @banner.ButtonText
-                            </a>
+                            @{
+                                var targetUrl = string.IsNullOrEmpty(banner.ButtonLink)
+                                    ? banner.BrochureUrl
+                                    : banner.ButtonLink;
+
+                                if (!string.IsNullOrEmpty(targetUrl) && targetUrl.Contains("/raw/upload/"))
+                                {
+                                    targetUrl = targetUrl.Replace("/raw/upload/", "/raw/upload/fl_attachment/");
+                                }
+                            }
+                            @if (!string.IsNullOrEmpty(targetUrl))
+                            {
+                                <a href="@targetUrl"
+                                   target="_blank"
+                                   rel="noopener"
+                                   class="inline-block bg-white text-black px-8 py-3 text-sm font-semibold tracking-wide
+                                                  hover:bg-black hover:text-white transition">
+                                    @banner.ButtonText
+                                </a>
+                            }
                         </div>
                     </div>
                 </div>

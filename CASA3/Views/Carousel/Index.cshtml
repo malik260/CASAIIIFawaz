@@ -1,4 +1,4 @@
-﻿@using static Util
+@using static Util
 @using Core.Enum
 @using Core.Model
 @model IEnumerable<Core.ViewModels.CarouselVM>
@@ -88,7 +88,7 @@
                                 <td>
                                     @if (!string.IsNullOrEmpty(item.BackgroundImageUrl))
                                     {
-                                        <img src="/@item.BackgroundImageUrl" alt="@item.Title" class="carousel-thumb">
+                                        <img src="@item.BackgroundImageUrl" alt="@item.Title" class="carousel-thumb">
                                     }
                                     else
                                     {
@@ -125,7 +125,7 @@
                                         }
                                         @if (!string.IsNullOrEmpty(item.BrochureUrl))
                                         {
-                                            <a href="/@item.BrochureUrl" target="_blank" class="text-success">
+                                            <a href="@item.BrochureUrl" target="_blank" class="text-success">
                                                 <i class="fa fa-file-pdf-o"></i> Brochure
                                             </a>
                                         }

@@ -1,4 +1,4 @@
-﻿function CreateCarousel() {
+function CreateCarousel() {
     // Validate required fields
     var title = $('#crl_title').val();
     var buttonText = $('#crl_button_text').val();
@@ -103,14 +103,14 @@ function GetCarouselDetailForEdit(id) {
                 if (data.backgroundImageUrl) {
                     $('#crl_current_background').html(`
                         <p class="text-muted mb-2">Current Background:</p>
-                        <img src="/${data.backgroundImageUrl}" alt="Background" style="max-width: 300px; max-height: 150px; object-fit: cover; border: 1px solid #ddd; border-radius: 4px;">
+                        <img src="${data.backgroundImageUrl}" alt="Background" style="max-width: 300px; max-height: 150px; object-fit: cover; border: 1px solid #ddd; border-radius: 4px;">
                     `);
                 }
 
                 // Display current brochure link
                 if (data.brochureUrl) {
                     $('#crl_current_brochure').html(`
-                        <p class="text-muted">Current: <a href="/${data.brochureUrl}" target="_blank">View Brochure PDF</a></p>
+                        <p class="text-muted">Current: <a href="${data.brochureUrl}" target="_blank">View Brochure PDF</a></p>
                     `);
                 }
 

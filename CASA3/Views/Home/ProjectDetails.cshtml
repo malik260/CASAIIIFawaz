@@ -69,11 +69,21 @@
                             <div class="flex flex-wrap gap-3">
                                 @if (!string.IsNullOrEmpty(design.BrochurePdfUrl))
                                 {
-                                    <a href="@design.BrochurePdfUrl" target="_blank" class="inline-block px-6 py-3 border-2 border-[#b39359] text-[#b39359] font-bold hover:bg-[#b39359] hover:text-white transition-all duration-300">DOWNLOAD BROCHURE</a>
+                                    var brochureUrl = design.BrochurePdfUrl;
+                                    if (brochureUrl.Contains("/raw/upload/"))
+                                    {
+                                        brochureUrl = brochureUrl.Replace("/raw/upload/", "/raw/upload/fl_attachment/");
+                                    }
+                                    <a href="@brochureUrl" target="_blank" class="inline-block px-6 py-3 border-2 border-[#b39359] text-[#b39359] font-bold hover:bg-[#b39359] hover:text-white transition-all duration-300">DOWNLOAD BROCHURE</a>
                                 }
                                 @if (!string.IsNullOrEmpty(design.FloorPlanPdfUrl))
                                 {
-                                    <a href="@design.FloorPlanPdfUrl" target="_blank" class="inline-block px-6 py-3 border-2 border-gray-800 text-gray-800 font-bold hover:bg-gray-800 hover:text-white transition-all duration-300">DOWNLOAD FLOOR PLAN</a>
+                                    var floorPlanUrl = design.FloorPlanPdfUrl;
+                                    if (floorPlanUrl.Contains("/raw/upload/"))
+                                    {
+                                        floorPlanUrl = floorPlanUrl.Replace("/raw/upload/", "/raw/upload/fl_attachment/");
+                                    }
+                                    <a href="@floorPlanUrl" target="_blank" class="inline-block px-6 py-3 border-2 border-gray-800 text-gray-800 font-bold hover:bg-gray-800 hover:text-white transition-all duration-300">DOWNLOAD FLOOR PLAN</a>
                                 }
                             </div>
                         </div>
@@ -98,11 +108,21 @@
                             <div class="flex flex-wrap gap-3">
                                 @if (!string.IsNullOrEmpty(design.BrochurePdfUrl))
                                 {
-                                    <a href="@design.BrochurePdfUrl" target="_blank" class="inline-block px-6 py-3 border-2 border-[#b39359] text-[#b39359] font-bold hover:bg-[#b39359] hover:text-white transition-all duration-300">DOWNLOAD BROCHURE</a>
+                                    var brochureUrl = design.BrochurePdfUrl;
+                                    if (brochureUrl.Contains("/raw/upload/"))
+                                    {
+                                        brochureUrl = brochureUrl.Replace("/raw/upload/", "/raw/upload/fl_attachment/");
+                                    }
+                                    <a href="@brochureUrl" target="_blank" class="inline-block px-6 py-3 border-2 border-[#b39359] text-[#b39359] font-bold hover:bg-[#b39359] hover:text-white transition-all duration-300">DOWNLOAD BROCHURE</a>
                                 }
                                 @if (!string.IsNullOrEmpty(design.FloorPlanPdfUrl))
                                 {
-                                    <a href="@design.FloorPlanPdfUrl" target="_blank" class="inline-block px-6 py-3 border-2 border-gray-800 text-gray-800 font-bold hover:bg-gray-800 hover:text-white transition-all duration-300">DOWNLOAD FLOOR PLAN</a>
+                                    var floorPlanUrl = design.FloorPlanPdfUrl;
+                                    if (floorPlanUrl.Contains("/raw/upload/"))
+                                    {
+                                        floorPlanUrl = floorPlanUrl.Replace("/raw/upload/", "/raw/upload/fl_attachment/");
+                                    }
+                                    <a href="@floorPlanUrl" target="_blank" class="inline-block px-6 py-3 border-2 border-gray-800 text-gray-800 font-bold hover:bg-gray-800 hover:text-white transition-all duration-300">DOWNLOAD FLOOR PLAN</a>
                                 }
                             </div>
                         </div>
@@ -131,7 +151,14 @@
         <p class="text-lg text-gray-700 mb-8">
             Download our comprehensive brochure for detailed information about all the features, amenities, and specifications.
         </p>
-        <a href="@Model.BrochurePdfUrl" target="_blank" class="inline-block px-8 py-4 bg-gray-800 text-white font-bold text-lg hover:bg-gray-900 transition-all duration-300">
+        @{
+            var mainBrochureUrl = Model.BrochurePdfUrl;
+            if (mainBrochureUrl.Contains("/raw/upload/"))
+            {
+                mainBrochureUrl = mainBrochureUrl.Replace("/raw/upload/", "/raw/upload/fl_attachment/");
+            }
+        }
+        <a href="@mainBrochureUrl" target="_blank" class="inline-block px-8 py-4 bg-gray-800 text-white font-bold text-lg hover:bg-gray-900 transition-all duration-300">
             DOWNLOAD BROCHURE
         </a>
     </div>
