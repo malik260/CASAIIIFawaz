@@ -60,6 +60,12 @@ namespace Core.DTOs
         public string NextOfKinResidentialAddress { get; set; }
 
         public string? NextOfKinOfficeAddress { get; set; }
+
+        [DataType(DataType.Password)]
+        public string? Password { get; set; }
+
+        public string? PassportFilePath { get; set; }
+        public IFormFile? PassportFile { get; set; }
     }
 
     public class ClientUpdateDto : ClientRegistrationDto

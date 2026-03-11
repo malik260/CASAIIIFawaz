@@ -19,6 +19,7 @@ namespace Core.Model
         public DateTime? DateOfBirthOrIncorporation { get; set; }
         public MeansOfID? MeansOfID { get; set; }
         public string? IDFilePath { get; set; }
+        public string? PassportFilePath { get; set; }
 
         // Next of Kin
         public string NextOfKinFirstName { get; set; }

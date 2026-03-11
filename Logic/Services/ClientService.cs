@@ -91,6 +91,7 @@ namespace Logic.Services
                     DateOfBirthOrIncorporation = registration.DateOfBirthOrIncorporation,
                     MeansOfID = registration.MeansOfID,
                     IDFilePath = registration.IDFilePath,
+                    PassportFilePath = registration.PassportFilePath,
                     NextOfKinFirstName = registration.NextOfKinFirstName,
                     NextOfKinLastName = registration.NextOfKinLastName,
                     NextOfKinOtherNames = registration.NextOfKinOtherNames,
@@ -204,6 +205,7 @@ namespace Logic.Services
                     .SetProperty(c => c.City, model.City)
                     .SetProperty(c => c.DateOfBirthOrIncorporation, model.DateOfBirthOrIncorporation)
                     .SetProperty(c => c.MeansOfID, model.MeansOfID)
+                    .SetProperty(c => c.PassportFilePath, model.PassportFilePath)
                     .SetProperty(c => c.NextOfKinFirstName, model.NextOfKinFirstName)
                     .SetProperty(c => c.NextOfKinLastName, model.NextOfKinLastName)
                     .SetProperty(c => c.NextOfKinOtherNames, model.NextOfKinOtherNames)
@@ -290,6 +292,7 @@ namespace Logic.Services
                 DateOfBirthOrIncorporation = client.DateOfBirthOrIncorporation,
                 MeansOfID = client.MeansOfID,
                 IDFilePath = client.IDFilePath,
+                PassportFilePath = client.PassportFilePath,
                 NextOfKinFirstName = client.NextOfKinFirstName,
                 NextOfKinLastName = client.NextOfKinLastName,
                 NextOfKinOtherNames = client.NextOfKinOtherNames,

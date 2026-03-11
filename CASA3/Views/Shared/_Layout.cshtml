@@ -115,31 +115,61 @@ max-h-96 overflow-y-auto z-50">
 
 		<!-- Mobile Menu -->
 		<div id="mobileMenu"
-			 class="hidden md:hidden absolute top-16 left-0 w-full bg-white shadow-lg border-t z-50">
+			 class="mobile-nav-drawer hidden md:hidden absolute top-16 left-0 right-0 w-full z-50">
 
-			<div class="px-6 py-6 space-y-4 text-base font-medium">
+			<nav class="mobile-nav-list" aria-label="Main navigation">
+				<a asp-controller="Home" asp-action="Index" class="mobile-nav-item mobile-nav-item--home">
+					<span class="mobile-nav-icon"><i class="ri-home-4-line" aria-hidden="true"></i></span>
+					<span class="mobile-nav-label">Home</span>
+				</a>
+				<div class="mobile-nav-divider" role="presentation"></div>
 
-				<a asp-controller="Home" asp-action="AboutUs" class="block">About Us</a>
+				<a asp-controller="Home" asp-action="AboutUs" class="mobile-nav-item">
+					<span class="mobile-nav-label">About Us</span>
+					<i class="ri-arrow-right-s-line mobile-nav-chevron" aria-hidden="true"></i>
+				</a>
+				<div class="mobile-nav-divider" role="presentation"></div>
 
-				<details>
-					<summary class="cursor-pointer">Our Projects</summary>
-
-					<div class="ml-4 mt-2 space-y-2">
+				<details class="mobile-nav-details">
+					<summary class="mobile-nav-item mobile-nav-item--summary">
+						<span class="mobile-nav-label">Our Projects</span>
+						<i class="ri-arrow-right-s-line mobile-nav-chevron mobile-nav-chevron--rotate" aria-hidden="true"></i>
+					</summary>
+					<div class="mobile-nav-sub">
 						@await Component.InvokeAsync("Navigation")
 					</div>
 				</details>
+				<div class="mobile-nav-divider" role="presentation"></div>
 
-				<a asp-controller="Client" asp-action="Register" class="block">Client Registration</a>
+				<a asp-controller="Client" asp-action="Register" class="mobile-nav-item">
+					<span class="mobile-nav-label">Client Registration</span>
+					<i class="ri-arrow-right-s-line mobile-nav-chevron" aria-hidden="true"></i>
+				</a>
+				<div class="mobile-nav-divider" role="presentation"></div>
 
-				<a asp-controller="Home" asp-action="BecomeAnAffiliate" class="block">Become An Affiliate</a>
+				<a asp-controller="Home" asp-action="BecomeAnAffiliate" class="mobile-nav-item">
+					<span class="mobile-nav-label">Become An Affiliate</span>
+					<i class="ri-arrow-right-s-line mobile-nav-chevron" aria-hidden="true"></i>
+				</a>
+				<div class="mobile-nav-divider" role="presentation"></div>
 
-				<a href="/Become-A-Vendor" class="block">Become A Vendor</a>
+				<a href="/Become-A-Vendor" class="mobile-nav-item">
+					<span class="mobile-nav-label">Become A Vendor</span>
+					<i class="ri-arrow-right-s-line mobile-nav-chevron" aria-hidden="true"></i>
+				</a>
+				<div class="mobile-nav-divider" role="presentation"></div>
 
-				<a asp-controller="Home" asp-action="ContactUs" class="block">Contact Us</a>
+				<a asp-controller="Home" asp-action="ContactUs" class="mobile-nav-item">
+					<span class="mobile-nav-label">Contact Us</span>
+					<i class="ri-arrow-right-s-line mobile-nav-chevron" aria-hidden="true"></i>
+				</a>
+				<div class="mobile-nav-divider" role="presentation"></div>
 
-				<a asp-controller="Home" asp-action="Blog" class="block">Blog</a>
-
-			</div>
+				<a asp-controller="Home" asp-action="Blog" class="mobile-nav-item">
+					<span class="mobile-nav-label">Blog</span>
+					<i class="ri-arrow-right-s-line mobile-nav-chevron" aria-hidden="true"></i>
+				</a>
+			</nav>
 
 		</div>
 	</header>

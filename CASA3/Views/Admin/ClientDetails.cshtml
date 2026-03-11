@@ -6,6 +6,19 @@
         : Model.Status == Core.Enum.RegistrationStatus.Rejected
             ? "bg-red-100 text-red-800 border-red-200"
             : "bg-yellow-100 text-yellow-800 border-yellow-200";
+    var meansOfIdDisplay = Model.MeansOfID.HasValue ? Model.MeansOfID.Value switch
+    {
+        Core.Enum.MeansOfID.NationalIDCard => "National ID Card",
+        Core.Enum.MeansOfID.DriversLicense => "Driver's License",
+        Core.Enum.MeansOfID.InternationalPassport => "International Passport",
+        Core.Enum.MeansOfID.VotersCard => "Voter's Card",
+        Core.Enum.MeansOfID.NINSlip => "NIN Slip",
+        Core.Enum.MeansOfID.CertificateOfIncorporation => "Certificate of Incorporation",
+        Core.Enum.MeansOfID.CACRegistration => "CAC Registration",
+        Core.Enum.MeansOfID.TaxIdentificationNumber => "Tax Identification Number (TIN)",
+        Core.Enum.MeansOfID.BusinessRegistrationCertificate => "Business Registration Certificate",
+        _ => Model.MeansOfID.ToString()
+    } : "";
 }
 
 <section class="p-8 max-w-5xl mx-auto">
@@ -63,7 +76,7 @@
                 {
                     <div class="flex justify-between">
                         <dt class="text-gray-500">Means of ID</dt>
-                        <dd class="font-semibold text-gray-800">@Model.MeansOfID</dd>
+                        <dd class="font-semibold text-gray-800">@meansOfIdDisplay</dd>
                     </div>
                 }
                 @if (!string.IsNullOrEmpty(Model.IDFilePath))
