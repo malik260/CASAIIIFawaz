@@ -197,16 +197,11 @@ body, input, button, select, textarea {
     display: block;
 }
 
-/* Ensure hero has usable height on mobile (iOS Safari vh fix) */
+/* Mobile: wide baked-in-text banners crop badly with object-fit:cover — show full image instead */
 @media (max-width: 768px) {
-    .affiliate-hero-section {
-        min-height: 60vh;
-        min-height: -webkit-fill-available;
-    }
-
-    /* Keep hero headline area visible on narrow screens */
     .affiliate-hero-img {
-        object-position: 38% center;
+        object-fit: contain;
+        object-position: center center;
     }
 }
 

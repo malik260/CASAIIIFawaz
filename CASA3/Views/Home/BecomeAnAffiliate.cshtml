@@ -2,8 +2,8 @@
     ViewData["Title"] = "Become an Affiliate";
 }
 
-<!-- Hero Section: min-height and img for reliable mobile background -->
-<section class="relative overflow-hidden affiliate-hero-section" style="min-height: 70vh; height: 85vh;">
+<!-- Hero: shorter fixed height on mobile + contain (see site.css) avoids cropping wide banner text -->
+<section class="relative overflow-hidden affiliate-hero-section min-h-[42vh] h-[46vh] sm:h-[50vh] md:min-h-[70vh] md:h-[85vh]">
     <!-- Fallback background when image is loading or fails (avoids solid black on mobile) -->
     <div class="absolute inset-0 bg-gray-900" aria-hidden="true"></div>
     <!-- Background Image: img tag for reliable display on mobile -->
