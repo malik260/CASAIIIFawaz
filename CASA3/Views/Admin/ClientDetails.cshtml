@@ -6,6 +6,7 @@
         : Model.Status == Core.Enum.RegistrationStatus.Rejected
             ? "bg-red-100 text-red-800 border-red-200"
             : "bg-yellow-100 text-yellow-800 border-yellow-200";
+    var isCorporate = Model.ClientType == Core.Enum.ClientType.Corporate;
     var meansOfIdDisplay = Model.MeansOfID.HasValue ? Model.MeansOfID.Value switch
     {
         Core.Enum.MeansOfID.NationalIDCard => "National ID Card",
@@ -130,39 +131,39 @@
             </dl>
         </div>
 
-        <!-- Next of Kin -->
+        <!-- Next of Kin / Directors -->
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:col-span-2">
             <h2 class="text-base font-bold text-[#1E403F] mb-4 pb-3 border-b border-gray-100 flex items-center gap-2">
-                <i class="fa fa-users text-[#b39359]"></i> Next of Kin
+                <i class="fa fa-users text-[#b39359]"></i> @(isCorporate ? "Directors" : "Next of Kin")
             </h2>
             <div class="grid md:grid-cols-2 gap-x-12 gap-y-3 text-sm">
                 <div class="flex justify-between">
-                    <dt class="text-gray-500">Full Name</dt>
+                    <dt class="text-gray-500">@(isCorporate ? "Director Full Name" : "Full Name")</dt>
                     <dd class="font-semibold text-gray-800">@Model.NextOfKinFirstName @Model.NextOfKinOtherNames @Model.NextOfKinLastName</dd>
                 </div>
                 <div class="flex justify-between">
-                    <dt class="text-gray-500">Relationship</dt>
+                    <dt class="text-gray-500">@(isCorporate ? "Director Role" : "Relationship")</dt>
                     <dd class="font-semibold text-gray-800">@Model.NextOfKinRelationship</dd>
                 </div>
                 <div class="flex justify-between">
-                    <dt class="text-gray-500">Phone</dt>
+                    <dt class="text-gray-500">@(isCorporate ? "Director Phone" : "Phone")</dt>
                     <dd class="font-semibold text-gray-800">@Model.NextOfKinPhoneNumber</dd>
                 </div>
                 @if (!string.IsNullOrEmpty(Model.NextOfKinEmail))
                 {
                     <div class="flex justify-between">
-                        <dt class="text-gray-500">Email</dt>
+                        <dt class="text-gray-500">@(isCorporate ? "Director Email" : "Email")</dt>
                         <dd class="font-semibold text-gray-800">@Model.NextOfKinEmail</dd>
                     </div>
                 }
                 <div class="flex justify-between md:col-span-2">
-                    <dt class="text-gray-500">Residential Address</dt>
+                    <dt class="text-gray-500">@(isCorporate ? "Director Residential Address" : "Residential Address")</dt>
                     <dd class="font-semibold text-gray-800 text-right">@Model.NextOfKinResidentialAddress</dd>
                 </div>
                 @if (!string.IsNullOrEmpty(Model.NextOfKinOfficeAddress))
                 {
                     <div class="flex justify-between md:col-span-2">
-                        <dt class="text-gray-500">Office Address</dt>
+                        <dt class="text-gray-500">@(isCorporate ? "Director Office Address" : "Office Address")</dt>
                         <dd class="font-semibold text-gray-800 text-right">@Model.NextOfKinOfficeAddress</dd>
                     </div>
                 }

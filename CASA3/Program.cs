@@ -6,7 +6,10 @@ using Logic.IServices;
 using Logic.Services;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 internal class Program
 {
@@ -79,6 +82,18 @@ internal class Program
         app.UseForwardedHeaders();
         app.UseHttpsRedirection();
         app.UseStaticFiles();
+
+        // Serve Cursor-provided temporary assets (used for the Become Affiliate hero background).
+        // Note: user-machine-specific; move/copy into CASA3/wwwroot/images for production.
+        var cursorAssetsPhysicalPath = @"C:\Users\Malik\.cursor\projects\c-Users-Malik-Music-Casa-Original-CasaIII-CasaIII\assets";
+        if (Directory.Exists(cursorAssetsPhysicalPath))
+        {
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(cursorAssetsPhysicalPath),
+                RequestPath = "/cursor-assets"
+            });
+        }
         app.UseAuthentication();
         app.UseCookiePolicy();
         app.UseRouting();
