@@ -349,6 +349,40 @@
             });
 
             toggleKinDirectorSections();
+
+            // Client Registration Form confirmation
+            var regForm = document.getElementById('clientRegForm');
+            if (regForm) {
+                regForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    // Check validation before showing SwAl
+                    if (typeof $(this).valid === 'function' && !$(this).valid()) {
+                        return;
+                    }
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "Please confirm that all your details are correct before submitting.",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#b39359',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, register!',
+                        cancelButtonText: 'Review'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Show loading state if needed
+                            const submitBtn = regForm.querySelector('button[type="submit"]');
+                            if (submitBtn) {
+                                submitBtn.disabled = true;
+                                submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i> Processing...';
+                            }
+                            regForm.submit();
+                        }
+                    });
+                });
+            }
         })();
     </script>
 }
